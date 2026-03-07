@@ -1,0 +1,12 @@
+/admin/vendor/
+/admin/node_modules/
+/admin/.env
+/uploads/
+/.env
+/node_modules/
+/vendor/
+/.DS_Store
+*.log
+*.sqlite
+.vscode/
+.idea/

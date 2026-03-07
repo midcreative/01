@@ -1,0 +1,24 @@
+# Root .htaccess — routes clean URLs to PHP files
+
+Options -Indexes
+RewriteEngine On
+
+# --- Route /post/{slug} to post/index.php ---
+RewriteRule ^post/([^/]+)/?$ post/index.php?slug=$1 [QSA,L]
+
+# --- Route /volunteer to volunteer.php ---
+RewriteRule ^volunteer/?$ volunteer.php [QSA,L]
+
+# --- Route /sitemap.xml to sitemap.php ---
+RewriteRule ^sitemap\.xml$ sitemap.php [QSA,L]
+
+# --- Serve real files/dirs directly, otherwise Everything else: index.php ---
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+
+# Protect sensitive files
+<Files ".env">
+    Order allow,deny
+    Deny from all
+</Files>

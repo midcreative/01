@@ -1,0 +1,25 @@
+# Block direct access to sensitive directories
+Options -Indexes
+
+# Route all admin requests through index.php
+RewriteEngine On
+RewriteBase /admin/
+
+# Allow direct access to real files/dirs (vendor assets etc.)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Send everything else to index.php
+RewriteRule ^ index.php [QSA,L]
+
+# Protect .env
+<Files ".env">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Protect composer files
+<FilesMatch "(composer\.(json|lock)|vendor/.*)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

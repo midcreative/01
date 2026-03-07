@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- === GEO / SEO Meta Tags === -->
+    <title>潘炩禕 服務日記 | 屏東第三選區在地服務與民意互動站</title>
+    <meta name="description" content="潘炩禕，屏東縣議員第三選區參選人，深耕潮州鎮、內埔鄉、萬巒鄉、枋寮鄉。紀錄農漁產銷、長照、親子教育等在地服務案例，提供民眾連署與志工招募功能。">
+    <meta name="keywords" content="潘炩禕, 屏東縣議員, 第三選區, 潮州鎮, 內埔鄉, 萬巒鄉, 枋寮鄉, 農漁業, 長照, 服務日記">
+    <link rel="canonical" href="https://demo10.midcreative.com/demo/index.html">
+
+    <!-- === Open Graph（社群分享） === -->
+    <meta property="og:title" content="潘炩禕 服務日記 | 屏東第三選區">
+    <meta property="og:description" content="深耕屏東第三選區，農漁產銷、長照、親子教育在地服務紀錄站。">
+    <meta property="og:url" content="https://demo10.midcreative.com/demo/index.html">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="zh_TW">
+    <meta property="og:site_name" content="潘炩禕 服務日記">
+
+    <!-- === JSON-LD 結構化資料（GEO 核心） === -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "潘炩禕",
+      "jobTitle": "屏東縣議員第三選區參選人",
+      "description": "屏東縣議員第三選區參選人，深耕農漁牧產銷、長照數位升級、親子教育、勞資共榮與身心靈關懷五大服務主軸。",
+      "areaServed": [
+        { "@type": "City", "name": "潮州鎮", "addressRegion": "屏東縣" },
+        { "@type": "City", "name": "內埔鄉", "addressRegion": "屏東縣" },
+        { "@type": "City", "name": "萬巒鄉", "addressRegion": "屏東縣" },
+        { "@type": "City", "name": "枋寮鄉", "addressRegion": "屏東縣" }
+      ],
+      "url": "https://demo10.midcreative.com/demo/index.html",
+      "knowsAbout": ["農漁牧產銷", "長照政策", "親子教育", "勞工權益", "心靈關懷"]
+    }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #F9FBFA; color: #1e293b; -webkit-font-smoothing: antialiased; }
+        .font-serif { font-family: 'Noto Serif TC', serif; }
+        .brand-green { color: #66C2A5; }
+        .bg-brand-green { background-color: #66C2A5; }
+        .border-brand-green { border-color: #66C2A5; }
+        .transition-all { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .hidden-view { display: none; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        * { -webkit-tap-highlight-color: transparent; }
+        .card-shadow { box-shadow: 0 10px 30px -10px rgba(102, 194, 165, 0.15); }
+    </style>
+</head>
+<body class="text-left select-none md:select-auto">
+
+    <!-- 導航欄 -->
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#E0F2ED]">
+        <div class="max-w-7xl mx-auto px-4 h-16 md:h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2 md:gap-3 py-2 cursor-pointer" onclick="switchView('home')">
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-brand-green rounded-xl flex items-center justify-center text-white shadow-lg shadow-[#66C2A5]/20 rotate-3 hover:rotate-0 transition-all">
+                    <span class="font-serif text-xl md:text-2xl font-bold">潘</span>
+                </div>
+                <div class="flex flex-col text-left">
+                    <span class="font-serif text-lg md:text-2xl font-black tracking-tighter text-slate-800">
+                        潘炩禕 <span class="brand-green font-sans text-sm md:text-lg font-bold ml-0.5">服務日記</span>
+                    </span>
+                    <span class="text-[8px] md:text-[9px] font-bold text-slate-400 uppercase tracking-[0.1em] md:tracking-[0.2em]">Pingtung District 3 Impact Site</span>
+                </div>
+            </div>
+            
+            <div class="hidden lg:flex items-center gap-8 text-sm font-bold tracking-wide">
+                <button onclick="switchView('home')" id="nav-home" class="nav-btn brand-green border-b-2 border-brand-green pb-1">鄉鎮足跡</button>
+                <button onclick="switchView('issues')" id="nav-issues" class="nav-btn text-slate-500 hover:brand-green">行動白皮書</button>
+                <button onclick="switchView('feedback')" id="nav-feedback" class="nav-btn text-slate-500 hover:brand-green">連署實證站</button>
+            </div>
+
+            <div class="flex items-center gap-2 text-left">
+                <button class="bg-brand-green text-white px-4 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-black shadow-lg shadow-[#66C2A5]/30 flex items-center gap-2 hover:bg-[#57A891] transition-all">
+                    <i data-lucide="message-square" class="w-3.5 h-3.5 md:w-4 md:h-4"></i> <span class="hidden xs:inline">線上陳情</span>
+                </button>
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-2 text-slate-500">
+                    <i data-lucide="menu" id="menu-icon"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-b border-[#E0F2ED] px-4 py-4 space-y-4 shadow-inner">
+            <button onclick="switchView('home'); toggleMobileMenu()" class="block w-full text-left font-bold text-slate-600 py-2 border-b border-slate-50">鄉鎮足跡</button>
+            <button onclick="switchView('issues'); toggleMobileMenu()" class="block w-full text-left font-bold text-slate-600 py-2 border-b border-slate-50">行動白皮書</button>
+            <button onclick="switchView('feedback'); toggleMobileMenu()" class="block w-full text-left font-bold text-slate-600 py-2">連署實證站</button>
+        </div>
+    </nav>
+
+    <!-- 主內容區 -->
+    <main class="max-w-7xl mx-auto px-4 py-8 md:py-12 text-left">
+        <header class="mb-8 md:mb-16 text-center">
+            <div class="inline-block bg-[#E0F2ED] px-3 py-1 rounded-full text-[#4A937F] text-[9px] md:text-[10px] font-black mb-4 tracking-[0.15em] uppercase text-center">
+                屏東縣議員第三選區參選人
+            </div>
+            <h1 id="main-title" class="text-3xl md:text-6xl font-serif font-black text-slate-900 mb-6 md:mb-8 leading-tight px-2 text-center">
+                聽見地方的心跳，<br class="hidden md:block">
+                <span class="brand-green font-sans italic opacity-90 text-center">讓服務的溫度延續。</span>
+            </h1>
+        </header>
+
+        <!-- 首頁：鄉鎮足跡與案例 Demo -->
+        <div id="view-home" class="view-content animate-in fade-in duration-500">
+            <!-- 鄉鎮切換 -->
+            <section class="mb-8 overflow-x-auto whitespace-nowrap pb-4 no-scrollbar -mx-4 px-4 text-center">
+                <div class="flex flex-nowrap items-center justify-center gap-2.5 text-center">
+                    <button onclick="filterTown('全部地區')" class="town-btn px-6 py-2 rounded-full text-xs font-bold bg-brand-green text-white shadow-md">全部地區</button>
+                    <button onclick="filterTown('潮州鎮')" class="town-btn px-6 py-2 rounded-full text-xs font-bold bg-white text-slate-400 border border-slate-100">潮州鎮</button>
+                    <button onclick="filterTown('內埔鄉')" class="town-btn px-6 py-2 rounded-full text-xs font-bold bg-white text-slate-400 border border-slate-100">內埔鄉</button>
+                    <button onclick="filterTown('萬巒鄉')" class="town-btn px-6 py-2 rounded-full text-xs font-bold bg-white text-slate-400 border border-slate-100">萬巒鄉</button>
+                    <button onclick="filterTown('枋寮鄉')" class="town-btn px-6 py-2 rounded-full text-xs font-bold bg-white text-slate-400 border border-slate-100">枋寮鄉</button>
+                </div>
+            </section>
+
+            <!-- 優化後的數據看板：整合五大主軸 -->
+            <section class="mb-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 text-center">
+                <div class="bg-white p-5 rounded-[1.5rem] border border-slate-50 shadow-sm flex flex-col items-center justify-center text-center group hover:border-[#66C2A5]/20 transition-all">
+                    <i data-lucide="layers" class="brand-green mb-2 w-5 h-5 opacity-70"></i>
+                    <span class="text-slate-400 text-[8px] font-black tracking-widest mb-1 uppercase">已關切議題總數</span>
+                    <h3 class="text-xl font-black text-slate-800">284 <span class="text-[10px] font-bold text-slate-400 uppercase">項</span></h3>
+                </div>
+                <div class="bg-white p-5 rounded-[1.5rem] border border-slate-50 shadow-sm flex flex-col items-center justify-center text-center group hover:border-emerald-200 transition-all">
+                    <i data-lucide="sprout" class="text-emerald-500 mb-2 w-5 h-5 opacity-70"></i>
+                    <span class="text-slate-400 text-[8px] font-black tracking-widest mb-1 uppercase text-balance">農漁牧業關注</span>
+                    <h3 class="text-xl font-black text-slate-800">85 <span class="text-[10px] font-bold text-slate-400">案</span></h3>
+                </div>
+                <div class="bg-white p-5 rounded-[1.5rem] border border-slate-50 shadow-sm flex flex-col items-center justify-center text-center group hover:border-blue-200 transition-all">
+                    <i data-lucide="briefcase" class="text-blue-500 mb-2 w-5 h-5 opacity-70"></i>
+                    <span class="text-slate-400 text-[8px] font-black tracking-widest mb-1 uppercase text-balance">勞資共榮協助</span>
+                    <h3 class="text-xl font-black text-slate-800">56 <span class="text-[10px] font-bold text-slate-400">案</span></h3>
+                </div>
+                <div class="bg-white p-5 rounded-[1.5rem] border border-slate-50 shadow-sm flex flex-col items-center justify-center text-center group hover:border-orange-200 transition-all">
+                    <i data-lucide="smile" class="text-orange-500 mb-2 w-5 h-5 opacity-70"></i>
+                    <span class="text-slate-400 text-[8px] font-black tracking-widest mb-1 uppercase text-balance">親子共學成長</span>
+                    <h3 class="text-xl font-black text-slate-800">72 <span class="text-[10px] font-bold text-slate-400">次</span></h3>
+                </div>
+                <div class="bg-white p-5 rounded-[1.5rem] border border-slate-50 shadow-sm flex flex-col items-center justify-center text-center group hover:border-rose-200 transition-all text-balance">
+                    <i data-lucide="heart" class="text-rose-500 mb-2 w-5 h-5 opacity-70"></i>
+                    <span class="text-slate-400 text-[8px] font-black tracking-widest mb-1 uppercase text-balance">身心靈關懷</span>
+                    <h3 class="text-xl font-black text-slate-800">68 <span class="text-[10px] font-bold text-slate-400">次</span></h3>
+                </div>
+                <div class="bg-white p-5 rounded-[1.5rem] border border-slate-50 shadow-sm flex flex-col items-center justify-center text-center group hover:border-indigo-200 transition-all text-balance">
+                    <i data-lucide="home" class="text-indigo-500 mb-2 w-5 h-5 opacity-70"></i>
+                    <span class="text-slate-400 text-[8px] font-black tracking-widest mb-1 uppercase text-balance">長照尊嚴守護</span>
+                    <h3 class="text-xl font-black text-slate-800">95 <span class="text-[10px] font-bold text-slate-400">次</span></h3>
+                </div>
+            </section>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 md:gap-10">
+                <aside class="lg:col-span-1 space-y-6">
+                    <div class="bg-white p-6 md:p-8 rounded-[2rem] border border-slate-50 shadow-sm text-left">
+                        <h3 class="font-black text-md md:text-lg flex items-center gap-2 mb-6 text-slate-800"><i data-lucide="bar-chart-3" class="brand-green w-5 h-5"></i> 服務分布</h3>
+                        <div class="space-y-5 text-left">
+                            <div class="text-left">
+                                <div class="flex justify-between text-[9px] font-black mb-1.5 uppercase tracking-widest text-slate-400"><span>農漁產銷</span><span>35%</span></div>
+                                <div class="h-1 bg-slate-50 rounded-full overflow-hidden"><div class="h-full bg-brand-green" style="width: 35%"></div></div>
+                            </div>
+                            <div class="text-left">
+                                <div class="flex justify-between text-[9px] font-black mb-1.5 uppercase tracking-widest text-slate-400 text-left"><span>長照身心</span><span>30%</span></div>
+                                <div class="h-1 bg-slate-50 rounded-full overflow-hidden"><div class="h-full bg-rose-400" style="width: 30%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-brand-green p-6 md:p-8 rounded-[2rem] text-white shadow-xl relative overflow-hidden text-left">
+                        <h4 class="font-serif text-2xl md:text-3xl font-black mb-3 text-left leading-none">找潘炩禕？</h4>
+                        <p class="text-white/80 text-xs md:text-sm mb-6 leading-relaxed text-left">您的託付，我必承擔。</p>
+                        <a href="tel:081234567" class="w-full py-3.5 bg-white/20 backdrop-blur-md rounded-xl font-bold text-sm flex items-center justify-center gap-2 border border-white/10 active:scale-95 transition-all text-center">
+                            <i data-lucide="phone" class="w-4 h-4"></i> 撥打服務專線
+                        </a>
+                    </div>
+                </aside>
+
+                <!-- 日記列表 Demo 案例 -->
+                <section id="service-list" class="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 text-left">
+                    <!-- 案例：農漁牧業 -->
+                    <div class="bg-white rounded-[2.5rem] overflow-hidden border border-slate-50 shadow-sm hover:shadow-lg transition-all flex flex-col text-left group">
+                        <div class="aspect-[16/9] md:aspect-[16/10] bg-[#F4F8F7] relative p-6 flex items-center justify-center overflow-hidden text-left">
+                            <span class="absolute top-4 left-4 px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.1em] border bg-emerald-50 text-emerald-600 border-emerald-100">農漁牧業關注</span>
+                        </div>
+                        <div class="p-6 md:p-10 flex flex-col flex-grow text-left">
+                            <div class="flex items-center gap-2 text-[9px] font-black text-slate-400 mb-3 tracking-wider text-left"><i data-lucide="map-pin" class="brand-green w-3 h-3"></i> 枋寮鄉 <span class="mx-1 opacity-30">/</span> 2026-03-12</div>
+                            <h3 class="text-xl md:text-2xl font-black text-slate-800 mb-4 group-hover:brand-green transition-colors font-serif leading-snug text-left">枋寮漁港冷鏈升級案：穩定產銷價格</h3>
+                            <div class="bg-[#F9FBFA] p-5 rounded-2xl mb-6 flex-grow border border-slate-50 text-left">
+                                <p class="text-xs md:text-sm text-slate-500 leading-relaxed italic font-medium text-left">「針對漁獲價格波動大，積極向縣府爭取冷鏈倉儲設備，保障在地漁民不再受限於即時銷售壓力。」</p>
+                            </div>
+                            <div class="flex items-center justify-between text-left">
+                                <span class="text-[9px] font-black text-[#4A937F] bg-[#E0F2ED] px-3 py-1 rounded-lg">專案跟進</span>
+                                <button class="brand-green font-black text-xs flex items-center gap-1 active:gap-3 transition-all text-left">閱讀更多 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 案例：親子教育 -->
+                    <div class="bg-white rounded-[2.5rem] overflow-hidden border border-slate-50 shadow-sm hover:shadow-lg transition-all flex flex-col text-left group">
+                        <div class="aspect-[16/9] md:aspect-[16/10] bg-[#F4F8F7] relative p-6 flex items-center justify-center overflow-hidden text-left">
+                            <span class="absolute top-4 left-4 px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.1em] border bg-orange-50 text-orange-600 border-orange-100">親子教育關懷</span>
+                        </div>
+                        <div class="p-6 md:p-10 flex flex-col flex-grow text-left">
+                            <div class="flex items-center gap-2 text-[9px] font-black text-slate-400 mb-3 tracking-wider text-left"><i data-lucide="map-pin" class="brand-green w-3 h-3 text-left"></i> 潮州鎮 <span class="mx-1 opacity-30">/</span> 2026-03-05</div>
+                            <h3 class="text-xl md:text-2xl font-black text-slate-800 mb-4 group-hover:brand-green transition-colors font-serif leading-snug text-left">推動特色公園安全升級：智慧路燈監控</h3>
+                            <div class="bg-[#F9FBFA] p-5 rounded-2xl mb-6 flex-grow border border-slate-50 text-left">
+                                <p class="text-xs md:text-sm text-slate-500 leading-relaxed italic font-medium text-left">「聽見家長對於夜間遊戲安全的擔憂，我們提案在公園熱點安裝智慧路燈與緊急按鈕，給孩子安全的成長環境。」</p>
+                            </div>
+                            <div class="flex items-center justify-between text-left">
+                                <span class="text-[9px] font-black text-orange-600 bg-orange-50 px-3 py-1 rounded-lg">已發函</span>
+                                <button class="brand-green font-black text-xs flex items-center gap-1 active:gap-3 transition-all text-left">閱讀更多 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- 行動白皮書頁面 (五大支柱完整內容) -->
+        <div id="view-issues" class="view-content hidden-view animate-in fade-in max-w-5xl mx-auto text-left">
+            <div class="text-center mb-10 md:mb-16">
+                <h2 class="text-3xl md:text-5xl font-serif font-black text-slate-900 mb-4 leading-tight text-center">行動白皮書</h2>
+                <p class="text-slate-500 text-sm md:text-lg font-medium max-w-2xl mx-auto text-center leading-relaxed text-balance">
+                    以數據設計未來，用行動回應託付。這是我們為屏東第三選區定義的五大核心支柱。
+                </p>
+            </div>
+
+            <div class="space-y-8 md:space-y-12 text-left">
+                <!-- 支柱 1：農漁牧產銷發展 -->
+                <div class="bg-white rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden border border-slate-50 card-shadow flex flex-col md:flex-row group transition-all hover:-translate-y-1 text-left">
+                    <div class="md:w-1/3 bg-[#F4F8F7] p-8 md:p-12 flex flex-col items-center justify-center text-center group-hover:bg-[#E0F2ED] transition-colors">
+                        <div class="w-16 h-16 bg-white rounded-3xl flex items-center justify-center brand-green shadow-lg mb-4 text-center"><i data-lucide="sprout" class="w-10 h-10 text-center"></i></div>
+                        <span class="text-[10px] font-black brand-green tracking-[0.2em] uppercase mb-2">產業升級</span>
+                        <h3 class="text-xl md:text-2xl font-serif font-black text-slate-800">農漁牧產銷發展</h3>
+                    </div>
+                    <div class="md:w-2/3 p-8 md:p-16 text-left">
+                        <h4 class="text-lg font-bold text-slate-800 mb-4 text-left">打破盤商束縛，讓屏東好貨賣得更有尊嚴</h4>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-6 font-medium italic text-left">「我們不僅要種得好，更要賣得準。透過冷鏈系統與品牌化經營，提升農漁產品價值。」</p>
+                        <ul class="space-y-3 mb-8 text-sm text-left">
+                            <li class="flex items-start gap-3 font-bold text-slate-700 text-left"><i data-lucide="check-circle-2" class="brand-green w-4 h-4 flex-shrink-0 text-left"></i> 建置區域型冷鏈中心，穩定市場供需。</li>
+                            <li class="flex items-start gap-3 font-bold text-slate-700 text-left"><i data-lucide="check-circle-2" class="brand-green w-4 h-4 flex-shrink-0 text-left"></i> 打造「屏東優選」直銷品牌，對接全台連鎖通路。</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 支柱 2：勞資共榮 -->
+                <div class="bg-white rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden border border-slate-50 card-shadow flex flex-col md:flex-row group transition-all hover:-translate-y-1 text-left">
+                    <div class="md:w-1/3 bg-[#F4F8F7] p-8 md:p-12 flex flex-col items-center justify-center text-center group-hover:bg-[#E0F2ED] transition-colors">
+                        <div class="w-16 h-16 bg-white rounded-3xl flex items-center justify-center text-blue-500 shadow-lg mb-4"><i data-lucide="briefcase" class="w-10 h-10"></i></div>
+                        <span class="text-[10px] font-black text-blue-500 tracking-[0.2em] uppercase mb-2">職場正義</span>
+                        <h3 class="text-xl md:text-2xl font-serif font-black text-slate-800 text-center">勞資對話與共榮</h3>
+                    </div>
+                    <div class="md:w-2/3 p-8 md:p-16 text-left text-balance">
+                        <h4 class="text-lg font-bold text-slate-800 mb-4 text-left">做勞工的後盾，建立企業與人才的互信橋樑</h4>
+                        <ul class="space-y-3 mb-8 text-sm text-left">
+                            <li class="flex items-start gap-3 font-bold text-slate-700 text-left"><i data-lucide="check-circle-2" class="text-blue-500 w-4 h-4 flex-shrink-0"></i> 設立行動法律諮詢站，保障工業區勞工權益。</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 支柱 3：親子教育 (新增內容) -->
+                <div class="bg-white rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden border border-slate-50 card-shadow flex flex-col md:flex-row group transition-all hover:-translate-y-1 text-left">
+                    <div class="md:w-1/3 bg-[#F4F8F7] p-8 md:p-12 flex flex-col items-center justify-center text-center group-hover:bg-[#E0F2ED] transition-colors">
+                        <div class="w-16 h-16 bg-white rounded-3xl flex items-center justify-center text-orange-500 shadow-lg mb-4"><i data-lucide="smile" class="w-10 h-10"></i></div>
+                        <span class="text-[10px] font-black text-orange-500 tracking-[0.2em] uppercase mb-2 text-center">教育傳承</span>
+                        <h3 class="text-xl md:text-2xl font-serif font-black text-slate-800 text-center">親子共學與友善環境</h3>
+                    </div>
+                    <div class="md:w-2/3 p-8 md:p-16 text-left text-balance">
+                        <h4 class="text-lg font-bold text-slate-800 mb-4 text-left">聽見家庭的心跳聲，升級教育資源與安全</h4>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-6 font-medium italic text-left">「親子關係是社會穩定的基石。我們要優化特色公園遊具，並引入AI共學講堂，讓孩子在屏東也能接軌國際。」</p>
+                    </div>
+                </div>
+
+                <!-- 支柱 4：身心靈共好 (新增內容) -->
+                <div class="bg-white rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden border border-slate-50 card-shadow flex flex-col md:flex-row group transition-all hover:-translate-y-1 text-left">
+                    <div class="md:w-1/3 bg-[#F4F8F7] p-8 md:p-12 flex flex-col items-center justify-center text-center group-hover:bg-[#E0F2ED] transition-colors">
+                        <div class="w-16 h-16 bg-white rounded-3xl flex items-center justify-center text-rose-500 shadow-lg mb-4 text-center"><i data-lucide="heart" class="w-10 h-10 text-center"></i></div>
+                        <span class="text-[10px] font-black text-rose-500 tracking-[0.2em] uppercase mb-2 text-center">身心健康</span>
+                        <h3 class="text-xl md:text-2xl font-serif font-black text-slate-800 text-center">全齡心靈關懷與支持</h3>
+                    </div>
+                    <div class="md:w-2/3 p-8 md:p-16 text-left">
+                        <h4 class="text-lg font-bold text-slate-800 mb-4 text-left">運動與支持，建立社區情緒安全網</h4>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-6 font-medium italic text-left">「運動不只是競技，是療癒。結合滑輪溜冰榮耀與專業心理諮商，守護每一位屏東人的情緒健康。」</p>
+                    </div>
+                </div>
+
+                <!-- 支柱 5：長照 3.0 -->
+                <div class="bg-slate-900 rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-16 text-white shadow-2xl relative overflow-hidden group text-left">
+                    <div class="absolute -right-10 -bottom-10 opacity-10 group-hover:scale-110 transition-transform duration-700 text-right">
+                        <i data-lucide="home" class="w-64 h-64 text-white text-right"></i>
+                    </div>
+                    <div class="relative z-10 text-left">
+                        <span class="inline-block bg-white/10 text-brand-green text-[10px] font-black px-4 py-1.5 rounded-full mb-6 tracking-widest uppercase text-left border border-white/5">旗艦溫暖計畫</span>
+                        <h3 class="text-3xl md:text-5xl font-serif font-black mb-6 text-left leading-tight">長照 3.0 數位升級：<br>老朋友的尊嚴守護</h3>
+                        <p class="text-white/60 max-w-2xl mb-10 text-sm md:text-lg leading-relaxed text-left font-medium">導入數位健康監測與遠距諮詢，讓在宅養老成為一種幸福。</p>
+                        <button class="px-10 py-4 bg-brand-green text-white rounded-2xl font-black text-sm shadow-xl hover:scale-105 transition-all text-center">參與長照連署</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 連署實證站 -->
+        <div id="view-feedback" class="view-content hidden-view animate-in fade-in max-w-6xl mx-auto text-left">
+            <div class="bg-white rounded-[2rem] p-6 md:p-10 shadow-sm border border-slate-50 mb-8 flex flex-col md:flex-row items-center justify-between gap-6 text-left">
+                <div class="flex items-start gap-4 md:gap-6 text-left">
+                    <div class="w-12 h-12 md:w-16 md:h-16 bg-[#E0F2ED] rounded-2xl flex items-center justify-center brand-green flex-shrink-0 text-center"><i data-lucide="shield-check" class="w-6 h-6 md:w-8 md:h-8"></i></div>
+                    <div class="text-left text-balance">
+                        <h2 class="text-xl md:text-2xl font-black text-slate-800 mb-1 font-serif text-left leading-none">議題連署實證站</h2>
+                        <p class="text-slate-500 text-[11px] md:text-sm leading-relaxed font-medium text-left">實名制提案，滿 100 人覆議即正式納入專案追蹤。</p>
+                    </div>
+                </div>
+                <button class="w-full md:w-auto bg-brand-green text-white px-8 py-4 rounded-2xl text-sm font-black flex items-center justify-center gap-2 shadow-xl shadow-brand text-center">
+                    <i data-lucide="plus" class="w-5 h-5"></i> 我要提案
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-[#E0F2ED] py-12 md:py-20 mt-12 md:mt-20 text-left">
+        <div class="max-w-7xl mx-auto px-6 md:px-4 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 text-left">
+            <div class="md:col-span-5 text-left text-balance">
+                <div class="flex items-center gap-2 mb-6 text-left">
+                    <div class="w-8 h-8 bg-brand-green rounded-lg flex items-center justify-center text-white font-serif font-black text-lg text-center">潘</div>
+                    <span class="font-serif font-black text-xl text-slate-800 text-left leading-none">潘炩禕 <span class="brand-green font-sans text-sm ml-0.5">服務辦公室</span></span>
+                </div>
+                <p class="text-slate-400 text-xs md:text-sm leading-relaxed font-medium mb-6 text-left">深耕屏東第三選區。以農漁產銷、親子教育、長照與心靈支持，承接您的託付。</p>
+            </div>
+            <div class="md:col-span-3 text-left">
+                <h4 class="font-black text-xs mb-6 text-slate-800 tracking-[0.1em] uppercase text-left">服務範圍</h4>
+                <div class="grid grid-cols-2 gap-y-3 text-slate-400 text-xs font-bold text-left">
+                    <button class="text-left hover:brand-green text-left">潮州鎮</button>
+                    <button class="text-left hover:brand-green text-left">內埔鄉</button>
+                    <button class="text-left hover:brand-green text-left">萬巒鄉</button>
+                    <button class="text-left hover:brand-green text-left">枋寮鄉</button>
+                </div>
+            </div>
+        </div>
+        <div class="mt-12 text-center text-slate-300 text-[8px] md:text-[9px] font-black tracking-[0.2em] uppercase px-4 leading-relaxed text-center">
+            © 2026 PAN LING-YI IMPACT OFFICE | DATA SUPPORTED BY MID CREATIVE
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            const isHidden = menu.classList.contains('hidden');
+            menu.classList.toggle('hidden');
+            icon.setAttribute('data-lucide', isHidden ? 'x' : 'menu');
+            lucide.createIcons();
+        }
+
+        function switchView(viewName) {
+            document.querySelectorAll('.view-content').forEach(view => {
+                view.classList.add('hidden-view');
+            });
+            document.getElementById('view-' + viewName).classList.remove('hidden-view');
+
+            const title = document.getElementById('main-title');
+            const isMobile = window.innerWidth < 768;
+            const breakTag = isMobile ? '' : '<br>';
+
+            if(viewName === 'home') {
+                title.innerHTML = '聽見地方的心跳，' + breakTag + '<span class="brand-green font-sans italic opacity-90">讓服務的溫度延續。</span>';
+            } else if(viewName === 'issues') {
+                title.innerHTML = '承接老朋友的託付，' + breakTag + '<span class="brand-green font-sans italic opacity-90">設計新一代的屏東。</span>';
+            } else if(viewName === 'feedback') {
+                title.innerHTML = '匯集集體的意志，' + breakTag + '<span class="brand-green font-sans italic opacity-90">翻轉家鄉的未來。</span>';
+            }
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('brand-green', 'border-b-2', 'border-brand-green', 'pb-1');
+                btn.classList.add('text-slate-500');
+            });
+            const activeBtn = document.getElementById('nav-' + viewName);
+            if(activeBtn) {
+                activeBtn.classList.remove('text-slate-500');
+                activeBtn.classList.add('brand-green', 'border-b-2', 'border-brand-green', 'pb-1');
+            }
+            window.scrollTo({top: 0, behavior: 'smooth'});
+            lucide.createIcons();
+        }
+
+        function filterTown(townName) {
+            document.querySelectorAll('.town-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-green', 'text-white', 'shadow-md');
+                btn.classList.add('bg-white', 'text-slate-400', 'border-slate-100');
+            });
+            event.currentTarget.classList.add('bg-brand-green', 'text-white', 'shadow-md');
+            event.currentTarget.classList.remove('bg-white', 'text-slate-400', 'border-slate-100');
+        }
+    </script>
+</body>
+</html>
