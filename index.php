@@ -12,6 +12,12 @@ use App\Models\Town;
 use App\Models\Whitepaper;
 use App\Layout\FrontLayout;
 
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+if (strpos($uri, '/admin') === 0) {
+    require __DIR__ . '/admin/index.php';
+    exit;
+}
+
 $dotenv = Dotenv::createImmutable(__DIR__ . '/admin');
 $dotenv->safeLoad();
 date_default_timezone_set('Asia/Taipei');
