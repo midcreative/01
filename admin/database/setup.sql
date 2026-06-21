@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `id`           INT UNSIGNED   NOT NULL AUTO_INCREMENT,
   `title`        VARCHAR(255)   NOT NULL,
   `slug`         VARCHAR(255)   NOT NULL,
-  `category`     ENUM('農漁牧業關注','親子教育關懷','勞資共榮','身心靈關懷','長照守護') NOT NULL,
-  `town`         ENUM('全部地區','潮州鎮','內埔鄉','萬巒鄉','枋寮鄉') NOT NULL DEFAULT '全部地區',
+  `category_id`  INT UNSIGNED   NOT NULL,
+  `town_id`      INT UNSIGNED   NOT NULL,
   `status_tag`   ENUM('專案跟進','已發函','已完成') NOT NULL DEFAULT '專案跟進',
   `excerpt`      TEXT,
   `content`      LONGTEXT,
@@ -136,3 +136,78 @@ CREATE TABLE IF NOT EXISTS `petition_signatures` (
   UNIQUE KEY `uq_petition_line_user` (`petition_id`, `line_user_id`),
   CONSTRAINT `fk_signature_petition` FOREIGN KEY (`petition_id`) REFERENCES `petitions` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- 9. Post Categories
+CREATE TABLE IF NOT EXISTS `post_categories` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `color_theme` VARCHAR(100) NOT NULL DEFAULT 'bg-slate-50 text-slate-600 border-slate-100',
+  `sort_order` INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO `post_categories` (`name`, `color_theme`, `sort_order`) VALUES
+('農漁牧業關注', 'bg-emerald-50 text-emerald-600 border-emerald-200', 1),
+('親子教育關懷', 'bg-orange-50 text-orange-600 border-orange-200', 2),
+('勞資共榮', 'bg-blue-50 text-blue-600 border-blue-200', 3),
+('身心靈關懷', 'bg-rose-50 text-rose-600 border-rose-200', 4),
+('長照守護', 'bg-indigo-50 text-indigo-600 border-indigo-200', 5);
+
+-- 10. Post Towns
+CREATE TABLE IF NOT EXISTS `post_towns` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `sort_order` INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO `post_towns` (`name`, `sort_order`) VALUES
+('全部地區', 1),
+('潮州鎮', 2),
+('內埔鄉', 3),
+('萬巒鄉', 4),
+('枋寮鄉', 5);
+
+-- 11. Settings
+CREATE TABLE IF NOT EXISTS `settings` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `setting_key` VARCHAR(100) NOT NULL,
+  `setting_value` TEXT,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_setting_key` (`setting_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO `settings` (`setting_key`, `setting_value`) VALUES 
+('LINE_CHANNEL_ID', ''),
+('LINE_CHANNEL_SECRET', '');
+
+-- 12. Candidates
+CREATE TABLE IF NOT EXISTS `candidates` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `party` VARCHAR(100),
+  `type` ENUM('self', 'main_opponent', 'other') NOT NULL DEFAULT 'other',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 13. Candidate Keywords
+CREATE TABLE IF NOT EXISTS `candidate_keywords` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `candidate_id` INT UNSIGNED NOT NULL,
+  `keyword` VARCHAR(255) NOT NULL,
+  `type` ENUM('positive', 'negative', 'neutral') NOT NULL DEFAULT 'neutral',
+  `is_active` TINYINT(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 14. Opinions
+CREATE TABLE IF NOT EXISTS `opinions` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `candidate_id` INT UNSIGNED NOT NULL,
+  `sentiment` ENUM('positive', 'neutral', 'negative') NOT NULL DEFAULT 'neutral',
+  `source_type` VARCHAR(100) NOT NULL,
+  `published_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `title` VARCHAR(500),
+  `url` VARCHAR(1000),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+

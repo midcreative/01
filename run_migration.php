@@ -17,6 +17,7 @@ try {
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     ]);
 
+    $pdo->exec("DROP TABLE IF EXISTS `posts`");
     $sql = file_get_contents(__DIR__ . '/admin/database/setup.sql');
     $pdo->exec($sql);
     echo "SUCCESS: Database migrated!";

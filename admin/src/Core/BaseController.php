@@ -53,6 +53,9 @@ abstract class BaseController
     protected function render(string $viewPath, array $data = []): void
     {
         extract($data);
+        if (!str_ends_with($viewPath, '.php')) {
+            $viewPath .= '.php';
+        }
         require __DIR__ . '/../Views/' . ltrim($viewPath, '/');
     }
 }
