@@ -20,11 +20,11 @@ final class Database
     public static function getInstance(): PDO
     {
         if (self::$instance === null) {
-            $host    = $_ENV['DB_HOST']    ?? 'localhost';
-            $name    = $_ENV['DB_NAME']    ?? '';
-            $user    = $_ENV['DB_USER']    ?? '';
-            $pass    = $_ENV['DB_PASS']    ?? '';
-            $charset = $_ENV['DB_CHARSET'] ?? 'utf8mb4';
+            $host    = getenv('DB_HOST')    ?: 'localhost';
+            $name    = getenv('DB_NAME')    ?: '';
+            $user    = getenv('DB_USER')    ?: '';
+            $pass    = getenv('DB_PASS')    ?: '';
+            $charset = getenv('DB_CHARSET') ?: 'utf8mb4';
 
             $dsn = "mysql:host={$host};dbname={$name};charset={$charset}";
 

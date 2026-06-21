@@ -115,7 +115,7 @@ final class AuthController extends BaseController
             $this->redirect('/admin/dashboard');
         } catch (\Throwable $e) {
             error_log('Login error: ' . $e->getMessage());
-            $this->redirect('/admin/?error=系統錯誤，請稍後再試');
+            $this->redirect('/admin/?error=' . urlencode($e->getMessage()));
         }
     }
 
