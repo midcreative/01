@@ -7,11 +7,11 @@ use Dotenv\Dotenv;
 use App\Config\Database;
 
 $dotenv = Dotenv::createImmutable(__DIR__ . '/admin');
-$dotenv->load();
+$dotenv->safeLoad();
 
 header('Content-Type: application/xml; charset=utf-8');
 
-$appUrl = rtrim($_ENV['APP_URL'] ?? 'https://demo10.midcreative.com', '/');
+$appUrl = rtrim($_ENV['APP_URL'] ?? 'https://panlingyi.tw', '/');
 
 try {
     $pdo   = Database::getInstance();
@@ -24,7 +24,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <!-- é¦–é  -->
+  <!-- é¦–é? -->
   <url>
     <loc><?= $appUrl ?>/</loc>
     <lastmod><?= date('Y-m-d') ?></lastmod>
@@ -32,7 +32,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
     <priority>1.0</priority>
   </url>
 
-  <!-- å¿—å·¥æ‹›å‹Ÿ -->
+  <!-- å¿—å·¥?›å? -->
   <url>
     <loc><?= $appUrl ?>/volunteer</loc>
     <lastmod><?= date('Y-m-d') ?></lastmod>
@@ -41,7 +41,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
   </url>
 
   <?php foreach ($posts as $post): ?>
-  <!-- æœå‹™æ—¥è¨˜ï¼š<?= htmlspecialchars($post['slug']) ?> -->
+  <!-- ?å??¥è?ï¼??= htmlspecialchars($post['slug']) ?> -->
   <url>
     <loc><?= $appUrl ?>/post/<?= htmlspecialchars($post['slug']) ?></loc>
     <lastmod><?= htmlspecialchars($post['updated_at'] ?? $post['created_at'] ?? date('Y-m-d')) ?></lastmod>

@@ -27,17 +27,14 @@ class LineLoginService
         $this->channelId     = !empty($settings['LINE_CHANNEL_ID']) ? $settings['LINE_CHANNEL_ID'] : ($_ENV['LINE_CHANNEL_ID'] ?? '');
         $this->channelSecret = !empty($settings['LINE_CHANNEL_SECRET']) ? $settings['LINE_CHANNEL_SECRET'] : ($_ENV['LINE_CHANNEL_SECRET'] ?? '');
 
-        // 3. Dynamically construct callbackUrl to support domain changes natively
-        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
-        $host = $_SERVER['HTTP_HOST'] ?? 'demo10.midcreative.com';
-        
-        $this->callbackUrl = $protocol . '://' . $host . '/api/line-callback.php';
+        // 3. Set callbackUrl rigidly to avoid any mismatch with LINE Developer Console
+        $this->callbackUrl = 'https://panlingyi.tw/api/line-callback.php';
     }
 
     /**
-     * 取得 LINE Login 授權網址
+     * ?��? LINE Login ?��?網�?
      */
-    public function getLoginUrl(string $state): string
+    public function getLoginUrl(string $state, ?string $customCallbackUrl = null): string
     {
         if ($this->channelId === '') {
             error_log('LINE_CHANNEL_ID is not configured');
@@ -48,25 +45,25 @@ class LineLoginService
         $params = [
             'response_type' => 'code',
             'client_id'     => $this->channelId,
-            'redirect_uri'  => $this->callbackUrl,
+            'redirect_uri'  => $customCallbackUrl ?? $this->callbackUrl,
             'state'         => $state,
             'scope'         => 'profile openid',
-            'bot_prompt'    => 'aggressive' // 強制引導加入官方帳號好友 (Link OA)
+            'bot_prompt'    => 'aggressive' // 強制引�??�入官方帳�?好�? (Link OA)
         ];
 
         return 'https://access.line.me/oauth2/v2.1/authorize?' . http_build_query($params);
     }
 
     /**
-     * 用 Authorization Code 交換 Access Token
+     * ??Authorization Code 交�? Access Token
      */
-    public function getAccessToken(string $code): ?string
+    public function getAccessToken(string $code, ?string $customCallbackUrl = null): ?string
     {
         $url = 'https://api.line.me/oauth2/v2.1/token';
         $data = [
             'grant_type'    => 'authorization_code',
             'code'          => $code,
-            'redirect_uri'  => $this->callbackUrl,
+            'redirect_uri'  => $customCallbackUrl ?? $this->callbackUrl,
             'client_id'     => $this->channelId,
             'client_secret' => $this->channelSecret,
         ];
@@ -93,7 +90,7 @@ class LineLoginService
     }
 
     /**
-     * 取得使用者的 Profile (包含 userId, displayName, pictureUrl)
+     * ?��?使用?��? Profile (?�含 userId, displayName, pictureUrl)
      */
     public function getUserProfile(string $accessToken): ?array
     {

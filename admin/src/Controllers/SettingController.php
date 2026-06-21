@@ -37,17 +37,61 @@ final class SettingController extends BaseController
         $pdo = Database::getInstance();
         
         // Allowed keys to update
-        $allowedKeys = ['LINE_CHANNEL_ID', 'LINE_CHANNEL_SECRET'];
-        
+        $allowedKeys = [
+            'LINE_CHANNEL_ID', 'LINE_CHANNEL_SECRET',
+            'HERO_TAG', 'HERO_HOME_TITLE_1', 'HERO_HOME_TITLE_2',
+            'HERO_ISSUES_TITLE_1', 'HERO_ISSUES_TITLE_2',
+            'HERO_FEEDBACK_TITLE_1', 'HERO_FEEDBACK_TITLE_2',
+            'HERO_CTA_SHOW', 'HERO_CTA_TEXT', 'HERO_BG_OVERLAY'
+        ];
         $pdo->beginTransaction();
         try {
-            $stmt = $pdo->prepare('UPDATE settings SET setting_value = ? WHERE setting_key = ?');
+            $checkStmt = $pdo->prepare('SELECT COUNT(*) FROM settings WHERE setting_key = ?');
+            $updateStmt = $pdo->prepare('UPDATE settings SET setting_value = ? WHERE setting_key = ?');
+            $insertStmt = $pdo->prepare('INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)');
+            
+            // Handle standard text fields
             foreach ($allowedKeys as $key) {
                 if (isset($_POST[$key])) {
                     $value = trim((string)$_POST[$key]);
-                    $stmt->execute([$value, $key]);
+                    
+                    $checkStmt->execute([$key]);
+                    if ($checkStmt->fetchColumn() > 0) {
+                        $updateStmt->execute([$value, $key]);
+                    } else {
+                        $insertStmt->execute([$key, $value]);
+                    }
                 }
             }
+
+            // Handle File Upload for HERO_BG_IMAGE
+            if (isset($_FILES['HERO_BG_IMAGE']) && $_FILES['HERO_BG_IMAGE']['error'] === UPLOAD_ERR_OK) {
+                $tmpName  = $_FILES['HERO_BG_IMAGE']['tmp_name'];
+                $fileName = time() . '_' . preg_replace('/[^a-zA-Z0-9_\.-]/', '_', basename($_FILES['HERO_BG_IMAGE']['name']));
+                
+                // Keep consistent upload directory
+                $uploadDirRel = '/uploads/settings/';
+                $uploadDirAbs = dirname(__DIR__, 3) . $uploadDirRel;
+                
+                if (!is_dir($uploadDirAbs)) {
+                    mkdir($uploadDirAbs, 0755, true);
+                }
+                
+                $targetPath = $uploadDirAbs . $fileName;
+                
+                if (move_uploaded_file($tmpName, $targetPath)) {
+                    $key = 'HERO_BG_IMAGE';
+                    $value = $uploadDirRel . $fileName;
+                    
+                    $checkStmt->execute([$key]);
+                    if ($checkStmt->fetchColumn() > 0) {
+                        $updateStmt->execute([$value, $key]);
+                    } else {
+                        $insertStmt->execute([$key, $value]);
+                    }
+                }
+            }
+
             $pdo->commit();
             
             if (session_status() === PHP_SESSION_NONE) {

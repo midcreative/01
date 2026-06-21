@@ -9,7 +9,7 @@ use Dotenv\Dotenv;
 use App\Models\Category;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+$dotenv->safeLoad();
 
 try {
     $categories = Category::all();

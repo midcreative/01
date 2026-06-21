@@ -58,6 +58,9 @@ final class AdminLayout
             <?php
             $navItems = [
                 ['key' => 'dashboard', 'icon' => 'layout-dashboard', 'label' => '儀表板',     'href' => '/admin/dashboard'],
+                ['key' => 'opinion_dashboard', 'icon' => 'activity',         'label' => '輿情戰情室',  'href' => '/admin/opinion/dashboard'],
+                ['key' => 'opinion_list',      'icon' => 'database',         'label' => '輿情資料庫',  'href' => '/admin/opinion/list'],
+                ['key' => 'candidates',        'icon' => 'user-search',      'label' => '候選人追蹤',  'href' => '/admin/candidates'],
                 ['key' => 'posts',     'icon' => 'newspaper',        'label' => '服務日記',    'href' => '/admin/posts'],
                 ['key' => 'stats',     'icon' => 'bar-chart-3',      'label' => '數據看板',    'href' => '/admin/stats'],
                 ['key' => 'volunteer', 'icon' => 'users',             'label' => '志工招募',    'href' => '/admin/volunteers'],

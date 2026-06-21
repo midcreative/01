@@ -5,7 +5,7 @@
 
 # --- FTP Server ---
 $FTP_HOST     = "85.187.128.60"
-$FTP_USER     = "xin@demo10.midcreative.com"
+$FTP_USER     = "xin@panlingyi.tw"
 $FTP_PASS     = "Ss@0952826333"
 
 # Remote root path on the FTP server (where your site files live)

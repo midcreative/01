@@ -5,7 +5,7 @@ use App\Config\Database;
 
 try {
     $dotenv = Dotenv::createImmutable(__DIR__);
-    $dotenv->load();
+    $dotenv->safeLoad();
     $pdo = Database::getInstance();
 
     $sql = "CREATE TABLE IF NOT EXISTS `settings` (

@@ -183,7 +183,7 @@ final class VolunteerController extends BaseController
 
     private function renderForm(?array $job): void
     {
-        $towns = ['全部地區', '潮州鎮', '內埔鄉', '萬巒鄉', '枋寮鄉'];
+        $towns = ['全部地區', '潮州鎮', '新埤鄉', '內埔鄉', '萬巒鄉', '竹田鄉', '枋寮鄉'];
         $action = $job ? "/admin/volunteers/{$job['id']}" : '/admin/volunteers/store';
         ?>
         <form method="POST" action="<?= $action ?>" class="space-y-5 max-w-2xl">

@@ -21,7 +21,7 @@ final class PetitionController extends BaseController
         $pdo       = Database::getInstance();
         $petitions = $pdo->query('SELECT * FROM petitions ORDER BY created_at DESC')->fetchAll();
 
-        $this->render('petitions/index', [
+        $this->render('petitions/index.php', [
             'petitions' => $petitions,
         ]);
     }
@@ -30,7 +30,7 @@ final class PetitionController extends BaseController
     {
         $this->auth->requireAuth();
         
-        $this->render('petitions/form');
+        $this->render('petitions/form.php');
     }
 
     public function store(): void
@@ -39,17 +39,18 @@ final class PetitionController extends BaseController
         
         $title       = trim($this->postString('title'));
         $description = trim($this->postString('description'));
+        $category    = trim($this->postString('category', '其他綜合議題'));
         $town        = trim($this->postString('town'));
         $status      = trim($this->postString('status'));
-        $targetCount = max(1, (int)$this->postString('target_count', '100'));
+        $targetCount = max(1, (int)$this->postString('target_count', '50'));
 
         if ($title === '') {
             $this->redirect('/admin/petitions/create');
         }
 
         $pdo  = Database::getInstance();
-        $stmt = $pdo->prepare('INSERT INTO petitions (title, description, town, status, target_count, current_count) VALUES (?, ?, ?, ?, ?, 0)');
-        $stmt->execute([$title, $description, $town, $status, $targetCount]);
+        $stmt = $pdo->prepare('INSERT INTO petitions (title, description, category, town, status, target_count, current_count) VALUES (?, ?, ?, ?, ?, ?, 0)');
+        $stmt->execute([$title, $description, $category, $town, $status, $targetCount]);
 
         $this->redirect('/admin/petitions');
     }
@@ -66,7 +67,7 @@ final class PetitionController extends BaseController
             $this->redirect('/admin/petitions');
         }
 
-        $this->render('petitions/form', [
+        $this->render('petitions/form.php', [
             'petition' => $petition,
         ]);
     }
@@ -77,17 +78,18 @@ final class PetitionController extends BaseController
         
         $title       = trim($this->postString('title'));
         $description = trim($this->postString('description'));
+        $category    = trim($this->postString('category', '其他綜合議題'));
         $town        = trim($this->postString('town'));
         $status      = trim($this->postString('status'));
-        $targetCount = max(1, (int)$this->postString('target_count', '100'));
+        $targetCount = max(1, (int)$this->postString('target_count', '50'));
 
         if ($title === '') {
             $this->redirect("/admin/petitions/{$id}/edit");
         }
 
         $pdo  = Database::getInstance();
-        $stmt = $pdo->prepare('UPDATE petitions SET title = ?, description = ?, town = ?, status = ?, target_count = ? WHERE id = ?');
-        $stmt->execute([$title, $description, $town, $status, $targetCount, $id]);
+        $stmt = $pdo->prepare('UPDATE petitions SET title = ?, description = ?, category = ?, town = ?, status = ?, target_count = ? WHERE id = ?');
+        $stmt->execute([$title, $description, $category, $town, $status, $targetCount, $id]);
 
         $this->redirect('/admin/petitions');
     }
@@ -118,7 +120,7 @@ final class PetitionController extends BaseController
         $sigStmt->execute([$id]);
         $signatures = $sigStmt->fetchAll();
 
-        $this->render('petitions/show', [
+        $this->render('petitions/show.php', [
             'petition'   => $petition,
             'signatures' => $signatures,
         ]);

@@ -9,15 +9,18 @@
     Optional flags:
         -DryRun   : Show what would be uploaded without uploading
         -Force    : Skip confirmation prompt
+        -All      : Force upload of all files (ignores fast incremental deployment)
 .EXAMPLE
-    .\deploy\deploy.ps1           # Normal deploy with confirmation
+    .\deploy\deploy.ps1           # Normal incremental deploy
     .\deploy\deploy.ps1 -DryRun   # Preview mode
     .\deploy\deploy.ps1 -Force    # Deploy without prompt
+    .\deploy\deploy.ps1 -All      # Full upload
 #>
 
 param(
     [switch]$DryRun,
-    [switch]$Force
+    [switch]$Force,
+    [switch]$All
 )
 
 Set-StrictMode -Version Latest
@@ -110,26 +113,66 @@ if (-not $Force -and -not $DryRun) {
     }
 }
 
-# Gather all files to deploy
-Write-Step "Scanning local files..."
-$allItems = Get-ChildItem -Path $LOCAL_SOURCE -Recurse -Force -ErrorAction SilentlyContinue
+# Gather files to deploy
+if ($All) {
+    Write-Step "Scanning all local files (Full Deploy)..."
+    $allItems = Get-ChildItem -Path $LOCAL_SOURCE -Recurse -File -Force -ErrorAction SilentlyContinue
+    $candidateFiles = $allItems.FullName
+} else {
+    Write-Step "Detecting modified files via Git (Incremental Deploy)..."
+    # Get all added, modified, renmaed, or untracked files
+    # Exclude deleted files as FTP upload doesn't delete them anyway in this script yet
+    $gitStatus = git -C $LOCAL_SOURCE status -s
+    $candidateFiles = @()
+    
+    foreach ($line in $gitStatus) {
+        if ([string]::IsNullOrWhiteSpace($line)) { continue }
+        # Status code is first 2 chars
+        $status = $line.Substring(0, 2)
+        # Skip deleted files
+        if ($status -match "D" -and $status -notmatch "R") { continue }
+        
+        # Extract relative path (handle rename formats like "R  old -> new")
+        $filePath = ""
+        if ($line -match "->\s+(.*)$") {
+            $filePath = $matches[1].Trim()
+        } else {
+            $filePath = $line.Substring(3).Trim()
+        }
+        
+        # Remove quotes if git output them
+        $filePath = $filePath -replace '^"|"$', ''
+        
+        $fullPath = Join-Path -Path $LOCAL_SOURCE -ChildPath $filePath
+        if (Test-Path -Path $fullPath -PathType Leaf) {
+            $candidateFiles += $fullPath
+        }
+    }
+    
+    if ($candidateFiles.Count -eq 0) {
+        Write-Host "  No changes detected. Working tree clean." -ForegroundColor Green
+        exit 0
+    }
+}
 
 $filesToUpload = @()
 $dirsToCreate  = @()
 
-foreach ($item in $allItems) {
+foreach ($file in $candidateFiles) {
     # Check each path segment for exclusions
-    $relParts = $item.FullName.Substring($LOCAL_SOURCE.Length + 1).Split([IO.Path]::DirectorySeparatorChar)
+    $relParts = $file.Substring($LOCAL_SOURCE.Length + 1).Split([IO.Path]::DirectorySeparatorChar)
     $excluded = $false
     foreach ($part in $relParts) {
         if (Is-Excluded $part) { $excluded = $true; break }
     }
-    if ($excluded) { Write-Skip $item.FullName.Substring($LOCAL_SOURCE.Length + 1); continue }
+    if ($excluded) { Write-Skip $file.Substring($LOCAL_SOURCE.Length + 1); continue }
 
-    if ($item.PSIsContainer) {
-        $dirsToCreate += $item.FullName
-    } else {
-        $filesToUpload += $item.FullName
+    $filesToUpload += $file
+    
+    # Track the parent directories we might need to create
+    $dirName = [IO.Path]::GetDirectoryName($file)
+    if ($dirName -ne $LOCAL_SOURCE -and $dirsToCreate -notcontains $dirName) {
+        $dirsToCreate += $dirName
     }
 }
 

@@ -9,12 +9,12 @@ use App\Config\Database;
 
 try {
     $dotenv = Dotenv::createImmutable(__DIR__);
-    $dotenv->load();
+    $dotenv->safeLoad();
     echo "DB_HOST is: " . ($_ENV['DB_HOST'] ?? 'Not set via ENV') . "\n";
     echo "DB_NAME is: " . ($_ENV['DB_NAME'] ?? 'Not set via ENV') . "\n";
     $pdo = Database::getInstance();
     
-    // 1. 建立 petition_signatures 表格
+    // 1. 建�? petition_signatures 表格
     $sql = "CREATE TABLE IF NOT EXISTS `petition_signatures` (
         `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
         `petition_id` int(10) unsigned NOT NULL,

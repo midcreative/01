@@ -1,6 +1,19 @@
 <?php
+require_once __DIR__ . '/admin/vendor/autoload.php';
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(__DIR__ . '/admin');
+$dotenv->safeLoad();
+
 try {
-    $pdo = new PDO('mysql:host=localhost;dbname=midcreat_demo10;charset=utf8mb4', 'midcreat_demo10', 'Ss@0952826333', [
+    $host = $_ENV['DB_HOST'] ?? 'localhost';
+    $dbname = $_ENV['DB_NAME'] ?? 'midcreat_demo10';
+    $user = $_ENV['DB_USER'] ?? 'midcreat_demo10';
+    $pass = $_ENV['DB_PASS'] ?? 'Ss@0952826333';
+    $charset = $_ENV['DB_CHARSET'] ?? 'utf8mb4';
+
+    $dsn = "mysql:host={$host};dbname={$dbname};charset={$charset}";
+    $pdo = new PDO($dsn, $user, $pass, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     ]);
 

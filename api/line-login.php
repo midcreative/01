@@ -9,7 +9,7 @@ use App\Services\LineLoginService;
 
 // Load .env since we need LINE_CHANNEL_ID
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../admin');
-$dotenv->load();
+$dotenv->safeLoad();
 
 $id = $_GET['id'] ?? null;
 if (!$id || !is_numeric($id)) {

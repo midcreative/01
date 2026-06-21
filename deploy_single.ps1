@@ -1,7 +1,7 @@
-$localFile = "c:\Users\User\Desktop\承昕\潘炩禕\01web\admin\migration_v3.php"
-$remoteUri = "ftp://85.187.128.60/admin/migration_v3.php"
+$localFile = "c:\Users\User\Desktop\?��?\潘炩禕\01web\index.php"
+$remoteUri = "ftp://85.187.128.60/index.php"
 $req = [System.Net.FtpWebRequest]::Create($remoteUri)
-$req.Credentials  = New-Object System.Net.NetworkCredential("xin@demo10.midcreative.com", "Xin@2026!")
+$req.Credentials  = New-Object System.Net.NetworkCredential("xin@panlingyi.tw", "Xin@2026!")
 $req.Method       = "STOR"
 $req.UseBinary    = $true
 $req.UsePassive   = $true
