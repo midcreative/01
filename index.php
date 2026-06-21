@@ -78,17 +78,17 @@ try {
 }
 
 // Default settings fallbacks
- = [
-    \'HERO_TAG\' => \'屏東縣議員第三選區參選人\',
-    \'HERO_HOME_TITLE_1\' => \'聽見地方的心跳，\',
-    \'HERO_HOME_TITLE_2\' => \'讓服務的溫度延續。\',
-    \'HERO_ISSUES_TITLE_1\' => \'迎接下個階段的託付，\',
-    \'HERO_ISSUES_TITLE_2\' => \'設計出更好的屏東。\',
-    \'HERO_FEEDBACK_TITLE_1\' => \'我們需要你的志願，\',
-    \'HERO_FEEDBACK_TITLE_2\' => \'翻轉家鄉的未來。\',
-    \'HERO_CTA_SHOW\' => \'1\',
-    \'HERO_CTA_TEXT\' => \'參與行動實踐\',
-    \'HERO_BG_IMAGE\' => \'\',
+$defaultSettings = [
+    'HERO_TAG' => '屏東縣議員第三選區參選人',
+    'HERO_HOME_TITLE_1' => '聽見地方的心跳，',
+    'HERO_HOME_TITLE_2' => '讓服務的溫度延續。',
+    'HERO_ISSUES_TITLE_1' => '迎接下個階段的託付，',
+    'HERO_ISSUES_TITLE_2' => '設計出更好的屏東。',
+    'HERO_FEEDBACK_TITLE_1' => '我們需要你的志願，',
+    'HERO_FEEDBACK_TITLE_2' => '翻轉家鄉的未來。',
+    'HERO_CTA_SHOW' => '1',
+    'HERO_CTA_TEXT' => '參與行動實踐',
+    'HERO_BG_IMAGE' => '',
 ];
 $settingsMap = array_merge($defaultSettings, $settingsDb);
 
