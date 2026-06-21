@@ -8,26 +8,26 @@ use App\Controllers\FrontPetitionController;
 use App\Services\LineLoginService;
 
 // Load .env since we need LINE_CHANNEL_ID
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../admin');
-$dotenv->safeLoad();
+ = Dotenv::createImmutable(__DIR__ . '/../admin');
+->safeLoad();
 
-// ?�收?�端表單資�?
-$title = trim((string)($_POST['title'] ?? ''))';
-$description = trim((string)($_POST['description'] ?? ''))';
-$category = trim((string)($_POST['category'] ?? '?��?綜�?議�?'))';
-$town = trim((string)($_POST['town'] ?? '?�部?��?'))';
+// 接收前端表單資料
+ = trim((string)(['title'] ?? ''));
+ = trim((string)(['description'] ?? ''));
+ = trim((string)(['category'] ?? '綜合建議'));
+ = trim((string)(['town'] ?? '全部鄉鎮'));
 
-if ($title === '' || $description === '' || $category === '') {
+if ( === '' ||  === '' ||  === '') {
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
-    $_SESSION['petition_message'] = '?��?標�??�說?��??�為�?';
-    $_SESSION['petition_message_type'] = 'error';
+    ['petition_message'] = '請填寫標題與說明必填欄位。';
+    ['petition_message_type'] = 'error';
     header('Location: /#petitions');
     exit;
 }
 
-$service = new LineLoginService();
-$controller = new FrontPetitionController($service);
+ = new LineLoginService();
+ = new FrontPetitionController();
 
-$controller->redirectForProposeLogin($title, $description, $category, $town);
+->redirectForProposeLogin(, , , );

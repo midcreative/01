@@ -78,7 +78,7 @@ try {
         $insertStmt = $pdo->prepare('
             INSERT INTO opinions (candidate_id, source_type, source_name, title, url, content_excerpt, sentiment, published_at)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ')';
+        ');
         
         $insertStmt->execute([
             $candidateId,
