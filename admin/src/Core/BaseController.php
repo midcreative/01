@@ -12,24 +12,10 @@ abstract class BaseController
     /**
      * Redirect to a URL and exit.
      */
-    protected function redirect(string $url, string $flashType = '', string $flashMsg = ''): never
+    protected function redirect(string $url): never
     {
-        if ($flashType && $flashMsg) {
-            $_SESSION['flash_type'] = $flashType;
-            $_SESSION['flash_message'] = $flashMsg;
-        }
         header("Location: {$url}");
         exit;
-    }
-
-    /**
-     * Require POST request method.
-     */
-    protected function requirePost(): void
-    {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->redirect('/', 'error', 'Invalid Request Method');
-        }
     }
 
     /**
@@ -67,10 +53,6 @@ abstract class BaseController
     protected function render(string $viewPath, array $data = []): void
     {
         extract($data);
-        $viewFile = ltrim($viewPath, '/');
-        if (!str_ends_with($viewFile, '.php')) {
-            $viewFile .= '.php';
-        }
-        require __DIR__ . '/../Views/' . $viewFile;
+        require __DIR__ . '/../Views/' . ltrim($viewPath, '/');
     }
 }

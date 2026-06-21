@@ -1,4 +1,4 @@
-$localFile = "c:\Users\User\Desktop\?��?\潘炩禕\01web\admin\src\Controllers\SettingController.php"
+$localFile = "c:\Users\User\Desktop\承昕\潘炩禕\01web\admin\src\Controllers\SettingController.php"
 $remoteUri = "ftp://85.187.128.60/admin/src/Controllers/SettingController.php"
 $req = [System.Net.FtpWebRequest]::Create($remoteUri)
 $req.Credentials  = New-Object System.Net.NetworkCredential("xin@panlingyi.tw", "Xin@2026!")

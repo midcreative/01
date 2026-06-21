@@ -24,7 +24,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <!-- é¦–é? -->
+  <!-- é¦–é  -->
   <url>
     <loc><?= $appUrl ?>/</loc>
     <lastmod><?= date('Y-m-d') ?></lastmod>
@@ -32,7 +32,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
     <priority>1.0</priority>
   </url>
 
-  <!-- å¿—å·¥?›å? -->
+  <!-- å¿—å·¥æ‹›å‹Ÿ -->
   <url>
     <loc><?= $appUrl ?>/volunteer</loc>
     <lastmod><?= date('Y-m-d') ?></lastmod>
@@ -41,7 +41,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
   </url>
 
   <?php foreach ($posts as $post): ?>
-  <!-- ?å??¥è?ï¼??= htmlspecialchars($post['slug']) ?> -->
+  <!-- æœå‹™æ—¥è¨˜ï¼š<?= htmlspecialchars($post['slug']) ?> -->
   <url>
     <loc><?= $appUrl ?>/post/<?= htmlspecialchars($post['slug']) ?></loc>
     <lastmod><?= htmlspecialchars($post['updated_at'] ?? $post['created_at'] ?? date('Y-m-d')) ?></lastmod>

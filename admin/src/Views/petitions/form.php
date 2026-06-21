@@ -1,14 +1,11 @@
 <?php
 use App\Layout\AdminLayout;
 
-use App\Models\Town;
-
 $isEdit = isset($petition);
 $title = $isEdit ? '編輯提案' : '新增提案';
 $action = $isEdit ? "/admin/petitions/{$petition['id']}" : '/admin/petitions/store';
 
-$townRecords = Town::all();
-$towns = array_column($townRecords, 'name');
+$towns = ['全部地區', '潮州鎮', '內埔鄉', '萬巒鄉', '枋寮鄉'];
 
 ob_start(); ?>
 
@@ -37,7 +34,6 @@ ob_start(); ?>
             <div>
                 <label class="block text-sm font-black text-slate-800 mb-2">所屬鄉鎮</label>
                 <select name="town" class="w-full bg-slate-50 border-0 rounded-2xl px-5 py-3 text-slate-800 focus:ring-4 focus:ring-[#E0F2ED] transition-shadow font-medium cursor-pointer">
-                    <option value="" <?= empty($petition['town']) ? 'selected' : '' ?>>全部地區</option>
                     <?php foreach ($towns as $t): ?>
                         <option value="<?= $t ?>" <?= ($petition['town'] ?? '') === $t ? 'selected' : '' ?>><?= $t ?></option>
                     <?php endforeach; ?>
@@ -45,20 +41,8 @@ ob_start(); ?>
             </div>
             
             <div>
-                <label class="block text-sm font-black text-slate-800 mb-2">議題分類</label>
-                <select name="category" required class="w-full bg-slate-50 border-0 rounded-2xl px-5 py-3 text-slate-800 focus:ring-4 focus:ring-[#E0F2ED] transition-shadow font-medium cursor-pointer">
-                    <?php 
-                    $categories = ['農業與產銷', '婦幼與社區生活', '長者照顧', '青年培力與地方創生', '交通建設與微型移動', '運動與休閒', '其他綜合議題'];
-                    foreach ($categories as $cat): 
-                    ?>
-                        <option value="<?= $cat ?>" <?= ($petition['category'] ?? '其他綜合議題') === $cat ? 'selected' : '' ?>><?= $cat ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            
-            <div>
                 <label class="block text-sm font-black text-slate-800 mb-2">目標連署人數</label>
-                <input type="number" name="target_count" value="<?= htmlspecialchars((string)($petition['target_count'] ?? 50)) ?>"
+                <input type="number" name="target_count" value="<?= htmlspecialchars((string)($petition['target_count'] ?? 100)) ?>"
                        class="w-full bg-slate-50 border-0 rounded-2xl px-5 py-3 text-slate-800 focus:ring-4 focus:ring-[#E0F2ED] transition-shadow font-medium">
             </div>
 

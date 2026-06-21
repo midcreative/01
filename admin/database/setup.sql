@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `title`        VARCHAR(255)   NOT NULL,
   `slug`         VARCHAR(255)   NOT NULL,
   `category`     ENUM('農漁牧業關注','親子教育關懷','勞資共榮','身心靈關懷','長照守護') NOT NULL,
-  `town`         ENUM('全部地區','潮州鎮','新埤鄉','內埔鄉','萬巒鄉','竹田鄉','枋寮鄉') NOT NULL DEFAULT '全部地區',
+  `town`         ENUM('全部地區','潮州鎮','內埔鄉','萬巒鄉','枋寮鄉') NOT NULL DEFAULT '全部地區',
   `status_tag`   ENUM('專案跟進','已發函','已完成') NOT NULL DEFAULT '專案跟進',
   `excerpt`      TEXT,
   `content`      LONGTEXT,
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `petitions` (
   `id`            INT UNSIGNED   NOT NULL AUTO_INCREMENT,
   `title`         VARCHAR(255)   NOT NULL,
   `description`   TEXT,
-  `town`          ENUM('全部地區','潮州鎮','新埤鄉','內埔鄉','萬巒鄉','竹田鄉','枋寮鄉'),
+  `town`          ENUM('全部地區','潮州鎮','內埔鄉','萬巒鄉','枋寮鄉'),
   `status`        ENUM('審核中','公開連署','已達標','已列管') NOT NULL DEFAULT '審核中',
   `target_count`  INT            NOT NULL DEFAULT 100,
   `current_count` INT            NOT NULL DEFAULT 0,
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `volunteer_jobs` (
   `id`           INT UNSIGNED   NOT NULL AUTO_INCREMENT,
   `title`        VARCHAR(255)   NOT NULL,
   `description`  TEXT,
-  `town`         ENUM('全部地區','潮州鎮','新埤鄉','內埔鄉','萬巒鄉','竹田鄉','枋寮鄉'),
+  `town`         ENUM('全部地區','潮州鎮','內埔鄉','萬巒鄉','枋寮鄉'),
   `required_num` INT            NOT NULL DEFAULT 1,
   `deadline`     DATE,
   `is_active`    TINYINT(1)     NOT NULL DEFAULT 1,
@@ -135,52 +135,4 @@ CREATE TABLE IF NOT EXISTS `petition_signatures` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_petition_line_user` (`petition_id`, `line_user_id`),
   CONSTRAINT `fk_signature_petition` FOREIGN KEY (`petition_id`) REFERENCES `petitions` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- 9. 輿情監測 - 候選人名單
-CREATE TABLE IF NOT EXISTS `candidates` (
-  `id`         INT UNSIGNED   NOT NULL AUTO_INCREMENT,
-  `name`       VARCHAR(100)   NOT NULL,
-  `party`      VARCHAR(50),
-  `type`       ENUM('self', 'main_opponent', 'other') NOT NULL DEFAULT 'other',
-  `created_at` DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` DATETIME       ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- 預設潘炩禕本人
-INSERT IGNORE INTO `candidates` (`name`, `party`, `type`) VALUES ('潘炩禕', '無黨籍', 'self');
-
--- 10. 輿情監測 - 關鍵字設定
-CREATE TABLE IF NOT EXISTS `candidate_keywords` (
-  `id`           INT UNSIGNED   NOT NULL AUTO_INCREMENT,
-  `candidate_id` INT UNSIGNED   NOT NULL,
-  `keyword`      VARCHAR(100)   NOT NULL,
-  `type`         ENUM('alias', 'issue', 'negative') NOT NULL DEFAULT 'alias',
-  `is_active`    TINYINT(1)     NOT NULL DEFAULT 1,
-  `created_at`   DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `idx_candidate_id` (`candidate_id`),
-  CONSTRAINT `fk_keyword_candidate` FOREIGN KEY (`candidate_id`) REFERENCES `candidates` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- 11. 輿情監測 - 輿情紀錄
-CREATE TABLE IF NOT EXISTS `opinions` (
-  `id`               INT UNSIGNED   NOT NULL AUTO_INCREMENT,
-  `candidate_id`     INT UNSIGNED,
-  `source_type`      ENUM('news', 'ptt', 'dcard', 'fb', 'other') NOT NULL DEFAULT 'other',
-  `source_name`      VARCHAR(100),
-  `title`            VARCHAR(255)   NOT NULL,
-  `url`              VARCHAR(500)   NOT NULL,
-  `content_excerpt`  TEXT,
-  `sentiment`        ENUM('positive', 'neutral', 'negative') DEFAULT 'neutral',
-  `confidence_score` DECIMAL(4,2),
-  `published_at`     DATETIME,
-  `created_at`       DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uq_url` (`url`),
-  KEY `idx_candidate_id` (`candidate_id`),
-  KEY `idx_published_at` (`published_at`),
-  KEY `idx_sentiment` (`sentiment`),
-  CONSTRAINT `fk_opinion_candidate` FOREIGN KEY (`candidate_id`) REFERENCES `candidates` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

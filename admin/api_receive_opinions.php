@@ -69,7 +69,7 @@ try {
         $pubDate = $item['published_at'] ?? date('Y-m-d H:i:s');
         $sourceName = $item['source_name'] ?? 'Google News';
         $excerpt = mb_substr(strip_tags($item['description'] ?? ''), 0, 300);
-        $candidateName = $item['candidate_name'] ?? '潘炩�?;
+        $candidateName = $item['candidate_name'] ?? '潘炩�?';
 
         // Call Gemini for Sentiment Analysis on the server
         $sentiment = $aiService->analyze($candidateName, $title, $excerpt);
@@ -78,7 +78,7 @@ try {
         $insertStmt = $pdo->prepare('
             INSERT INTO opinions (candidate_id, source_type, source_name, title, url, content_excerpt, sentiment, published_at)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ');
+        ')';
         
         $insertStmt->execute([
             $candidateId,

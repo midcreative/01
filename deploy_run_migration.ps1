@@ -1,4 +1,4 @@
-$localFile = "c:\Users\User\Desktop\?��?\潘炩禕\01web\run_migration.php"
+$localFile = "c:\Users\User\Desktop\承昕\潘炩禕\01web\run_migration.php"
 $remoteUri = "ftp://85.187.128.60/run_migration.php"
 $req = [System.Net.FtpWebRequest]::Create($remoteUri)
 $req.Credentials  = New-Object System.Net.NetworkCredential("xin@panlingyi.tw", "Xin@2026!")

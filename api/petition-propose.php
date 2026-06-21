@@ -11,17 +11,17 @@ use App\Services\LineLoginService;
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../admin');
 $dotenv->safeLoad();
 
-// ?¥æ”¶?ç«¯è¡¨å–®è³‡æ?
-$title = trim((string)($_POST['title'] ?? ''));
-$description = trim((string)($_POST['description'] ?? ''));
-$category = trim((string)($_POST['category'] ?? '?¶ä?ç¶œå?è­°é?'));
-$town = trim((string)($_POST['town'] ?? '?¨éƒ¨?°å?'));
+// ?ï¿½æ”¶?ï¿½ç«¯è¡¨å–®è³‡ï¿½?
+$title = trim((string)($_POST['title'] ?? ''))';
+$description = trim((string)($_POST['description'] ?? ''))';
+$category = trim((string)($_POST['category'] ?? '?ï¿½ï¿½?ç¶œï¿½?è­°ï¿½?'))';
+$town = trim((string)($_POST['town'] ?? '?ï¿½éƒ¨?ï¿½ï¿½?'))';
 
 if ($title === '' || $description === '' || $category === '') {
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
-    $_SESSION['petition_message'] = '?æ?æ¨™é??–èªª?ä??¯ç‚ºç©?;
+    $_SESSION['petition_message'] = '?ï¿½ï¿½?æ¨™ï¿½??ï¿½èªª?ï¿½ï¿½??ï¿½ç‚ºï¿½?';
     $_SESSION['petition_message_type'] = 'error';
     header('Location: /#petitions');
     exit;
