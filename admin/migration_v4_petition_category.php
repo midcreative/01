@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 
 echo "Starting migration: Add category to petitions...<br>";
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 use Dotenv\Dotenv;
 use App\Config\Database;
 

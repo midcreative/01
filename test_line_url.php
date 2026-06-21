@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/admin/vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__ . '/admin');
 $dotenv->safeLoad();
