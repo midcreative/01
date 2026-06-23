@@ -114,7 +114,7 @@ ob_start();
         </section>
 
         <!-- 服務日記列表 -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8" id="service-list">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8" id="service-list">
             <?php if (empty($posts)): ?>
             <div class="md:col-span-2 py-20 text-center text-slate-300 text-sm">尚未有服務日記，請透過後台新增。</div>
             <?php endif; ?>
@@ -122,7 +122,7 @@ ob_start();
             <?php foreach ($posts as $post):
                 $badgeClass = $post['category_color'] ?? 'bg-slate-50 text-slate-500 border-slate-100';
             ?>
-            <article class="bg-white rounded-[2.5rem] overflow-hidden border border-slate-50 shadow-sm hover:shadow-lg transition-all flex flex-col group"
+            <article class="bg-white rounded-[2.5rem] overflow-hidden border border-slate-50 shadow-sm hover:shadow-lg transition-all flex flex-col group post-item"
                      data-town="<?= htmlspecialchars($post['town_name'] ?? '') ?>">
                 <?php if ($post['cover_image']): ?>
                 <div class="aspect-[16/9] bg-[#F4F8F7] overflow-hidden">
@@ -164,6 +164,14 @@ ob_start();
             </article>
             <?php endforeach; ?>
         </div>
+
+        <?php if (count($posts) > 12): ?>
+        <div class="mt-12 text-center" id="load-more-container" style="display: none;">
+            <button onclick="loadMorePosts()" class="px-8 py-3 bg-white text-slate-500 border border-slate-200 rounded-full font-bold hover:bg-slate-50 hover:text-[#66C2A5] transition-all">
+                載入更多日記
+            </button>
+        </div>
+        <?php endif; ?>
     </div>
 
     <div id="view-issues" class="view-content hidden-view animate-in fade-in max-w-5xl mx-auto text-left">
@@ -355,13 +363,58 @@ function switchView(name) {
     
     window.scrollTo({top: 0, behavior: 'smooth'});
 }
+let currentTown = '全部地區';
+let itemsToShow = 12;
+
+function renderPosts() {
+    const posts = document.querySelectorAll('.post-item');
+    let visibleCount = 0;
+    let totalMatching = 0;
+
+    posts.forEach(card => {
+        const matchTown = (currentTown === '全部地區' || card.dataset.town === currentTown);
+        if (matchTown) {
+            totalMatching++;
+            if (visibleCount < itemsToShow) {
+                card.style.display = '';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    const loadMoreContainer = document.getElementById('load-more-container');
+    if (loadMoreContainer) {
+        if (itemsToShow >= totalMatching) {
+            loadMoreContainer.style.display = 'none';
+        } else {
+            loadMoreContainer.style.display = 'block';
+        }
+    }
+}
+
 function filterTown(el, town) {
     document.querySelectorAll('.town-btn').forEach(b => b.classList.remove('bg-brand-green','text-white','shadow-md'));
     el.classList.add('bg-brand-green','text-white','shadow-md');
-    document.querySelectorAll('#service-list article').forEach(card => {
-        card.style.display = (town === '全部地區' || card.dataset.town === town) ? '' : 'none';
-    });
+    
+    currentTown = town;
+    itemsToShow = 12;
+    renderPosts();
 }
+
+function loadMorePosts() {
+    itemsToShow += 12;
+    renderPosts();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (document.querySelectorAll('.post-item').length > 0) {
+        renderPosts();
+    }
+});
 </script>
 
 <?php
