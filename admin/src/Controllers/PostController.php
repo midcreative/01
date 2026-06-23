@@ -110,7 +110,16 @@ final class PostController extends BaseController
     {
         $this->auth->requireAuth();
         $existingPost = Post::findById($id);
-        Post::update($id, $this->buildDataFromPost($existingPost ?: null));
+        
+        $data = $this->buildDataFromPost($existingPost ?: null);
+        
+        if ($existingPost && !empty($existingPost['slug'])) {
+            $data['slug'] = $existingPost['slug'];
+        } else {
+            $data['slug'] = Post::generateSlug($data['title']) . '-' . time();
+        }
+        
+        Post::update($id, $data);
         $this->redirect('/admin/posts');
     }
 
