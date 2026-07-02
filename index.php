@@ -94,19 +94,35 @@ ob_start();
 <main class="max-w-7xl mx-auto px-4 py-8 md:py-12 text-left">
     <?php
     $heroBg = $settingsMap['HERO_BG_IMAGE'] ?? '';
+    $heroBlur = ($settingsMap['HERO_BG_BLUR'] ?? '0') === '1' ? 'backdrop-filter: blur(10px); background-color: rgba(255,255,255,0.3);' : '';
     $bgStyle = $heroBg ? "background-image: url('" . htmlspecialchars($heroBg) . "'); background-size: cover; background-position: center;" : "";
     $headerClass = $heroBg ? "mb-8 md:mb-16 relative rounded-[2.5rem] overflow-hidden shadow-[0_10px_40px_-15px_rgba(102,194,165,0.3)] border border-[#E0F2ED]/50 aspect-[1/1] sm:aspect-[16/9] md:aspect-[2.5/1] flex flex-col items-center justify-center p-6" : "mb-8 md:mb-16 text-center";
+    $heroTag = $settingsMap['HERO_TAG'] ?? '屏東縣議員第三選區參選人';
     ?>
     <header class="<?= $headerClass ?>" style="<?= $bgStyle ?>">
-        <div class="inline-block bg-[#E0F2ED] px-3 py-1 rounded-full text-[#4A937F] text-[9px] md:text-[10px] font-black mb-4 tracking-[0.15em] uppercase">屏東縣議員第三選區參選人</div>
-        <h1 id="main-title" class="text-3xl md:text-6xl font-serif font-black text-slate-900 mb-6 md:mb-8 leading-tight px-2">
-            聽見地方的心跳，<br class="hidden md:block">
-            <span class="brand-green font-sans italic opacity-90">讓服務的溫度延續。</span>
-        </h1>
+        <div class="absolute inset-0" style="<?= $heroBlur ?>"></div>
+        <div class="relative z-10 flex flex-col items-center text-center">
+            <?php if ($heroTag): ?>
+            <div class="inline-block bg-[#E0F2ED] px-3 py-1 rounded-full text-[#4A937F] text-[9px] md:text-[10px] font-black mb-4 tracking-[0.15em] uppercase"><?= htmlspecialchars($heroTag) ?></div>
+            <?php endif; ?>
+            <h1 id="main-title" class="text-3xl md:text-6xl font-serif font-black text-slate-900 mb-6 md:mb-8 leading-tight px-2">
+                聽見地方的心跳，<br class="hidden md:block">
+                <span class="brand-green font-sans italic opacity-90">讓服務的溫度延續。</span>
+            </h1>
+        </div>
     </header>
 
     <!-- 首頁：鄉鎮足跡 -->
     <div id="view-home" class="view-content">
+        <?php if (!empty($settingsMap['TOWN_TITLE'])): ?>
+        <div class="text-center mb-8">
+            <h2 class="text-3xl md:text-4xl font-serif font-black text-slate-900 mb-2 leading-tight"><?= htmlspecialchars($settingsMap['TOWN_TITLE']) ?></h2>
+            <?php if (!empty($settingsMap['TOWN_SUBTITLE'])): ?>
+            <p class="text-brand-green text-sm font-medium italic opacity-90"><?= htmlspecialchars($settingsMap['TOWN_SUBTITLE']) ?></p>
+            <?php endif; ?>
+        </div>
+        <?php endif; ?>
+        
         <!-- 鄉鎮切換 -->
         <section class="mb-8 overflow-x-auto whitespace-nowrap pb-4 no-scrollbar -mx-4 px-4 text-center">
             <div class="flex flex-nowrap items-center justify-center gap-2.5">
@@ -196,9 +212,9 @@ ob_start();
 
     <div id="view-issues" class="view-content hidden-view animate-in fade-in max-w-5xl mx-auto text-left">
         <div class="text-center mb-10 md:mb-16">
-            <h2 class="text-3xl md:text-5xl font-serif font-black text-slate-900 mb-4 leading-tight text-center">行動白皮書</h2>
+            <h2 class="text-3xl md:text-5xl font-serif font-black text-slate-900 mb-4 leading-tight text-center"><?= htmlspecialchars($settingsMap['WHITEPAPER_TITLE'] ?? '行動白皮書') ?></h2>
             <p class="text-slate-500 text-sm md:text-lg font-medium max-w-2xl mx-auto text-center leading-relaxed text-balance">
-                以數據設計未來，用行動回應託付。這是我們為屏東第三選區定義的核心支柱。
+                <?= htmlspecialchars($settingsMap['WHITEPAPER_SUBTITLE'] ?? '從基層做起，以務實的政策帶動地方發展，解決鄉親最關心的問題。') ?>
             </p>
         </div>
 
@@ -261,10 +277,17 @@ ob_start();
     <!-- 連署實證站 -->
     <div id="view-feedback" class="view-content hidden-view max-w-5xl mx-auto">
         <div class="text-center mb-10 md:mb-16">
-            <h2 class="text-3xl md:text-5xl font-serif font-black text-slate-900 mb-4 leading-tight text-center">議題連署實證站</h2>
+            <h2 class="text-3xl md:text-5xl font-serif font-black text-slate-900 mb-4 leading-tight text-center"><?= htmlspecialchars($settingsMap['PETITION_TITLE'] ?? '議題連署實證站') ?></h2>
             <p class="text-slate-500 text-sm md:text-lg font-medium max-w-2xl mx-auto text-center leading-relaxed text-balance">
-                實名制提案，滿 100 人覆議即正式納入專案追蹤。您的參與，是驅動改變的開始。
+                <?= htmlspecialchars($settingsMap['PETITION_SUBTITLE'] ?? '實名制提案，滿 100 人覆議即正式納入專案追蹤。您的參與，是驅動改變的開始。') ?>
             </p>
+            <?php if (($settingsMap['PETITION_CTA_SHOW'] ?? '0') === '1' && !empty($settingsMap['PETITION_CTA_TEXT'])): ?>
+            <div class="mt-6">
+                <a href="/contact" class="inline-block bg-[#06C755] hover:bg-[#05b34d] text-white px-8 py-3 rounded-full font-black text-sm transition-colors shadow-lg shadow-[#06C755]/30">
+                    <?= htmlspecialchars($settingsMap['PETITION_CTA_TEXT']) ?>
+                </a>
+            </div>
+            <?php endif; ?>
             <?php if (isset($_SESSION['petition_message'])): ?>
             <div class="mt-6 inline-block px-6 py-3 rounded-2xl text-sm font-bold <?= $_SESSION['petition_message_type'] === 'success' ? 'bg-[#E0F2ED] text-[#2D7A60]' : 'bg-red-50 text-red-600' ?>">
                 <?= htmlspecialchars($_SESSION['petition_message']) ?>

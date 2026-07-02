@@ -37,7 +37,13 @@ final class SettingController extends BaseController
         $pdo = Database::getInstance();
         
         // Allowed keys to update
-        $allowedKeys = ['LINE_CHANNEL_ID', 'LINE_CHANNEL_SECRET'];
+        $allowedKeys = [
+            'LINE_CHANNEL_ID', 'LINE_CHANNEL_SECRET',
+            'HERO_TAG', 'HERO_BG_BLUR',
+            'TOWN_TITLE', 'TOWN_SUBTITLE',
+            'WHITEPAPER_TITLE', 'WHITEPAPER_SUBTITLE',
+            'PETITION_TITLE', 'PETITION_SUBTITLE', 'PETITION_CTA_SHOW', 'PETITION_CTA_TEXT'
+        ];
         
         $pdo->beginTransaction();
         try {
