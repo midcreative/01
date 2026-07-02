@@ -34,11 +34,14 @@ try {
     $petitionsStmt->execute();
     $petitions = $petitionsStmt->fetchAll();
 
-    $stats = $pdo->query('SELECT * FROM stats ORDER BY sort_order ASC')->fetchAll();
-    $statsMap = [];
-    foreach ($stats as $s) {
-        $statsMap[$s['stat_key']] = $s;
-    }
+    $categoryStatsStmt = $pdo->query('
+        SELECT c.id, c.name, c.color_theme, COUNT(p.id) as post_count 
+        FROM post_categories c 
+        LEFT JOIN posts p ON c.id = p.category_id AND p.is_published = 1 
+        GROUP BY c.id 
+        ORDER BY c.sort_order ASC
+    ');
+    $categoryStats = $categoryStatsStmt->fetchAll();
 
     $settings = $pdo->query('SELECT * FROM settings')->fetchAll();
     $settingsMap = [];
@@ -51,7 +54,7 @@ try {
     $posts       = [];
     $towns       = [];
     $whitepapers = [];
-    $statsMap    = [];
+    $categoryStats = [];
     $settingsMap = [];
 }
 
@@ -115,13 +118,20 @@ ob_start();
         </section>
 
         <!-- 數據看板（從 DB 動態產生） -->
+        <p class="text-center text-slate-400 text-[10px] mb-3 font-bold tracking-[0.1em]"><i data-lucide="filter" class="inline w-3 h-3 mr-1 -mt-0.5 opacity-60"></i>點擊分類查看專屬服務日記</p>
         <section class="mb-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 text-center">
-            <?php foreach ($statsMap as $key => $s): ?>
-            <div class="bg-white p-5 rounded-[1.5rem] border border-slate-50 shadow-sm flex flex-col items-center justify-center group hover:border-[#66C2A5]/20 transition-all">
-                <i data-lucide="<?= htmlspecialchars($s['icon_name'] ?? 'layers') ?>" class="<?= htmlspecialchars($s['icon_color'] ?? 'brand-green') ?> mb-2 w-5 h-5 opacity-70"></i>
-                <span class="text-slate-400 text-[8px] font-black tracking-widest mb-1 uppercase"><?= htmlspecialchars($s['stat_label']) ?></span>
-                <h3 class="text-xl font-black text-slate-800"><?= (int)$s['stat_value'] ?> <span class="text-[10px] font-bold text-slate-400"><?= htmlspecialchars($s['stat_unit']) ?></span></h3>
-            </div>
+            <!-- 全部類別 -->
+            <button onclick="filterCategory('全部類別')" id="cat-btn-all" class="category-btn active-category bg-white p-5 rounded-[1.5rem] border border-[#66C2A5] shadow-sm flex flex-col items-center justify-center group hover:border-[#66C2A5]/70 transition-all cursor-pointer w-full">
+                <i data-lucide="layers" class="brand-green mb-2 w-5 h-5 opacity-70"></i>
+                <span class="text-slate-400 text-[8px] font-black tracking-widest mb-1 uppercase">所有文章</span>
+                <h3 class="text-xl font-black text-slate-800"><?= count($posts) ?> <span class="text-[10px] font-bold text-slate-400">篇</span></h3>
+            </button>
+            <?php foreach ($categoryStats as $c): ?>
+            <button onclick="filterCategory('<?= htmlspecialchars($c['name']) ?>')" id="cat-btn-<?= htmlspecialchars(md5($c['name'])) ?>" class="category-btn bg-white p-5 rounded-[1.5rem] border border-slate-50 shadow-sm flex flex-col items-center justify-center group hover:border-[#66C2A5]/50 transition-all cursor-pointer w-full">
+                <i data-lucide="folder" class="brand-green mb-2 w-5 h-5 opacity-70"></i>
+                <span class="text-slate-400 text-[8px] font-black tracking-widest mb-1 uppercase"><?= htmlspecialchars($c['name']) ?></span>
+                <h3 class="text-xl font-black text-slate-800"><?= (int)$c['post_count'] ?> <span class="text-[10px] font-bold text-slate-400">篇</span></h3>
+            </button>
             <?php endforeach; ?>
         </section>
 
@@ -135,7 +145,8 @@ ob_start();
                 $badgeClass = $post['category_color'] ?? 'bg-slate-50 text-slate-500 border-slate-100';
             ?>
             <article class="bg-white rounded-[2.5rem] overflow-hidden border border-slate-50 shadow-sm hover:shadow-lg transition-all flex flex-col group post-item"
-                     data-town="<?= htmlspecialchars($post['town_name'] ?? '') ?>">
+                     data-town="<?= htmlspecialchars($post['town_name'] ?? '') ?>"
+                     data-category="<?= htmlspecialchars($post['category_name'] ?? '') ?>">
                 <?php if ($post['cover_image']): ?>
                 <div class="aspect-[16/9] bg-[#F4F8F7] overflow-hidden">
                     <img src="<?= htmlspecialchars($post['cover_image']) ?>"
@@ -391,6 +402,7 @@ function switchView(name) {
     window.scrollTo({top: 0, behavior: 'smooth'});
 }
 let currentTown = '全部地區';
+let currentCategory = '全部類別';
 let itemsToShow = 12;
 
 function renderPosts() {
@@ -400,7 +412,8 @@ function renderPosts() {
 
     posts.forEach(card => {
         const matchTown = (currentTown === '全部地區' || card.dataset.town === currentTown);
-        if (matchTown) {
+        const matchCategory = (currentCategory === '全部類別' || card.dataset.category === currentCategory);
+        if (matchTown && matchCategory) {
             totalMatching++;
             if (visibleCount < itemsToShow) {
                 card.style.display = '';
@@ -428,6 +441,31 @@ function filterTown(el, town) {
     el.classList.add('bg-brand-green','text-white','shadow-md');
     
     currentTown = town;
+    itemsToShow = 12;
+    renderPosts();
+}
+
+function filterCategory(category) {
+    document.querySelectorAll('.category-btn').forEach(b => {
+        b.classList.remove('active-category', 'border-[#66C2A5]', 'border-2');
+        b.classList.add('border-slate-50');
+    });
+    
+    // Find the button that was clicked. We can use event.currentTarget if we passed 'this', but we passed the string.
+    // Instead we can match it using an id, or data attribute.
+    // In HTML we added id="cat-btn-all" and id="cat-btn-..." but we can also just find it by text or add an active class.
+    // Actually, I can just use event.currentTarget. Let me update the HTML later or just find the element.
+    // Let's use event.currentTarget since onclick is defined on the button. Wait, `filterCategory` only receives `category`.
+    // We can iterate and check if the span text matches.
+    document.querySelectorAll('.category-btn').forEach(b => {
+        const span = b.querySelector('span');
+        if (span && (span.textContent === category || (category === '全部類別' && span.textContent === '所有文章'))) {
+            b.classList.add('active-category', 'border-[#66C2A5]', 'border-2');
+            b.classList.remove('border-slate-50');
+        }
+    });
+    
+    currentCategory = category;
     itemsToShow = 12;
     renderPosts();
 }
