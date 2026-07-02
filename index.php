@@ -40,12 +40,19 @@ try {
         $statsMap[$s['stat_key']] = $s;
     }
 
+    $settings = $pdo->query('SELECT * FROM settings')->fetchAll();
+    $settingsMap = [];
+    foreach ($settings as $s) {
+        $settingsMap[$s['setting_key']] = $s['setting_value'];
+    }
+
 } catch (\Throwable $e) {
     error_log('Front index error: ' . $e->getMessage());
     $posts       = [];
     $towns       = [];
     $whitepapers = [];
     $statsMap    = [];
+    $settingsMap = [];
 }
 
 // ─── Render ─────────────────────────────────────────────────────────────────
@@ -82,7 +89,12 @@ ob_start();
 
 <!-- 主內容 -->
 <main class="max-w-7xl mx-auto px-4 py-8 md:py-12 text-left">
-    <header class="mb-8 md:mb-16 text-center">
+    <?php
+    $heroBg = $settingsMap['HERO_BG_IMAGE'] ?? '';
+    $bgStyle = $heroBg ? "background-image: url('" . htmlspecialchars($heroBg) . "'); background-size: cover; background-position: center;" : "";
+    $headerClass = $heroBg ? "mb-8 md:mb-16 relative rounded-[2.5rem] overflow-hidden shadow-[0_10px_40px_-15px_rgba(102,194,165,0.3)] border border-[#E0F2ED]/50 aspect-[1/1] sm:aspect-[16/9] md:aspect-[2.5/1] flex flex-col items-center justify-center p-6" : "mb-8 md:mb-16 text-center";
+    ?>
+    <header class="<?= $headerClass ?>" style="<?= $bgStyle ?>">
         <div class="inline-block bg-[#E0F2ED] px-3 py-1 rounded-full text-[#4A937F] text-[9px] md:text-[10px] font-black mb-4 tracking-[0.15em] uppercase">屏東縣議員第三選區參選人</div>
         <h1 id="main-title" class="text-3xl md:text-6xl font-serif font-black text-slate-900 mb-6 md:mb-8 leading-tight px-2">
             聽見地方的心跳，<br class="hidden md:block">
@@ -332,6 +344,9 @@ ob_start();
     </div>
 </footer>
 
+<script>
+    const heroSettings = <?= json_encode($settingsMap) ?>;
+</script>
 <style>.hidden-view { display: none; }</style>
 <script>
 function switchView(name) {
@@ -340,14 +355,26 @@ function switchView(name) {
     
     const title = document.getElementById('main-title');
     const isMobile = window.innerWidth < 768;
-    const breakTag = isMobile ? '' : '<br>';
+    const breakTag = isMobile ? '' : '<br class="hidden md:block">';
 
+    let t1 = '', t2 = '';
     if(name === 'home') {
-        title.innerHTML = '聽見地方的心跳，' + breakTag + '<span class="brand-green font-sans italic opacity-90">讓服務的溫度延續。</span>';
+        t1 = heroSettings.HERO_HOME_TITLE_1 || '聽見地方的心跳，';
+        t2 = heroSettings.HERO_HOME_TITLE_2 || '讓服務的溫度延續。';
     } else if(name === 'issues') {
-        title.innerHTML = '承接老朋友的託付，' + breakTag + '<span class="brand-green font-sans italic opacity-90">設計新一代的屏東。</span>';
+        t1 = heroSettings.HERO_ISSUES_TITLE_1 || '承接老朋友的託付，';
+        t2 = heroSettings.HERO_ISSUES_TITLE_2 || '設計新一代的屏東。';
     } else if(name === 'feedback') {
-        title.innerHTML = '匯集集體的意志，' + breakTag + '<span class="brand-green font-sans italic opacity-90">翻轉家鄉的未來。</span>';
+        t1 = heroSettings.HERO_FEEDBACK_TITLE_1 || '匯集集體的意志，';
+        t2 = heroSettings.HERO_FEEDBACK_TITLE_2 || '翻轉家鄉的未來。';
+    }
+
+    if(t1 === '' && t2 === '') {
+        title.style.display = 'none';
+        title.innerHTML = '';
+    } else {
+        title.style.display = 'block';
+        title.innerHTML = `${t1}${breakTag}<span class="brand-green font-sans italic opacity-90">${t2}</span>`;
     }
 
     document.querySelectorAll('.nav-btn').forEach(b => {
