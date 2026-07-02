@@ -48,6 +48,34 @@ final class SettingController extends BaseController
                     $stmt->execute([$value, $key]);
                 }
             }
+            
+            // Handle Hero BG Upload
+            if (isset($_FILES['HERO_BG_IMAGE_FILE']) && $_FILES['HERO_BG_IMAGE_FILE']['error'] === UPLOAD_ERR_OK) {
+                $tmpName = $_FILES['HERO_BG_IMAGE_FILE']['tmp_name'];
+                $name    = basename($_FILES['HERO_BG_IMAGE_FILE']['name']);
+                $ext     = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+                if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
+                    $uploadDirRel = '/uploads/settings/';
+                    $uploadDirAbs = dirname(__DIR__, 3) . $uploadDirRel;
+                    if (!is_dir($uploadDirAbs)) {
+                        mkdir($uploadDirAbs, 0755, true);
+                    }
+                    $fileName   = time() . '_' . uniqid() . '.' . $ext;
+                    $targetPath = $uploadDirAbs . $fileName;
+                    if (move_uploaded_file($tmpName, $targetPath)) {
+                        // check if setting exists
+                        $checkStmt = $pdo->prepare('SELECT 1 FROM settings WHERE setting_key = ?');
+                        $checkStmt->execute(['HERO_BG_IMAGE']);
+                        if ($checkStmt->fetch()) {
+                            $stmt->execute([$uploadDirRel . $fileName, 'HERO_BG_IMAGE']);
+                        } else {
+                            $insertStmt = $pdo->prepare('INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)');
+                            $insertStmt->execute(['HERO_BG_IMAGE', $uploadDirRel . $fileName]);
+                        }
+                    }
+                }
+            }
+            
             $pdo->commit();
             
             if (session_status() === PHP_SESSION_NONE) {

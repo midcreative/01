@@ -24,7 +24,7 @@ ob_start(); ?>
         <i class="fa-brands fa-line text-[15rem]"></i>
     </div>
 
-    <form method="POST" action="/admin/settings/update" class="relative z-10">
+    <form method="POST" action="/admin/settings/update" enctype="multipart/form-data" class="relative z-10">
         <div class="mb-8">
             <h3 class="text-lg font-black text-slate-800 mb-2 border-l-4 border-[#06C755] pl-3">LINE Login 整合設定</h3>
             <p class="text-slate-500 text-sm mb-6 pl-4">用於「連署提案」功能的一鍵 LINE 身分驗證與自動加入官方帳號。請至 <a href="https://developers.line.biz/" target="_blank" class="text-[#06C755] hover:underline font-bold">LINE Developers Console</a> 取得以下資訊。</p>
@@ -56,6 +56,29 @@ ob_start(); ?>
                            value="<?= htmlspecialchars($settings['LINE_CHANNEL_SECRET']['setting_value'] ?? '') ?>"
                            class="w-full bg-slate-50 border-0 rounded-2xl px-5 py-3 text-slate-800 focus:ring-4 focus:ring-[#06C755]/20 focus:bg-white transition-all placeholder:text-slate-300 font-medium font-mono">
                            <p class="text-xs text-slate-400 mt-2"><i class="fa-solid fa-triangle-exclamation mr-1 text-orange-400"></i> 請妥善保管密鑰，若更改網域可繼續沿用，無需重新設定。</p>
+                </div>
+            </div>
+        </div>
+
+        </div>
+
+        <hr class="border-slate-100 mb-8 max-w-2xl">
+
+        <div class="mb-8">
+            <h3 class="text-lg font-black text-slate-800 mb-2 border-l-4 border-[#06C755] pl-3">首頁橫幅 (Hero) 設定</h3>
+            <p class="text-slate-500 text-sm mb-6 pl-4">設定前台首頁的主視覺背景圖片。建議尺寸比例為 16:9 或 2.5:1，寬度建議至少 1920px。</p>
+            
+            <div class="space-y-6 max-w-2xl pl-4">
+                <div>
+                    <label class="block text-sm font-black text-slate-800 mb-2">上傳背景圖片</label>
+                    <input type="file" name="HERO_BG_IMAGE_FILE" accept="image/png, image/jpeg, image/webp"
+                           class="w-full bg-slate-50 border-0 rounded-2xl px-5 py-3 text-slate-800 focus:ring-4 focus:ring-[#06C755]/20 focus:bg-white transition-all font-medium">
+                    <?php if (!empty($settings['HERO_BG_IMAGE']['setting_value'])): ?>
+                        <div class="mt-4">
+                            <p class="text-xs text-slate-500 mb-2">目前使用的圖片：</p>
+                            <img src="<?= htmlspecialchars($settings['HERO_BG_IMAGE']['setting_value']) ?>" alt="Hero BG" class="h-32 rounded-lg border border-slate-200 object-cover">
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
