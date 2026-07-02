@@ -156,7 +156,7 @@ ob_start();
                     </div>
                     <?php endif; ?>
                     <div class="flex items-center justify-end">
-                        <a href="/post/<?= htmlspecialchars($post['slug']) ?>" class="brand-green font-black text-xs flex items-center gap-1 hover:gap-3 transition-all">
+                        <a href="/post/index.php?slug=<?= htmlspecialchars($post['slug']) ?>" class="brand-green font-black text-xs flex items-center gap-1 hover:gap-3 transition-all">
                             閱讀更多 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                         </a>
                     </div>
