@@ -47,11 +47,19 @@ final class SettingController extends BaseController
         
         $pdo->beginTransaction();
         try {
-            $stmt = $pdo->prepare('UPDATE settings SET setting_value = ? WHERE setting_key = ?');
+            $updateStmt = $pdo->prepare('UPDATE settings SET setting_value = ? WHERE setting_key = ?');
+            $checkStmt = $pdo->prepare('SELECT 1 FROM settings WHERE setting_key = ?');
+            $insertStmt = $pdo->prepare('INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)');
+            
             foreach ($allowedKeys as $key) {
                 if (isset($_POST[$key])) {
                     $value = trim((string)$_POST[$key]);
-                    $stmt->execute([$value, $key]);
+                    $checkStmt->execute([$key]);
+                    if ($checkStmt->fetch()) {
+                        $updateStmt->execute([$value, $key]);
+                    } else {
+                        $insertStmt->execute([$key, $value]);
+                    }
                 }
             }
             
@@ -70,13 +78,13 @@ final class SettingController extends BaseController
                     $targetPath = $uploadDirAbs . $fileName;
                     if (move_uploaded_file($tmpName, $targetPath)) {
                         // check if setting exists
-                        $checkStmt = $pdo->prepare('SELECT 1 FROM settings WHERE setting_key = ?');
-                        $checkStmt->execute(['HERO_BG_IMAGE']);
-                        if ($checkStmt->fetch()) {
-                            $stmt->execute([$uploadDirRel . $fileName, 'HERO_BG_IMAGE']);
+                        $checkStmtBg = $pdo->prepare('SELECT 1 FROM settings WHERE setting_key = ?');
+                        $checkStmtBg->execute(['HERO_BG_IMAGE']);
+                        if ($checkStmtBg->fetch()) {
+                            $updateStmt->execute([$uploadDirRel . $fileName, 'HERO_BG_IMAGE']);
                         } else {
-                            $insertStmt = $pdo->prepare('INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)');
-                            $insertStmt->execute(['HERO_BG_IMAGE', $uploadDirRel . $fileName]);
+                            $insertStmtBg = $pdo->prepare('INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)');
+                            $insertStmtBg->execute(['HERO_BG_IMAGE', $uploadDirRel . $fileName]);
                         }
                     }
                 }
