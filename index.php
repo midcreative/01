@@ -100,8 +100,8 @@ ob_start();
     $heroTag = $settingsMap['HERO_TAG'] ?? '屏東縣議員第三選區參選人';
     ?>
     <header class="<?= $headerClass ?>" style="<?= $bgStyle ?>">
-        <div class="absolute inset-0" style="<?= $heroBlur ?>"></div>
-        <div class="relative z-10 flex flex-col items-center text-center">
+        <div id="hero-overlay" class="absolute inset-0" style="<?= $heroBlur ?>"></div>
+        <div id="hero-text-content" class="relative z-10 flex flex-col items-center text-center">
             <?php if ($heroTag): ?>
             <div class="inline-block bg-[#E0F2ED] px-3 py-1 rounded-full text-[#4A937F] text-[9px] md:text-[10px] font-black mb-4 tracking-[0.15em] uppercase"><?= htmlspecialchars($heroTag) ?></div>
             <?php endif; ?>
@@ -387,6 +387,12 @@ function switchView(name) {
     const title = document.getElementById('main-title');
     const isMobile = window.innerWidth < 768;
     const breakTag = isMobile ? '' : '<br class="hidden md:block">';
+
+    const showText = heroSettings.HERO_SHOW_TEXT !== '0';
+    const textContent = document.getElementById('hero-text-content');
+    const heroOverlay = document.getElementById('hero-overlay');
+    if(textContent) textContent.style.display = showText ? 'flex' : 'none';
+    if(heroOverlay) heroOverlay.style.display = showText ? 'block' : 'none';
 
     let t1 = '', t2 = '';
     if(name === 'home') {

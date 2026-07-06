@@ -97,7 +97,17 @@ ob_start(); ?>
                         <option value="0" <?= ($settings['HERO_BG_BLUR']['setting_value'] ?? '0') === '0' ? 'selected' : '' ?>>關閉 (適合已經自帶字體的設計海報)</option>
                         <option value="1" <?= ($settings['HERO_BG_BLUR']['setting_value'] ?? '0') === '1' ? 'selected' : '' ?>>開啟 (加上半透明模糊層，凸顯文字)</option>
                     </select>
-                    <p class="text-xs text-slate-400 mt-2">支援 JPG, PNG, WEBP。若不更改請保持空白</p>
+                    <p class="text-xs text-slate-400 mt-2 mb-4">支援 JPG, PNG, WEBP。若不更改請保持空白</p>
+                </div>
+
+                <!-- HERO_SHOW_TEXT -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-black text-slate-800 mb-2">顯示主視覺文字</label>
+                    <div class="flex items-center gap-3 bg-slate-50 border-0 rounded-2xl px-5 py-3">
+                        <input type="hidden" name="HERO_SHOW_TEXT" value="0">
+                        <input type="checkbox" name="HERO_SHOW_TEXT" value="1" <?= ($settings['HERO_SHOW_TEXT']['setting_value'] ?? '1') === '1' ? 'checked' : '' ?> class="w-5 h-5 text-[#06C755] bg-white border-slate-300 rounded focus:ring-[#06C755] focus:ring-2">
+                        <span class="text-slate-800 font-medium text-sm">開啟 (在前台顯示標題與副標題文字，若關閉則僅顯示背景圖片)</span>
+                    </div>
                 </div>
             </div>
         </div>
