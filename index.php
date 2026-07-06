@@ -463,8 +463,12 @@ function renderPosts() {
 }
 
 function filterTown(el, town) {
-    document.querySelectorAll('.town-btn').forEach(b => b.classList.remove('bg-brand-green','text-white','shadow-md'));
-    el.classList.add('bg-brand-green','text-white','shadow-md');
+    document.querySelectorAll('.town-btn').forEach(b => {
+        b.classList.remove('bg-brand-green','text-white','shadow-md', 'border-transparent');
+        b.classList.add('bg-white', 'text-slate-400', 'border-slate-100');
+    });
+    el.classList.remove('bg-white', 'text-slate-400', 'border-slate-100');
+    el.classList.add('bg-brand-green','text-white','shadow-md', 'border-transparent');
     
     currentTown = town;
     itemsToShow = 12;
