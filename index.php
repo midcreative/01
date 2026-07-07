@@ -137,7 +137,7 @@ ob_start();
 
         <!-- 數據看板（從 DB 動態產生） -->
         <p class="text-center text-slate-400 text-[10px] mb-3 font-bold tracking-[0.1em]"><i data-lucide="filter" class="inline w-3 h-3 mr-1 -mt-0.5 opacity-60"></i>點擊分類查看專屬服務日記</p>
-        <section class="mb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5 text-left">
+        <section class="mb-10 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-5 text-left">
             <?php 
             $maxPosts = 0;
             foreach ($categoryStats as $c) {
@@ -165,20 +165,20 @@ ob_start();
                 ];
                 $colors = $colorMap[$theme] ?? $colorMap['brand-green'];
             ?>
-            <button onclick="filterCategory('<?= htmlspecialchars($c['name']) ?>')" id="cat-btn-<?= htmlspecialchars(md5($c['name'])) ?>" class="category-btn relative bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between group <?= $colors['hover'] ?> transition-all duration-300 cursor-pointer overflow-hidden text-left h-full min-h-[110px] transform hover:-translate-y-1">
+            <button onclick="filterCategory('<?= htmlspecialchars($c['name']) ?>')" id="cat-btn-<?= htmlspecialchars(md5($c['name'])) ?>" class="category-btn relative bg-white p-3 md:p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between group <?= $colors['hover'] ?> transition-all duration-300 cursor-pointer overflow-hidden text-left h-full min-h-[110px] transform hover:-translate-y-1">
                 
-                <div class="flex justify-between items-start w-full mb-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl <?= $colors['bg'] ?> flex items-center justify-center shrink-0">
-                            <i data-lucide="folder" class="<?= $colors['text'] ?> w-5 h-5"></i>
+                <div class="flex justify-between items-start w-full mb-3 md:mb-4">
+                    <div class="flex items-center gap-2 md:gap-3">
+                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl <?= $colors['bg'] ?> flex items-center justify-center shrink-0">
+                            <i data-lucide="folder" class="<?= $colors['text'] ?> w-4 h-4 md:w-5 md:h-5"></i>
                         </div>
-                        <h3 class="text-[15px] font-bold text-slate-700 leading-tight text-left">
+                        <h3 class="text-sm md:text-[15px] font-bold text-slate-700 leading-tight text-left">
                             <?= htmlspecialchars($c['name']) ?>
                         </h3>
                     </div>
                     <div class="text-right shrink-0">
-                        <span class="text-3xl font-black <?= $colors['text'] ?> tracking-tighter counter-value" data-target="<?= $count ?>">0</span>
-                        <span class="text-xs text-slate-400 font-medium ml-1">篇</span>
+                        <span class="text-2xl md:text-3xl font-black <?= $colors['text'] ?> tracking-tighter counter-value" data-target="<?= $count ?>">0</span>
+                        <span class="text-[10px] md:text-xs text-slate-400 font-medium ml-0.5 md:ml-1">篇</span>
                     </div>
                 </div>
 
