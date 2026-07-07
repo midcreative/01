@@ -392,6 +392,63 @@ ob_start();
     </div>
 </main>
 
+<!-- CTA 政治獻金 -->
+<section class="relative bg-gradient-to-b from-[#e5eaff] to-[#7f85d2] py-16 md:py-24 overflow-hidden flex flex-col items-center">
+    <!-- Watermark text -->
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden select-none mix-blend-overlay">
+        <span class="text-[5rem] md:text-[9rem] lg:text-[12rem] font-black text-[#565ba1] opacity-20 whitespace-nowrap tracking-[0.2em] font-sans">CARRY THE HEART</span>
+    </div>
+    
+    <div class="relative z-10 w-full max-w-4xl px-4 md:px-6 flex flex-col items-center text-center">
+        <h2 class="text-3xl md:text-4xl font-black text-[#565ba1] mb-10 tracking-wider">政治獻金開戶啦！</h2>
+        
+        <div class="w-full bg-white rounded-xl shadow-[0_20px_40px_-15px_rgba(127,133,210,0.5)] border border-white/50 overflow-hidden mb-12 text-left">
+            <!-- Bank row -->
+            <div class="flex flex-col md:flex-row border-b border-[#e5eaff]">
+                <div class="md:w-32 bg-white flex items-center justify-center md:justify-center px-6 py-4 md:border-r border-[#e5eaff]">
+                    <span class="text-xl font-bold text-slate-700 tracking-[0.2em]">銀行</span>
+                </div>
+                <div class="flex-1 px-6 py-4 bg-white flex items-center justify-center md:justify-start">
+                    <span class="text-lg font-medium text-slate-700">004 臺灣銀行潮州分行</span>
+                </div>
+            </div>
+            
+            <!-- Name row -->
+            <div class="flex flex-col md:flex-row border-b border-[#e5eaff]">
+                <div class="md:w-32 bg-white flex items-center justify-center md:justify-center px-6 py-4 md:border-r border-[#e5eaff]">
+                    <span class="text-xl font-bold text-slate-700 tracking-[0.2em]">戶名</span>
+                </div>
+                <div class="flex-1 px-6 py-4 bg-white flex items-center justify-center md:justify-start">
+                    <span class="text-lg md:text-xl font-medium text-slate-700">115年屏東縣議員擬參選人潘炩禕政治獻金專戶</span>
+                </div>
+            </div>
+
+            <!-- Account row -->
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-32 bg-white flex items-center justify-center md:justify-center px-6 py-4 md:border-r border-[#e5eaff]">
+                    <span class="text-xl font-bold text-slate-700 tracking-[0.2em]">帳號</span>
+                </div>
+                <div class="flex-1 px-4 py-4 md:px-6 bg-white flex items-center justify-center md:justify-start">
+                    <div class="flex border border-[#7f85d2] rounded-md overflow-hidden bg-white max-w-full overflow-x-auto">
+                        <?php 
+                        $accountStr = '088004769454';
+                        for($i=0; $i<strlen($accountStr); $i++): 
+                        ?>
+                        <div class="w-8 h-10 md:w-10 md:h-12 flex items-center justify-center text-xl md:text-2xl font-medium text-slate-700 <?= $i < strlen($accountStr)-1 ? 'border-r border-[#7f85d2]/40' : '' ?> shrink-0">
+                            <?= $accountStr[$i] ?>
+                        </div>
+                        <?php endfor; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="bg-[#8cc63f] hover:bg-[#7db435] text-white text-xl md:text-2xl font-bold py-4 md:py-5 px-10 md:px-16 rounded-full shadow-[0_8px_20px_-5px_rgba(140,198,63,0.5)] transition-transform hover:-translate-y-1 tracking-widest flex items-center gap-3">
+            小額捐款 支持炩禕
+        </button>
+    </div>
+</section>
+
 <!-- Footer（與 demo 一致） -->
 <footer class="bg-white border-t border-[#E0F2ED] py-12 md:py-20 mt-12 md:mt-20">
     <div class="max-w-7xl mx-auto px-6 md:px-4 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16">
