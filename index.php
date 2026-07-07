@@ -137,15 +137,54 @@ ob_start();
 
         <!-- 數據看板（從 DB 動態產生） -->
         <p class="text-center text-slate-400 text-[10px] mb-3 font-bold tracking-[0.1em]"><i data-lucide="filter" class="inline w-3 h-3 mr-1 -mt-0.5 opacity-60"></i>點擊分類查看專屬服務日記</p>
-        <section class="mb-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 text-center">
-            <?php foreach ($categoryStats as $c): ?>
-            <button onclick="filterCategory('<?= htmlspecialchars($c['name']) ?>')" id="cat-btn-<?= htmlspecialchars(md5($c['name'])) ?>" class="category-btn bg-white py-4 px-2 rounded-[1.5rem] border border-slate-50 shadow-sm flex flex-col items-center justify-center group hover:border-[#66C2A5]/50 transition-all cursor-pointer w-full">
-                <i data-lucide="folder" class="brand-green mb-2 w-5 h-5 opacity-70"></i>
-                <h3 class="text-sm font-black text-slate-800 leading-tight">
-                    <span class="text-xl"><?= (int)$c['post_count'] ?></span> 
-                    <span class="text-xs text-slate-500 font-bold ml-0.5">個</span><br>
-                    <span class="text-xs"><?= htmlspecialchars($c['name']) ?></span>
-                </h3>
+        <section class="mb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5 text-left">
+            <?php 
+            $maxPosts = 0;
+            foreach ($categoryStats as $c) {
+                if ((int)$c['post_count'] > $maxPosts) $maxPosts = (int)$c['post_count'];
+            }
+            $maxPosts = max(1, $maxPosts); // prevent division by zero
+
+            foreach ($categoryStats as $c): 
+                $count = (int)$c['post_count'];
+                $percent = round(($count / $maxPosts) * 100);
+                
+                // 預設顏色主題
+                $theme = !empty($c['color_theme']) ? htmlspecialchars($c['color_theme']) : 'brand-green';
+                
+                // 定義顏色映射
+                $colorMap = [
+                    'brand-green' => ['bg' => 'bg-[#E0F2ED]', 'text' => 'text-[#4A937F]', 'bar' => 'bg-[#66C2A5]', 'hover' => 'hover:border-[#66C2A5]/50 hover:shadow-[#66C2A5]/10'],
+                    'blue' => ['bg' => 'bg-blue-50', 'text' => 'text-blue-600', 'bar' => 'bg-blue-400', 'hover' => 'hover:border-blue-300 hover:shadow-blue-500/10'],
+                    'red' => ['bg' => 'bg-red-50', 'text' => 'text-red-500', 'bar' => 'bg-red-400', 'hover' => 'hover:border-red-300 hover:shadow-red-500/10'],
+                    'yellow' => ['bg' => 'bg-yellow-50', 'text' => 'text-yellow-600', 'bar' => 'bg-yellow-400', 'hover' => 'hover:border-yellow-300 hover:shadow-yellow-500/10'],
+                    'purple' => ['bg' => 'bg-purple-50', 'text' => 'text-purple-600', 'bar' => 'bg-purple-400', 'hover' => 'hover:border-purple-300 hover:shadow-purple-500/10'],
+                    'orange' => ['bg' => 'bg-orange-50', 'text' => 'text-orange-500', 'bar' => 'bg-orange-400', 'hover' => 'hover:border-orange-300 hover:shadow-orange-500/10'],
+                    'pink' => ['bg' => 'bg-pink-50', 'text' => 'text-pink-500', 'bar' => 'bg-pink-400', 'hover' => 'hover:border-pink-300 hover:shadow-pink-500/10'],
+                    'slate' => ['bg' => 'bg-slate-50', 'text' => 'text-slate-600', 'bar' => 'bg-slate-400', 'hover' => 'hover:border-slate-300 hover:shadow-slate-500/10'],
+                ];
+                $colors = $colorMap[$theme] ?? $colorMap['brand-green'];
+            ?>
+            <button onclick="filterCategory('<?= htmlspecialchars($c['name']) ?>')" id="cat-btn-<?= htmlspecialchars(md5($c['name'])) ?>" class="category-btn relative bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between group <?= $colors['hover'] ?> transition-all duration-300 cursor-pointer overflow-hidden text-left h-full min-h-[110px] transform hover:-translate-y-1">
+                
+                <div class="flex justify-between items-start w-full mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl <?= $colors['bg'] ?> flex items-center justify-center shrink-0">
+                            <i data-lucide="folder" class="<?= $colors['text'] ?> w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-[15px] font-bold text-slate-700 leading-tight text-left">
+                            <?= htmlspecialchars($c['name']) ?>
+                        </h3>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <span class="text-3xl font-black <?= $colors['text'] ?> tracking-tighter counter-value" data-target="<?= $count ?>">0</span>
+                        <span class="text-xs text-slate-400 font-medium ml-1">篇</span>
+                    </div>
+                </div>
+
+                <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden mt-auto">
+                    <div class="h-full <?= $colors['bar'] ?> rounded-full transition-all duration-1000 ease-out progress-bar" style="width: 0%" data-width="<?= $percent ?>%"></div>
+                </div>
             </button>
             <?php endforeach; ?>
         </section>
@@ -511,6 +550,41 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.querySelectorAll('.post-item').length > 0) {
         renderPosts();
     }
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Animate progress bar
+                const bar = entry.target.querySelector('.progress-bar');
+                if (bar) {
+                    bar.style.width = bar.getAttribute('data-width');
+                }
+                
+                // Animate counter
+                const counter = entry.target.querySelector('.counter-value');
+                if (counter && !counter.classList.contains('counted')) {
+                    counter.classList.add('counted');
+                    const target = parseInt(counter.getAttribute('data-target'));
+                    let current = 0;
+                    const increment = Math.max(1, target / 30); // speed
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            counter.innerText = target;
+                            clearInterval(timer);
+                        } else {
+                            counter.innerText = Math.ceil(current);
+                        }
+                    }, 30);
+                }
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.category-btn').forEach(btn => {
+        observer.observe(btn);
+    });
 });
 </script>
 
