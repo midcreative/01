@@ -12,9 +12,27 @@ use App\Models\Town;
 use App\Models\Whitepaper;
 use App\Layout\FrontLayout;
 
-$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+
+// ─── Routing ───────────────────────────────────────────────────────────────
 if (strpos($uri, '/admin') === 0) {
     require __DIR__ . '/admin/index.php';
+    exit;
+}
+
+if ($uri === '/sitemap.xml') {
+    require __DIR__ . '/sitemap.php';
+    exit;
+}
+
+if (rtrim($uri, '/') === '/volunteer') {
+    require __DIR__ . '/volunteer.php';
+    exit;
+}
+
+if (preg_match('#^/post/([^/]+)/?$#', $uri, $matches)) {
+    $_GET['slug'] = $matches[1];
+    require __DIR__ . '/post/index.php';
     exit;
 }
 

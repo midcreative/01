@@ -23,7 +23,7 @@
 ## 主要頁面
 
 - 首頁（鄉鎮足跡、行動白皮書、連署實證站）: https://panlingyi.tw/
-- 志工招募: https://panlingyi.tw/volunteer.php
+- 志工招募: https://panlingyi.tw/volunteer
 
 ## 聯絡資訊
 

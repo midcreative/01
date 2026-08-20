@@ -31,6 +31,7 @@ final class FrontLayout
         $title       = htmlspecialchars($seo['title'] ?? '潘炩禕 服務日記');
         $description = htmlspecialchars($seo['description'] ?? '屏東縣議員第三選區在地服務紀錄站');
         $canonical   = htmlspecialchars($seo['canonical'] ?? $appUrl . '/');
+        $ogImage     = !empty($seo['image']) ? htmlspecialchars($seo['image']) : '';
         $schemaJson  = self::buildSchema($seo['schema_type'] ?? 'WebPage', $seo['schema_data'] ?? [], $canonical, $appUrl);
         ?>
 <!DOCTYPE html>
@@ -53,6 +54,9 @@ final class FrontLayout
     <meta property="og:type"        content="website">
     <meta property="og:locale"      content="zh_TW">
     <meta property="og:site_name"   content="潘炩禕 服務日記">
+    <?php if ($ogImage): ?>
+    <meta property="og:image"       content="<?= $ogImage ?>">
+    <?php endif; ?>
 
     <!-- === JSON-LD 結構化資料（GEO 核心，AI 爬蟲直讀） ============== -->
     <script type="application/ld+json"><?= $schemaJson ?></script>
@@ -97,10 +101,11 @@ final class FrontLayout
         $base = ['@context' => 'https://schema.org'];
 
         $schema = match ($type) {
-            'Article' => array_merge($base, [
+            'Article' => array_filter(array_merge($base, [
                 '@type'         => 'Article',
                 'headline'      => $data['title'] ?? '',
                 'description'   => $data['excerpt'] ?? '',
+                'image'         => !empty($data['cover_image']) ? ($appUrl . $data['cover_image']) : null,
                 'datePublished' => $data['published_at'] ?? '',
                 'dateModified'  => $data['updated_at'] ?? $data['published_at'] ?? '',
                 'url'           => $canonical,
@@ -109,7 +114,7 @@ final class FrontLayout
                 'publisher'     => ['@type' => 'Organization', 'name' => '潘炩禕服務辦公室'],
                 'keywords'      => '屏東,' . ($data['town'] ?? '') . ',' . ($data['category'] ?? ''),
                 'articleSection'=> $data['category'] ?? '',
-            ]),
+            ])),
 
             'VolunteerWork' => array_merge($base, [
                 '@type'               => 'VolunteerWork',

@@ -114,6 +114,7 @@ FrontLayout::render($content, [
     'title'       => htmlspecialchars($post['title']) . ' | 潘炩禕 服務日記',
     'description' => mb_substr($post['excerpt'] ?? $post['title'], 0, 155),
     'canonical'   => $canonical,
+    'image'       => !empty($post['cover_image']) ? ($appUrl . $post['cover_image']) : null,
     'schema_type' => 'Article',
     'schema_data' => $post,
 ]);
