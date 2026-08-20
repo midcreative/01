@@ -38,6 +38,7 @@ final class FrontLayout
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="google-site-verification" content="xVIoix1VL8Ns4_ba6dtCL2mOqcmq9CL9PHHz3gYEnWY">
 
     <!-- === GEO / SEO Meta ============================================ -->
     <title><?= $title ?></title>
