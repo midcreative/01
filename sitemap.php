@@ -40,11 +40,14 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
     <priority>0.8</priority>
   </url>
 
-  <?php foreach ($posts as $post): ?>
+  <?php foreach ($posts as $post): 
+    $rawDate = $post['updated_at'] ?? $post['created_at'] ?? null;
+    $lastMod = $rawDate ? date('Y-m-d', strtotime((string)$rawDate)) : date('Y-m-d');
+  ?>
   <!-- 服務日記：<?= htmlspecialchars($post['slug']) ?> -->
   <url>
     <loc><?= $appUrl ?>/post/<?= htmlspecialchars($post['slug']) ?></loc>
-    <lastmod><?= htmlspecialchars($post['updated_at'] ?? $post['created_at'] ?? date('Y-m-d')) ?></lastmod>
+    <lastmod><?= $lastMod ?></lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
