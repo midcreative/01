@@ -118,18 +118,19 @@ ob_start();
     if (preg_match('#^https?://[^/]+(/uploads/.*)$#', $heroBg, $m)) {
         $heroBg = $m[1];
     }
+    if ($heroBg === '') {
+        $heroBg = '/assets/hero_banner.png';
+    }
     $heroBlur = ($settingsMap['HERO_BG_BLUR'] ?? '0') === '1';
     $heroTag = $settingsMap['HERO_TAG'] ?? '屏東縣議員第三選區參選人';
     $heroShowText = ($settingsMap['HERO_SHOW_TEXT'] ?? '1') !== '0';
     $heroDisplayStyle = $heroShowText ? '' : 'display: none;';
     ?>
-    <header class="mb-8 md:mb-14 relative rounded-[2.5rem] overflow-hidden border border-[#E0F2ED]/80 shadow-[0_10px_35px_-15px_rgba(102,194,165,0.2)] bg-gradient-to-br from-[#F4F8F7] via-white to-[#E0F2ED]/40 min-h-[160px] md:min-h-[220px] flex flex-col items-center justify-center p-6 md:p-12 text-center">
-        <?php if ($heroBg !== ''): ?>
+    <header class="mb-8 md:mb-14 relative rounded-[2.5rem] overflow-hidden border border-[#E0F2ED]/80 shadow-[0_10px_35px_-15px_rgba(102,194,165,0.2)] bg-gradient-to-br from-[#F4F8F7] via-white to-[#E0F2ED]/40 min-h-[180px] sm:min-h-[240px] md:min-h-[300px] flex flex-col items-center justify-center p-6 md:p-12 text-center">
         <img src="<?= htmlspecialchars($heroBg) ?>"
              alt="Hero Background"
-             onerror="this.style.display='none';"
+             onerror="if (this.src.indexOf('/assets/hero_banner.png') === -1) { this.src = '/assets/hero_banner.png'; } else { this.style.display = 'none'; }"
              class="absolute inset-0 w-full h-full object-cover z-0">
-        <?php endif; ?>
 
         <div id="hero-overlay" class="absolute inset-0 z-0 <?= $heroBlur ? 'backdrop-blur-md bg-white/40' : '' ?>" style="<?= $heroDisplayStyle ?>"></div>
         
