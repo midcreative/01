@@ -121,7 +121,7 @@ function openApplyModal(jobId, title) {
 $content = ob_get_clean() ?? '';
 FrontLayout::render($content, [
     'title'       => '志工招募 | 潘炩禕 服務日記',
-    'description' => '加入潘炩禕服務辦公室志工行列，深耕屏東第三選區潮州鎮、內埔鄉、萬巒鄉、枋寮鄉。',
+    'description' => '加入潘炩禕服務辦公室志工行列，深耕屏東第三選區潮州鎮、萬巒鄉、內埔鄉、竹田鄉、新埤鄉、枋寮鄉。',
     'canonical'   => $appUrl . '/volunteer',
     'schema_type' => 'VolunteerWork',
     'schema_data' => ['title' => '志工招募', 'description' => '加入潘炩禕服務辦公室志工行列'],

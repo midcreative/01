@@ -44,7 +44,7 @@ final class FrontLayout
     <!-- === GEO / SEO Meta ============================================ -->
     <title><?= $title ?></title>
     <meta name="description" content="<?= $description ?>">
-    <meta name="keywords" content="潘炩禕, 屏東縣議員, 第三選區, 潮州鎮, 內埔鄉, 萬巒鄉, 枋寮鄉, 服務日記">
+    <meta name="keywords" content="潘炩禕, 屏東縣議員, 第三選區, 潮州鎮, 萬巒鄉, 內埔鄉, 竹田鄉, 新埤鄉, 枋寮鄉, 服務日記">
     <link rel="canonical" href="<?= $canonical ?>">
 
     <!-- === Open Graph ================================================ -->
@@ -133,8 +133,10 @@ final class FrontLayout
                 'url'         => $appUrl . '/',
                 'areaServed'  => [
                     ['@type' => 'City', 'name' => '潮州鎮', 'addressRegion' => '屏東縣'],
-                    ['@type' => 'City', 'name' => '內埔鄉', 'addressRegion' => '屏東縣'],
                     ['@type' => 'City', 'name' => '萬巒鄉', 'addressRegion' => '屏東縣'],
+                    ['@type' => 'City', 'name' => '內埔鄉', 'addressRegion' => '屏東縣'],
+                    ['@type' => 'City', 'name' => '竹田鄉', 'addressRegion' => '屏東縣'],
+                    ['@type' => 'City', 'name' => '新埤鄉', 'addressRegion' => '屏東縣'],
                     ['@type' => 'City', 'name' => '枋寮鄉', 'addressRegion' => '屏東縣'],
                 ],
                 'knowsAbout' => ['農漁牧產銷', '長照政策', '親子教育', '勞工權益', '心靈關懷'],

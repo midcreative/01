@@ -480,7 +480,7 @@ ob_start();
         <div class="md:col-span-3">
             <h4 class="font-black text-xs mb-6 text-slate-800 tracking-[0.1em] uppercase">服務範圍</h4>
             <div class="grid grid-cols-2 gap-y-3 text-slate-400 text-xs font-bold">
-                <?php foreach (['潮州鎮','內埔鄉','萬巒鄉','枋寮鄉'] as $t): ?>
+                <?php foreach (['潮州鎮','萬巒鄉','內埔鄉','竹田鄉','新埤鄉','枋寮鄉'] as $t): ?>
                 <span><?= $t ?></span>
                 <?php endforeach; ?>
             </div>
@@ -667,7 +667,7 @@ document.addEventListener("DOMContentLoaded", () => {
 $content = ob_get_clean() ?? '';
 FrontLayout::render($content, [
     'title'       => '潘炩禕 服務日記 | 屏東第三選區在地服務與民意互動站',
-    'description' => '屏東縣議員第三選區參選人潘炩禕，深耕潮州鎮、內埔鄉、萬巒鄉、枋寮鄉。紀錄農漁產銷、長照、親子教育等在地服務案例。',
+    'description' => '屏東縣議員第三選區參選人潘炩禕，深耕潮州鎮、萬巒鄉、內埔鄉、竹田鄉、新埤鄉、枋寮鄉。紀錄農漁產銷、長照、親子教育等在地服務案例。',
     'canonical'   => ($_ENV['APP_URL'] ?? 'https://panlingyi.tw') . '/',
     'schema_type' => 'Person',
     'schema_data' => [],
