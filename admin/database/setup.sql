@@ -194,20 +194,32 @@ CREATE TABLE IF NOT EXISTS `candidate_keywords` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `candidate_id` INT UNSIGNED NOT NULL,
   `keyword` VARCHAR(255) NOT NULL,
-  `type` ENUM('positive', 'negative', 'neutral') NOT NULL DEFAULT 'neutral',
+  `type` ENUM('alias', 'issue', 'negative') NOT NULL DEFAULT 'alias',
   `is_active` TINYINT(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`id`)
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_candidate_id` (`candidate_id`),
+  CONSTRAINT `fk_keyword_candidate` FOREIGN KEY (`candidate_id`) REFERENCES `candidates` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 14. Opinions
 CREATE TABLE IF NOT EXISTS `opinions` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `candidate_id` INT UNSIGNED NOT NULL,
-  `sentiment` ENUM('positive', 'neutral', 'negative') NOT NULL DEFAULT 'neutral',
-  `source_type` VARCHAR(100) NOT NULL,
+  `candidate_id` INT UNSIGNED,
+  `source_type` ENUM('news', 'ptt', 'dcard', 'fb', 'other') NOT NULL DEFAULT 'other',
+  `source_name` VARCHAR(100),
+  `title` VARCHAR(500) NOT NULL,
+  `url` VARCHAR(1000) NOT NULL,
+  `content_excerpt` TEXT,
+  `sentiment` ENUM('positive', 'neutral', 'negative') DEFAULT 'neutral',
+  `confidence_score` DECIMAL(4,2),
   `published_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `title` VARCHAR(500),
-  `url` VARCHAR(1000),
-  PRIMARY KEY (`id`)
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_url` (`url`(255)),
+  KEY `idx_candidate_id` (`candidate_id`),
+  KEY `idx_published_at` (`published_at`),
+  KEY `idx_sentiment` (`sentiment`),
+  CONSTRAINT `fk_opinion_candidate` FOREIGN KEY (`candidate_id`) REFERENCES `candidates` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

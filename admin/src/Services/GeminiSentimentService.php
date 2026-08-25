@@ -7,11 +7,11 @@ namespace App\Services;
 class GeminiSentimentService
 {
     private string $apiKey;
-    private string $endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+    private string $endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
     public function __construct()
     {
-        $this->apiKey = $_ENV['GEMINI_API_KEY'] ?? '';
+        $this->apiKey = (string)($_ENV['GEMINI_API_KEY'] ?? '');
     }
 
     /**
@@ -20,9 +20,10 @@ class GeminiSentimentService
      */
     public function analyze(string $candidateName, string $title, string $content): string
     {
-        if (empty($this->apiKey)) {
+        if (trim($this->apiKey) === '') {
             return 'neutral';
         }
+
         $prompt = "請分析以下新聞標題與內容，判斷針對政治人物「{$candidateName}」的感情傾向。\n";
         $prompt .= "新聞標題：{$title}\n";
         $prompt .= "新聞內容摘要：{$content}\n\n";
@@ -43,12 +44,16 @@ class GeminiSentimentService
             ]
         ];
 
-        $ch = curl_init($this->endpoint . '?key=' . $this->apiKey);
+        $ch = curl_init($this->endpoint . '?key=' . urlencode($this->apiKey));
+        if ($ch === false) {
+            return 'neutral';
+        }
+
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10); // 避免長時間卡死報 500
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload, JSON_UNESCAPED_UNICODE));
+        curl_setopt($ch, CURLOPT_TIMEOUT, 8); // 避免長時間阻塞請求
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 4);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json'
         ]);
@@ -63,15 +68,15 @@ class GeminiSentimentService
             return 'neutral';
         }
 
-        $result = json_decode($response, true);
-        $text = $result['candidates'][0]['content']['parts'][0]['text'] ?? '';
+        $result = json_decode((string)$response, true);
+        $text = (string)($result['candidates'][0]['content']['parts'][0]['text'] ?? '');
         $text = strtolower(trim($text));
 
-        if (in_array($text, ['positive', 'negative', 'neutral'])) {
+        if (in_array($text, ['positive', 'negative', 'neutral'], true)) {
             return $text;
         }
 
-        // 防呆：如果 AI 還是囉唆回了一堆，找看看關鍵字
+        // 防呆：如果 AI 還是回覆了完整句子，尋找關鍵詞
         if (strpos($text, 'positive') !== false) return 'positive';
         if (strpos($text, 'negative') !== false) return 'negative';
         

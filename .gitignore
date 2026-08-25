@@ -1,7 +1,9 @@
 /admin/vendor/
 /admin/node_modules/
 /admin/.env
-/uploads/
+/uploads/*
+!/uploads/.gitkeep
+!/uploads/**/.gitkeep
 /.env
 /node_modules/
 /vendor/
@@ -10,3 +12,11 @@
 *.sqlite
 .vscode/
 .idea/
+*.tmp
+temp.txt
+dashboard.html
+login_error.html
+check_admin.php
+gen_ps.php
+test_*.php
+

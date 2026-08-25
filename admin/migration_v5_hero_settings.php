@@ -8,7 +8,12 @@ error_reporting(E_ALL);
 
 echo "Starting migration: Add Hero Settings...<br>";
 
-require_once __DIR__ . '/../vendor/autoload.php';
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require_once __DIR__ . '/../vendor/autoload.php';
+} elseif (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+}
+
 use Dotenv\Dotenv;
 use App\Config\Database;
 
@@ -19,15 +24,15 @@ try {
     $pdo = Database::getInstance();
     
     $defaults = [
-        'HERO_TAG' => '屏東�?��?�第三選?�?�選�?,
-        'HERO_HOME_TITLE_1' => '?��??�方?��?跳�?',
-        'HERO_HOME_TITLE_2' => '讓�??��?溫度延�???,
-        'HERO_ISSUES_TITLE_1' => '?�接?��??��?託�?�?,
-        'HERO_ISSUES_TITLE_2' => '設�??��?�??屏東??,
-        'HERO_FEEDBACK_TITLE_1' => '?��??��??��?志�?',
-        'HERO_FEEDBACK_TITLE_2' => '翻�?家�??�未來�?,
+        'HERO_TAG' => '屏東縣議員第三選區參選人',
+        'HERO_HOME_TITLE_1' => '聽見地方的心跳，',
+        'HERO_HOME_TITLE_2' => '讓服務的溫度延續。',
+        'HERO_ISSUES_TITLE_1' => '承接老朋友的託付，',
+        'HERO_ISSUES_TITLE_2' => '設計新一代的屏東。',
+        'HERO_FEEDBACK_TITLE_1' => '匯集集體的意志，',
+        'HERO_FEEDBACK_TITLE_2' => '翻轉家鄉的未來。',
         'HERO_CTA_SHOW' => '1',
-        'HERO_CTA_TEXT' => '?��???��實�?',
+        'HERO_CTA_TEXT' => '參與長照連署',
         'HERO_BG_IMAGE' => '',
     ];
 
@@ -39,7 +44,7 @@ try {
     $insertStmt = $pdo->prepare("INSERT INTO `settings` (`setting_key`, `setting_value`) VALUES (?, ?)");
 
     foreach ($defaults as $key => $val) {
-        if (!in_array($key, $existingKeys)) {
+        if (!in_array($key, $existingKeys, true)) {
             $insertStmt->execute([$key, $val]);
             echo "Added new setting: {$key}<br>";
         } else {

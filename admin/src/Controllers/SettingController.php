@@ -40,6 +40,9 @@ final class SettingController extends BaseController
         $allowedKeys = [
             'LINE_CHANNEL_ID', 'LINE_CHANNEL_SECRET',
             'HERO_TAG', 'HERO_BG_BLUR', 'HERO_SHOW_TEXT',
+            'HERO_HOME_TITLE_1', 'HERO_HOME_TITLE_2',
+            'HERO_ISSUES_TITLE_1', 'HERO_ISSUES_TITLE_2',
+            'HERO_FEEDBACK_TITLE_1', 'HERO_FEEDBACK_TITLE_2',
             'TOWN_TITLE', 'TOWN_SUBTITLE',
             'WHITEPAPER_TITLE', 'WHITEPAPER_SUBTITLE',
             'PETITION_TITLE', 'PETITION_SUBTITLE', 'PETITION_CTA_SHOW', 'PETITION_CTA_TEXT'

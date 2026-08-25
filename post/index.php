@@ -2,7 +2,11 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../vendor/autoload.php';
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require_once __DIR__ . '/../vendor/autoload.php';
+} elseif (file_exists(__DIR__ . '/../admin/vendor/autoload.php')) {
+    require_once __DIR__ . '/../admin/vendor/autoload.php';
+}
 
 use Dotenv\Dotenv;
 use App\Models\Post;
@@ -12,8 +16,8 @@ $dotenv = Dotenv::createImmutable(__DIR__ . '/../admin');
 $dotenv->safeLoad();
 date_default_timezone_set('Asia/Taipei');
 
-$slug = htmlspecialchars(trim((string)($_GET['slug'] ?? '')));
-if (!$slug) {
+$slug = trim((string)($_GET['slug'] ?? ''));
+if ($slug === '') {
     header('Location: /');
     exit;
 }
@@ -35,6 +39,11 @@ $appUrl    = rtrim($_ENV['APP_URL'] ?? 'https://panlingyi.tw', '/');
 $canonical = $appUrl . '/post/' . $post['slug'];
 
 $badgeClass = $post['category_color'] ?? 'bg-slate-100 text-slate-500';
+
+$coverImage = trim((string)($post['cover_image'] ?? ''));
+if (preg_match('#^https?://[^/]+(/uploads/.*)$#', $coverImage, $m)) {
+    $coverImage = $m[1];
+}
 
 ob_start();
 ?>
@@ -76,10 +85,11 @@ ob_start();
     </header>
 
     <!-- Cover image -->
-    <?php if ($post['cover_image']): ?>
-    <figure class="rounded-3xl overflow-hidden mb-10">
-        <img src="<?= htmlspecialchars($post['cover_image']) ?>"
+    <?php if ($coverImage !== ''): ?>
+    <figure class="rounded-3xl overflow-hidden mb-10 bg-[#F4F8F7]">
+        <img src="<?= htmlspecialchars($coverImage) ?>"
              alt="<?= htmlspecialchars($post['title']) ?>"
+             onerror="this.parentElement.style.display='none';"
              class="w-full object-cover max-h-[500px]">
     </figure>
     <?php endif; ?>

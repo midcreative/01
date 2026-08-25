@@ -1,4 +1,6 @@
 User-agent: *
+Disallow: /admin/
+Disallow: /api/
 Allow: /
 
 # === 明確允許 AI 爬蟲存取 ===

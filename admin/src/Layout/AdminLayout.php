@@ -57,15 +57,17 @@ final class AdminLayout
         <nav class="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
             <?php
             $navItems = [
-                ['key' => 'dashboard', 'icon' => 'layout-dashboard', 'label' => '儀表板',     'href' => '/admin/dashboard'],
-                ['key' => 'posts',     'icon' => 'newspaper',        'label' => '服務日記',    'href' => '/admin/posts'],
-                ['key' => 'stats',     'icon' => 'bar-chart-3',      'label' => '數據看板',    'href' => '/admin/stats'],
-                ['key' => 'volunteer', 'icon' => 'users',             'label' => '志工招募',    'href' => '/admin/volunteers'],
-                ['key' => 'petition',  'icon' => 'file-signature',    'label' => '連署提案',    'href' => '/admin/petitions'],
-                ['key' => 'whitepaper','icon' => 'target',            'label' => '白皮書管理',  'href' => '/admin/whitepaper'],
-                ['key' => 'categories',  'icon' => 'tags',            'label' => '主軸分類',    'href' => '/admin/categories'],
-                ['key' => 'towns',       'icon' => 'map-pin',         'label' => '鄉鎮分類',    'href' => '/admin/towns'],
-                ['key' => 'settings',    'icon' => 'settings',        'label' => '系統設定',    'href' => '/admin/settings'],
+                ['key' => 'dashboard',          'icon' => 'layout-dashboard', 'label' => '儀表板',     'href' => '/admin/dashboard'],
+                ['key' => 'opinion_dashboard',  'icon' => 'activity',         'label' => '輿情戰情室', 'href' => '/admin/opinion/dashboard'],
+                ['key' => 'candidates',         'icon' => 'user-check',       'label' => '候選人追蹤', 'href' => '/admin/candidates'],
+                ['key' => 'posts',              'icon' => 'newspaper',        'label' => '服務日記',   'href' => '/admin/posts'],
+                ['key' => 'stats',              'icon' => 'bar-chart-3',      'label' => '數據看板',   'href' => '/admin/stats'],
+                ['key' => 'volunteer',          'icon' => 'users',            'label' => '志工招募',   'href' => '/admin/volunteers'],
+                ['key' => 'petition',           'icon' => 'file-signature',   'label' => '連署提案',   'href' => '/admin/petitions'],
+                ['key' => 'whitepaper',         'icon' => 'target',           'label' => '白皮書管理', 'href' => '/admin/whitepaper'],
+                ['key' => 'categories',         'icon' => 'tags',             'label' => '主軸分類',   'href' => '/admin/categories'],
+                ['key' => 'towns',              'icon' => 'map-pin',          'label' => '鄉鎮分類',   'href' => '/admin/towns'],
+                ['key' => 'settings',           'icon' => 'settings',         'label' => '系統設定',   'href' => '/admin/settings'],
             ];
             foreach ($navItems as $item):
                 $isActive = $active === $item['key'] ? 'sidebar-item active' : 'sidebar-item text-slate-500 hover:bg-slate-50';

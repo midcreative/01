@@ -2,10 +2,18 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/vendor/autoload.php';
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+} elseif (file_exists(__DIR__ . '/admin/vendor/autoload.php')) {
+    require_once __DIR__ . '/admin/vendor/autoload.php';
+}
 use Dotenv\Dotenv;
 use App\Config\Database;
 use App\Layout\FrontLayout;
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 $dotenv = Dotenv::createImmutable(__DIR__ . '/admin');
 $dotenv->safeLoad();
@@ -37,7 +45,17 @@ ob_start();
     <header class="mb-10 text-center">
         <div class="inline-block bg-[#E0F2ED] px-3 py-1 rounded-full text-[#4A937F] text-[10px] font-black mb-4 tracking-[0.15em] uppercase">一起為屏東第三選區貢獻</div>
         <h1 class="text-3xl md:text-5xl font-serif font-black text-slate-900 mb-4 leading-tight">志工招募</h1>
-        <p class="text-slate-500 max-w-xl mx-auto text-sm md:text-base leading-relaxed">您的熱情和行動，是我們最大的支持。歡迎加入潘炩禕服務辦公室的志工行列，一起深耕屏東第三選區。</p>
+        <p class="text-slate-500 max-w-xl mx-auto text-sm md:text-base leading-relaxed mb-6">您的熱情和行動，是我們最大的支持。歡迎加入潘炩禕服務辦公室的志工行列，一起深耕屏東第三選區。</p>
+        
+        <?php if (isset($_SESSION['volunteer_flash'])): 
+            $flash = $_SESSION['volunteer_flash'];
+            unset($_SESSION['volunteer_flash']);
+        ?>
+        <div class="max-w-md mx-auto p-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 shadow-sm <?= $flash['type'] === 'success' ? 'bg-[#E0F2ED] text-[#2D7A60] border border-[#66C2A5]/30' : 'bg-red-50 text-red-600 border border-red-200' ?>">
+            <i data-lucide="<?= $flash['type'] === 'success' ? 'check-circle' : 'alert-circle' ?>" class="w-5 h-5 flex-shrink-0"></i>
+            <span><?= htmlspecialchars($flash['message']) ?></span>
+        </div>
+        <?php endif; ?>
     </header>
 
     <?php if (empty($jobs)): ?>
@@ -78,7 +96,7 @@ ob_start();
     <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl">
         <h2 class="font-black text-xl text-slate-800 mb-2" id="modal-title">報名志工</h2>
         <p class="text-slate-400 text-sm mb-6">填寫基本資料，我們將盡快與您聯繫。</p>
-        <form method="POST" action="/volunteer-apply.php" class="space-y-4">
+        <form method="POST" action="/volunteer-apply.php" class="space-y-4" onsubmit="const btn = this.querySelector('button[type=submit]'); btn.disabled = true; btn.innerHTML = '<span class=\'animate-spin inline-block mr-1\'>⏳</span> 送出中...';">
             <input type="hidden" name="job_id" id="modal-job-id">
             <div>
                 <label class="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">姓名 *</label>

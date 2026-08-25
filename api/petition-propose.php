@@ -1,33 +1,26 @@
 <?php
+
 declare(strict_types=1);
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
-use Dotenv\Dotenv;
-use App\Controllers\FrontPetitionController;
-use App\Services\LineLoginService;
-
-// Load .env since we need LINE_CHANNEL_ID
- = Dotenv::createImmutable(__DIR__ . '/../admin');
-->safeLoad();
-
-// 接收前端表單資料
- = trim((string)(['title'] ?? ''));
- = trim((string)(['description'] ?? ''));
- = trim((string)(['category'] ?? '綜合建議'));
- = trim((string)(['town'] ?? '全部鄉鎮'));
-
-if ( === '' ||  === '' ||  === '') {
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-    ['petition_message'] = '請填寫標題與說明必填欄位。';
-    ['petition_message_type'] = 'error';
-    header('Location: /#petitions');
-    exit;
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require_once __DIR__ . '/../vendor/autoload.php';
+} elseif (file_exists(__DIR__ . '/../admin/vendor/autoload.php')) {
+    require_once __DIR__ . '/../admin/vendor/autoload.php';
 }
 
- = new LineLoginService();
- = new FrontPetitionController();
+use Dotenv\Dotenv;
 
-->redirectForProposeLogin(, , , );
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../admin');
+$dotenv->safeLoad();
+
+// 目前連署實證站由辦公室統一發布提案，民眾實名連署附議。
+// 若未來開放民眾線上自提提案，可在此擴充提案審核流程。
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$_SESSION['petition_message'] = '感謝您的建議！如欲發起連署提案，歡迎透過線上陳情或與服務處聯繫。';
+$_SESSION['petition_message_type'] = 'success';
+
+header('Location: /#petitions');
+exit;
