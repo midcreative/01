@@ -3,11 +3,7 @@
 declare(strict_types=1);
 
 // ─── Bootstrap ─────────────────────────────────────────────────────────────
-if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
-    require_once __DIR__ . '/../vendor/autoload.php';
-} elseif (file_exists(__DIR__ . '/vendor/autoload.php')) {
-    require_once __DIR__ . '/vendor/autoload.php';
-}
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Dotenv\Dotenv;
 use App\Core\Auth;
@@ -22,8 +18,6 @@ use App\Controllers\WhitepaperController;
 use App\Controllers\CategoryController;
 use App\Controllers\TownController;
 use App\Controllers\SettingController;
-use App\Controllers\OpinionMonitorController;
-use App\Controllers\CandidateController;
 
 // Load .env
 $dotenv = Dotenv::createImmutable(__DIR__);
@@ -44,19 +38,6 @@ $router->get( '/admin/logout',  fn() => (new AuthController($auth))->logout());
 
 // Dashboard
 $router->get('/admin/dashboard', fn() => (new DashboardController($auth))->index());
-
-// Opinion Monitor (輿情戰情室)
-$router->get( '/admin/opinion/dashboard', fn() => (new OpinionMonitorController($auth))->dashboard());
-$router->get( '/admin/opinion/list',      fn() => (new OpinionMonitorController($auth))->list());
-$router->post('/admin/opinion/fetch',     fn() => (new OpinionMonitorController($auth))->fetch());
-
-// Candidates & Keywords (候選人與關鍵字)
-$router->get( '/admin/candidates',                     fn() => (new CandidateController($auth))->index());
-$router->post('/admin/candidates/store',               fn() => (new CandidateController($auth))->store());
-$router->post('/admin/candidates/{id}',                fn(string $id) => (new CandidateController($auth))->update((int)$id));
-$router->post('/admin/candidates/{id}/delete',         fn(string $id) => (new CandidateController($auth))->delete((int)$id));
-$router->post('/admin/candidates/keyword/store',       fn() => (new CandidateController($auth))->storeKeyword());
-$router->post('/admin/candidates/keyword/{id}/delete', fn(string $id) => (new CandidateController($auth))->deleteKeyword((int)$id));
 
 // Posts (服務日記)
 $router->get( '/admin/posts',           fn() => (new PostController($auth))->index());
@@ -117,5 +98,5 @@ try {
     $router->dispatch();
 } catch (\Throwable $e) {
     http_response_code(500);
-    echo "<h1>CRASH LOG:</h1><pre>" . htmlspecialchars((string)$e) . "</pre>";
+    echo "<h1>CRASH LOG:</h1><pre>" . (string)$e . "</pre>";
 }

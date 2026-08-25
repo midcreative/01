@@ -1,6 +1,6 @@
-<?php
-$term = '"許馨勻"';
-$rawQuery = $term . ' AND "屏東"';
+﻿<?php
+$term = '\"許馨勻\"';
+$rawQuery = $term . ' AND \"屏東\"';
 $query = urlencode($rawQuery);
 $rssUrl = "https://news.google.com/rss/search?q={$query}&hl=zh-TW&gl=TW&ceid=TW:zh-Hant";
 echo "URL: $rssUrl\n";
@@ -17,13 +17,11 @@ if (!$xmlString) {
 } else {
     echo "Length: " . strlen($xmlString) . "\n";
     $xml = @simplexml_load_string($xmlString);
-    if (!$xml) { 
-        echo "Invalid XML\n"; 
-    } else {
-        $count = isset($xml->channel->item) ? count($xml->channel->item) : 0;
-        echo "Items count: " . $count . "\n";
-        if ($count > 0) {
-            echo "First title: " . (string)$xml->channel->item[0]->title . "\n";
+    if (!$xml) { echo "Invalid XML\n"; }
+    else {
+        echo "Items count: " . count($xml->channel->item) . "\n";
+        if (count($xml->channel->item) > 0) {
+            echo "First title: " . {$xml->channel->item[0]->title} . "\n";
         }
     }
 }

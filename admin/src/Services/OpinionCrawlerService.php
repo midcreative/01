@@ -21,10 +21,8 @@ class OpinionCrawlerService
      * Run the Google News RSS crawler for all active candidates and their keywords.
      * @param int $limitPerCandidate Maximum number of new articles to process per candidate per run.
      */
-    public function runCrawler(int $limitPerCandidate = 3): int
+    public function runCrawler(int $limitPerCandidate = 10): int
     {
-        @set_time_limit(120);
-
         $candidates = Candidate::all();
         $pdo = Database::getInstance();
         $newRecordsCount = 0;
@@ -35,7 +33,7 @@ class OpinionCrawlerService
             // 如果沒有額外設定關鍵字，至少用本名去搜尋
             $searchTerms = [$candidate['name']];
             foreach ($keywords as $kw) {
-                if (!empty($kw['is_active'])) {
+                if ($kw['is_active']) {
                     $searchTerms[] = $kw['keyword'];
                 }
             }
@@ -47,8 +45,16 @@ class OpinionCrawlerService
             
             $rssUrl = "https://news.google.com/rss/search?q={$query}&hl=zh-TW&gl=TW&ceid=TW:zh-Hant";
             
-            // 使用 cURL 抓取 RSS，具備超時與偽裝 User-Agent 防阻擋
-            $xmlString = $this->fetchUrl($rssUrl);
+            // 加入 Context 設定以帶上 User-Agent，避免被 Google News 阻擋
+            $options = [
+                'http' => [
+                    'method' => 'GET',
+                    'header' => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36\r\n"
+                ]
+            ];
+            $context = stream_context_create($options);
+
+            $xmlString = @file_get_contents($rssUrl, false, $context);
             if (!$xmlString) {
                 error_log("Failed to fetch RSS for candidate ID: " . $candidate['id']);
                 continue;
@@ -66,20 +72,14 @@ class OpinionCrawlerService
                     break;
                 }
                 
-                $title = trim((string)$item->title);
-                $link = trim((string)$item->link);
-                $pubDateRaw = (string)$item->pubDate;
-                $pubTimestamp = strtotime($pubDateRaw);
-                $pubDate = $pubTimestamp ? date('Y-m-d H:i:s', $pubTimestamp) : date('Y-m-d H:i:s');
+                $title = (string)$item->title;
+                $link = (string)$item->link;
+                $pubDate = date('Y-m-d H:i:s', strtotime((string)$item->pubDate));
                 $sourceName = (string)($item->source ?? 'Google News');
                 
                 // 去除可能夾帶在 RSS 裡的 HTML tag 作為摘要
                 $description = strip_tags((string)$item->description);
-                $excerpt = mb_substr(trim($description), 0, 300);
-
-                if ($link === '' || $title === '') {
-                    continue;
-                }
+                $excerpt = mb_substr($description, 0, 300);
 
                 // Check if this URL is already in our DB
                 $stmt = $pdo->prepare('SELECT id FROM opinions WHERE url = ?');
@@ -98,7 +98,7 @@ class OpinionCrawlerService
                 ');
                 
                 $insertStmt->execute([
-                    (int)$candidate['id'],
+                    $candidate['id'],
                     'news',
                     $sourceName,
                     $title,
@@ -114,31 +114,5 @@ class OpinionCrawlerService
         }
 
         return $newRecordsCount;
-    }
-
-    private function fetchUrl(string $url): ?string
-    {
-        $ch = curl_init($url);
-        if ($ch === false) {
-            return null;
-        }
-
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 8);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 4);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 相容某些主機缺少 CA 憑證鏈
-
-        $response = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($httpCode >= 200 && $httpCode < 300 && is_string($response)) {
-            return $response;
-        }
-
-        return null;
     }
 }

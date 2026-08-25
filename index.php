@@ -2,11 +2,8 @@
 
 declare(strict_types=1);
 
-if (file_exists(__DIR__ . '/vendor/autoload.php')) {
-    require_once __DIR__ . '/vendor/autoload.php';
-} elseif (file_exists(__DIR__ . '/admin/vendor/autoload.php')) {
-    require_once __DIR__ . '/admin/vendor/autoload.php';
-}
+// ─── Bootstrap ─────────────────────────────────────────────────────────────
+require_once __DIR__ . '/vendor/autoload.php';
 
 use Dotenv\Dotenv;
 use App\Config\Database;
@@ -114,33 +111,19 @@ ob_start();
 <!-- 主內容 -->
 <main class="max-w-7xl mx-auto px-4 py-8 md:py-12 text-left">
     <?php
-    $heroBg = trim((string)($settingsMap['HERO_BG_IMAGE'] ?? ''));
-    if (preg_match('#^https?://[^/]+(/uploads/.*)$#', $heroBg, $m)) {
-        $heroBg = $m[1];
-    }
-    if ($heroBg === '') {
-        $heroBg = '/assets/hero_banner.png';
-    }
-    $heroBlur = ($settingsMap['HERO_BG_BLUR'] ?? '0') === '1';
+    $heroBg = $settingsMap['HERO_BG_IMAGE'] ?? '';
+    $heroBlur = ($settingsMap['HERO_BG_BLUR'] ?? '0') === '1' ? 'backdrop-filter: blur(10px); background-color: rgba(255,255,255,0.3);' : '';
+    $bgStyle = $heroBg ? "background-image: url('" . htmlspecialchars($heroBg) . "'); background-size: cover; background-position: center;" : "";
+    $headerClass = $heroBg ? "mb-8 md:mb-16 relative rounded-[2.5rem] overflow-hidden shadow-[0_10px_40px_-15px_rgba(102,194,165,0.3)] border border-[#E0F2ED]/50 aspect-[1/1] sm:aspect-[16/9] md:aspect-[2.5/1] flex flex-col items-center justify-center p-6" : "mb-8 md:mb-16 text-center";
     $heroTag = $settingsMap['HERO_TAG'] ?? '屏東縣議員第三選區參選人';
-    $heroShowText = ($settingsMap['HERO_SHOW_TEXT'] ?? '1') !== '0';
-    $heroDisplayStyle = $heroShowText ? '' : 'display: none;';
     ?>
-    <header class="mb-8 md:mb-14 relative rounded-[2.5rem] overflow-hidden border border-[#E0F2ED]/80 shadow-[0_10px_35px_-15px_rgba(102,194,165,0.2)] bg-gradient-to-br from-[#F4F8F7] via-white to-[#E0F2ED]/40 min-h-[180px] sm:min-h-[240px] md:min-h-[300px] flex flex-col items-center justify-center p-6 md:p-12 text-center">
-        <img src="<?= htmlspecialchars($heroBg) ?>"
-             alt="Hero Background"
-             onerror="if (this.src.indexOf('/assets/hero_banner.png') === -1) { this.src = '/assets/hero_banner.png'; } else { this.style.display = 'none'; }"
-             class="absolute inset-0 w-full h-full object-cover z-0">
-
-        <div id="hero-overlay" class="absolute inset-0 z-0 <?= $heroBlur ? 'backdrop-blur-md bg-white/40' : '' ?>" style="<?= $heroDisplayStyle ?>"></div>
-        
-        <div id="hero-text-content" class="relative z-10 flex flex-col items-center text-center" style="<?= $heroDisplayStyle ?>">
+    <header class="<?= $headerClass ?>" style="<?= $bgStyle ?>">
+        <div id="hero-overlay" class="absolute inset-0" style="<?= $heroBlur ?>"></div>
+        <div id="hero-text-content" class="relative z-10 flex flex-col items-center text-center">
             <?php if ($heroTag): ?>
-            <div class="inline-block bg-[#E0F2ED] px-3.5 py-1 rounded-full text-[#4A937F] text-[9px] md:text-[10px] font-black mb-3 md:mb-4 tracking-[0.15em] uppercase shadow-sm">
-                <?= htmlspecialchars($heroTag) ?>
-            </div>
+            <div class="inline-block bg-[#E0F2ED] px-3 py-1 rounded-full text-[#4A937F] text-[9px] md:text-[10px] font-black mb-4 tracking-[0.15em] uppercase"><?= htmlspecialchars($heroTag) ?></div>
             <?php endif; ?>
-            <h1 id="main-title" class="text-3xl md:text-5xl lg:text-6xl font-serif font-black text-slate-900 mb-2 md:mb-4 leading-tight px-2">
+            <h1 id="main-title" class="text-3xl md:text-6xl font-serif font-black text-slate-900 mb-6 md:mb-8 leading-tight px-2">
                 聽見地方的心跳，<br class="hidden md:block">
                 <span class="brand-green font-sans italic opacity-90">讓服務的溫度延續。</span>
             </h1>
@@ -230,41 +213,24 @@ ob_start();
 
             <?php foreach ($posts as $post):
                 $badgeClass = $post['category_color'] ?? 'bg-slate-50 text-slate-500 border-slate-100';
-                $rawCover = trim((string)($post['cover_image'] ?? ''));
-                // 自動清除舊 demo 網域名稱，轉為相對根目錄路徑
-                if (preg_match('#^https?://[^/]+(/uploads/.*)$#', $rawCover, $m)) {
-                    $rawCover = $m[1];
-                }
             ?>
             <article class="bg-white rounded-[2.5rem] overflow-hidden border border-slate-50 shadow-sm hover:shadow-lg transition-all flex flex-col group post-item"
                      data-town="<?= htmlspecialchars($post['town_name'] ?? '') ?>"
                      data-category="<?= htmlspecialchars($post['category_name'] ?? '') ?>">
-                <div class="aspect-[16/9] bg-[#F4F8F7] overflow-hidden relative">
-                    <?php if ($rawCover !== ''): ?>
-                    <img src="<?= htmlspecialchars($rawCover) ?>"
+                <?php if ($post['cover_image']): ?>
+                <div class="aspect-[16/9] bg-[#F4F8F7] overflow-hidden">
+                    <img src="<?= htmlspecialchars($post['cover_image']) ?>"
                          alt="<?= htmlspecialchars($post['title']) ?>"
                          loading="lazy"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                    <div class="w-full h-full relative p-6 flex items-center justify-center bg-gradient-to-br from-[#E0F2ED]/60 to-[#F4F8F7]" style="display: none;">
-                        <div class="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-[#66C2A5] mb-2 opacity-80">
-                            <i data-lucide="newspaper" class="w-6 h-6"></i>
-                        </div>
-                        <span class="absolute top-4 left-4 px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.1em] border <?= $badgeClass ?>">
-                            <?= htmlspecialchars($post['category_name'] ?? '服務日記') ?>
-                        </span>
-                    </div>
-                    <?php else: ?>
-                    <div class="w-full h-full relative p-6 flex flex-col items-center justify-center bg-gradient-to-br from-[#E0F2ED]/60 to-[#F4F8F7]">
-                        <div class="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-[#66C2A5] mb-2 opacity-80">
-                            <i data-lucide="newspaper" class="w-6 h-6"></i>
-                        </div>
-                        <span class="absolute top-4 left-4 px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.1em] border <?= $badgeClass ?>">
-                            <?= htmlspecialchars($post['category_name'] ?? '服務日記') ?>
-                        </span>
-                    </div>
-                    <?php endif; ?>
                 </div>
+                <?php else: ?>
+                <div class="aspect-[16/9] md:aspect-[16/10] bg-[#F4F8F7] relative p-6 flex items-center justify-center">
+                    <span class="absolute top-4 left-4 px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.1em] border <?= $badgeClass ?>">
+                        <?= htmlspecialchars($post['category_name'] ?? '未分類') ?>
+                    </span>
+                </div>
+                <?php endif; ?>
                 <div class="p-6 md:p-10 flex flex-col flex-grow">
                     <div class="flex items-center gap-2 text-[9px] font-black text-slate-400 mb-3 tracking-wider">
                         <i data-lucide="map-pin" class="brand-green w-3 h-3"></i>
@@ -535,12 +501,6 @@ function switchView(name) {
     const title = document.getElementById('main-title');
     const isMobile = window.innerWidth < 768;
     const breakTag = isMobile ? '' : '<br class="hidden md:block">';
-
-    const showText = heroSettings.HERO_SHOW_TEXT !== '0';
-    const textContent = document.getElementById('hero-text-content');
-    const heroOverlay = document.getElementById('hero-overlay');
-    if(textContent) textContent.style.display = showText ? 'flex' : 'none';
-    if(heroOverlay) heroOverlay.style.display = showText ? 'block' : 'none';
 
     let t1 = '', t2 = '';
     if(name === 'home') {

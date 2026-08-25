@@ -33,13 +33,14 @@ class CandidateController extends BaseController
     public function store(): void
     {
         $this->auth->requireAuth();
+        $this->requirePost();
         
-        $name = trim((string)($_POST['name'] ?? ''));
-        $party = trim((string)($_POST['party'] ?? ''));
-        $type = (string)($_POST['type'] ?? 'other');
+        $name = trim($_POST['name'] ?? '');
+        $party = trim($_POST['party'] ?? '');
+        $type = $_POST['type'] ?? 'other';
         
         if ($name === '') {
-            $this->redirect('/admin/candidates');
+            $this->redirect('/admin/candidates', 'error', '候選人姓名不得為空');
         }
 
         Candidate::create([
@@ -48,19 +49,21 @@ class CandidateController extends BaseController
             'type' => $type
         ]);
 
-        $this->redirect('/admin/candidates');
+        $this->redirect('/admin/candidates', 'success', '候選人建立成功');
     }
 
-    public function update(int $id): void
+    public function update(array $params): void
     {
         $this->auth->requireAuth();
+        $this->requirePost();
         
-        $name = trim((string)($_POST['name'] ?? ''));
-        $party = trim((string)($_POST['party'] ?? ''));
-        $type = (string)($_POST['type'] ?? 'other');
+        $id = (int)$params['id'];
+        $name = trim($_POST['name'] ?? '');
+        $party = trim($_POST['party'] ?? '');
+        $type = $_POST['type'] ?? 'other';
         
         if ($name === '') {
-            $this->redirect('/admin/candidates');
+            $this->redirect('/admin/candidates', 'error', '候選人姓名不得為空');
         }
 
         Candidate::update($id, [
@@ -69,16 +72,18 @@ class CandidateController extends BaseController
             'type' => $type
         ]);
 
-        $this->redirect('/admin/candidates');
+        $this->redirect('/admin/candidates', 'success', '候選人更新成功');
     }
 
-    public function delete(int $id): void
+    public function delete(array $params): void
     {
         $this->auth->requireAuth();
+        $this->requirePost();
         
+        $id = (int)$params['id'];
         Candidate::delete($id);
 
-        $this->redirect('/admin/candidates');
+        $this->redirect('/admin/candidates', 'success', '候選人已刪除');
     }
 
     // --- Keywords ---
@@ -86,13 +91,14 @@ class CandidateController extends BaseController
     public function storeKeyword(): void
     {
         $this->auth->requireAuth();
+        $this->requirePost();
         
         $candidateId = (int)($_POST['candidate_id'] ?? 0);
-        $keyword = trim((string)($_POST['keyword'] ?? ''));
-        $type = (string)($_POST['type'] ?? 'alias');
+        $keyword = trim($_POST['keyword'] ?? '');
+        $type = $_POST['type'] ?? 'alias';
         
         if ($candidateId === 0 || $keyword === '') {
-            $this->redirect('/admin/candidates');
+            $this->redirect('/admin/candidates', 'error', '資料不完整');
         }
 
         CandidateKeyword::create([
@@ -102,15 +108,17 @@ class CandidateController extends BaseController
             'is_active' => 1
         ]);
 
-        $this->redirect('/admin/candidates');
+        $this->redirect('/admin/candidates', 'success', '關鍵字新增成功');
     }
 
-    public function deleteKeyword(int $id): void
+    public function deleteKeyword(array $params): void
     {
         $this->auth->requireAuth();
+        $this->requirePost();
         
+        $id = (int)$params['id'];
         CandidateKeyword::delete($id);
 
-        $this->redirect('/admin/candidates');
+        $this->redirect('/admin/candidates', 'success', '關鍵字已刪除');
     }
 }
