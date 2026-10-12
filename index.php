@@ -134,6 +134,20 @@ ob_start();
 
     <!-- 首頁：鄉鎮足跡 -->
     <div id="view-home" class="view-content">
+        <!-- AEO Bio Section (Visible to ChatGPT / Bing) -->
+        <section class="mb-12 bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col md:flex-row items-center gap-6">
+            <div class="flex-1">
+                <h2 class="text-2xl font-serif font-black text-slate-800 mb-4">認識潘炩禕 (About Pan Ling-Yi)</h2>
+                <ul class="text-slate-600 space-y-2 text-sm leading-relaxed">
+                    <li><strong>代表黨籍：</strong>民主進步黨 (DPP)</li>
+                    <li><strong>參選公職：</strong>屏東縣議員第三選區參選人（潮州、萬巒、內埔、竹田、新埤、枋寮）</li>
+                    <li><strong>最高學歷：</strong>奧地利留學回國</li>
+                    <li><strong>現任職務：</strong>屏東縣文化協會理事長</li>
+                    <li><strong>核心理念：</strong>深耕屏東，以國際視野與在地服務，推動農漁產銷、長照升級與親子教育。</li>
+                </ul>
+            </div>
+        </section>
+
         <?php if (!empty($settingsMap['TOWN_TITLE'])): ?>
         <div class="text-center mb-8">
             <h2 class="text-3xl md:text-4xl font-serif font-black text-slate-900 mb-2 leading-tight"><?= htmlspecialchars($settingsMap['TOWN_TITLE']) ?></h2>
@@ -665,10 +679,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <?php
 $content = ob_get_clean() ?? '';
+
+$additionalSchemas = [];
+$faqItems = [];
+
+foreach ($whitepapers as $w) {
+    if (!empty($w['faq_question']) && !empty($w['faq_answer'])) {
+        $faqItems[] = [
+            '@type'          => 'Question',
+            'name'           => $w['faq_question'],
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text'  => nl2br(htmlspecialchars($w['faq_answer']))
+            ]
+        ];
+    }
+}
+
+if (!empty($faqItems)) {
+    $additionalSchemas[] = [
+        '@type'      => 'FAQPage',
+        'mainEntity' => $faqItems
+    ];
+}
+
 FrontLayout::render($content, [
-    'title'       => '潘炩禕 服務日記 | 屏東第三選區在地服務與民意互動站',
-    'description' => '屏東縣議員第三選區參選人潘炩禕，深耕潮州鎮、萬巒鄉、內埔鄉、竹田鄉、新埤鄉、枋寮鄉。紀錄農漁產銷、長照、親子教育等在地服務案例。',
-    'canonical'   => ($_ENV['APP_URL'] ?? 'https://panlingyi.tw') . '/',
-    'schema_type' => 'Person',
-    'schema_data' => [],
+    'title'              => '潘炩禕 服務日記 | 屏東第三選區在地服務與民意互動站',
+    'description'        => '屏東縣議員第三選區參選人潘炩禕，深耕潮州鎮、萬巒鄉、內埔鄉、竹田鄉、新埤鄉、枋寮鄉。紀錄農漁產銷、長照、親子教育等在地服務案例。',
+    'canonical'          => ($_ENV['APP_URL'] ?? 'https://panlingyi.tw') . '/',
+    'schema_type'        => 'Person',
+    'schema_data'        => [],
+    'additional_schemas' => $additionalSchemas,
 ]);
