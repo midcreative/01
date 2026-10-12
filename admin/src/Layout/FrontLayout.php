@@ -22,7 +22,8 @@ final class FrontLayout
      *   description: string,
      *   canonical?: string,
      *   schema_type?: string,
-     *   schema_data?: array<string,mixed>
+     *   schema_data?: array<string,mixed>,
+     *   additional_schemas?: array<array<string,mixed>>
      * } $seo SEO / GEO metadata
      */
     public static function render(string $content, array $seo): void
@@ -33,6 +34,15 @@ final class FrontLayout
         $canonical   = htmlspecialchars($seo['canonical'] ?? $appUrl . '/');
         $ogImage     = !empty($seo['image']) ? htmlspecialchars($seo['image']) : '';
         $schemaJson  = self::buildSchema($seo['schema_type'] ?? 'WebPage', $seo['schema_data'] ?? [], $canonical, $appUrl);
+        $additionalSchemasHtml = '';
+        if (!empty($seo['additional_schemas']) && is_array($seo['additional_schemas'])) {
+            foreach ($seo['additional_schemas'] as $addSchema) {
+                if (isset($addSchema['@type'])) { // if it's already a full raw schema
+                    $json = json_encode(array_merge(['@context' => 'https://schema.org'], $addSchema), JSON_UNESCAPED_UNICODE);
+                    $additionalSchemasHtml .= "\n    <script type=\"application/ld+json\">{$json}</script>";
+                }
+            }
+        }
         ?>
 <!DOCTYPE html>
 <html lang="zh-TW">
@@ -59,7 +69,7 @@ final class FrontLayout
     <?php endif; ?>
 
     <!-- === JSON-LD 結構化資料（GEO 核心，AI 爬蟲直讀） ============== -->
-    <script type="application/ld+json"><?= $schemaJson ?></script>
+    <script type="application/ld+json"><?= $schemaJson ?></script><?= $additionalSchemasHtml ?>
 
     <!-- === 字型 ====================================================== -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -131,6 +141,10 @@ final class FrontLayout
                 'jobTitle'    => '屏東縣議員第三選區參選人',
                 'description' => '屏東縣議員第三選區參選人，深耕農漁牧產銷、長照數位升級、親子教育、勞資共榮與身心靈關懷五大服務主軸。',
                 'url'         => $appUrl . '/',
+                'memberOf'    => [
+                    '@type' => 'Organization',
+                    'name'  => '民主進步黨'
+                ],
                 'areaServed'  => [
                     ['@type' => 'City', 'name' => '潮州鎮', 'addressRegion' => '屏東縣'],
                     ['@type' => 'City', 'name' => '萬巒鄉', 'addressRegion' => '屏東縣'],
