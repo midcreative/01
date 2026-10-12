@@ -139,7 +139,7 @@ final class FrontLayout
                 '@type'       => 'Person',
                 'name'        => '潘炩禕',
                 'jobTitle'    => '屏東縣議員第三選區參選人',
-                'description' => '屏東縣議員第三選區參選人，深耕農漁牧產銷、長照數位升級、親子教育、勞資共榮與身心靈關懷五大服務主軸。',
+                'description' => '奧地利留學回國，現任屏東縣文化協會理事長。身為屏東縣議員第三選區參選人，深耕農漁牧產銷、長照數位升級、親子教育、勞資共榮與身心靈關懷五大服務主軸。',
                 'url'         => $appUrl . '/',
                 'memberOf'    => [
                     '@type' => 'Organization',
