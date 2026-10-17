@@ -104,7 +104,26 @@ ob_start();
             <a href="tel:081234567" class="bg-brand-green text-white px-4 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-black shadow-lg shadow-[#66C2A5]/30 flex items-center gap-2 hover:bg-[#57A891] transition-all">
                 <i data-lucide="message-square" class="w-3.5 h-3.5 md:w-4 md:h-4"></i> <span class="hidden xs:inline">線上陳情</span>
             </a>
+            <button type="button" onclick="toggleMobileMenu()" aria-label="開啟選單" class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-[#E0F2ED]/50 hover:brand-green transition-all">
+                <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+            </button>
         </div>
+    </div>
+
+    <!-- 手機版下拉選單 -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-white/98 backdrop-blur-md border-t border-[#E0F2ED] px-4 py-3 space-y-1 shadow-lg">
+        <button type="button" onclick="switchView('home'); closeMobileMenu()" id="mobile-nav-home" class="mobile-nav-btn flex items-center gap-3 w-full text-left font-bold px-3 py-3 rounded-xl brand-green bg-[#E0F2ED]/40 transition-all">
+            <i data-lucide="map-pin" class="w-4 h-4"></i> 鄉鎮足跡
+        </button>
+        <button type="button" onclick="switchView('issues'); closeMobileMenu()" id="mobile-nav-issues" class="mobile-nav-btn flex items-center gap-3 w-full text-left font-bold px-3 py-3 rounded-xl text-slate-600 hover:bg-slate-50 transition-all">
+            <i data-lucide="book-open" class="w-4 h-4"></i> 行動白皮書
+        </button>
+        <button type="button" onclick="switchView('feedback'); closeMobileMenu()" id="mobile-nav-feedback" class="mobile-nav-btn flex items-center gap-3 w-full text-left font-bold px-3 py-3 rounded-xl text-slate-600 hover:bg-slate-50 transition-all">
+            <i data-lucide="shield-check" class="w-4 h-4"></i> 連署實證站
+        </button>
+        <a href="/volunteer.php" class="mobile-nav-btn flex items-center gap-3 w-full text-left font-bold px-3 py-3 rounded-xl text-slate-600 hover:bg-slate-50 transition-all">
+            <i data-lucide="users" class="w-4 h-4"></i> 志工招募
+        </a>
     </div>
 </nav>
 
@@ -482,7 +501,7 @@ ob_start();
 </section>
 
 <!-- Footer（與 demo 一致） -->
-<footer class="bg-white border-t border-[#E0F2ED] py-12 md:py-20 mt-12 md:mt-20">
+<footer class="bg-white border-t border-[#E0F2ED] pt-12 pb-28 md:pt-20 md:pb-28 lg:py-20 mt-12 md:mt-20">
     <div class="max-w-7xl mx-auto px-6 md:px-4 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16">
         <div class="md:col-span-5">
             <div class="flex items-center gap-2 mb-6">
@@ -505,11 +524,57 @@ ob_start();
     </div>
 </footer>
 
+<!-- 手機版底部固定導航列 (Bottom App Bar) -->
+<nav id="mobile-bottom-nav" aria-label="行動版底部導航" class="lg:hidden fixed bottom-0 inset-x-0 z-50 bg-white/95 backdrop-blur-md border-t border-[#E0F2ED] shadow-[0_-4px_20px_-5px_rgba(102,194,165,0.18)]">
+    <div class="grid grid-cols-4 max-w-md mx-auto px-2 py-2">
+        <button type="button" onclick="switchView('home')" id="bottom-nav-home" class="bottom-nav-btn flex flex-col items-center justify-center gap-1 py-1.5 rounded-xl brand-green font-black transition-all">
+            <i data-lucide="map-pin" class="w-5 h-5"></i>
+            <span class="text-[11px] leading-none">鄉鎮足跡</span>
+        </button>
+        <button type="button" onclick="switchView('issues')" id="bottom-nav-issues" class="bottom-nav-btn flex flex-col items-center justify-center gap-1 py-1.5 rounded-xl text-slate-400 font-bold hover:brand-green transition-all">
+            <i data-lucide="book-open" class="w-5 h-5"></i>
+            <span class="text-[11px] leading-none">行動白皮書</span>
+        </button>
+        <button type="button" onclick="switchView('feedback')" id="bottom-nav-feedback" class="bottom-nav-btn flex flex-col items-center justify-center gap-1 py-1.5 rounded-xl text-slate-400 font-bold hover:brand-green transition-all">
+            <i data-lucide="shield-check" class="w-5 h-5"></i>
+            <span class="text-[11px] leading-none">連署實證站</span>
+        </button>
+        <a href="/volunteer.php" class="bottom-nav-btn flex flex-col items-center justify-center gap-1 py-1.5 rounded-xl text-slate-400 font-bold hover:brand-green transition-all">
+            <i data-lucide="users" class="w-5 h-5"></i>
+            <span class="text-[11px] leading-none">志工招募</span>
+        </a>
+    </div>
+</nav>
+
 <script>
     const heroSettings = <?= json_encode($settingsMap) ?>;
 </script>
 <style>.hidden-view { display: none; }</style>
 <script>
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const icon = document.getElementById('menu-icon');
+    if (!menu) return;
+    const isHidden = menu.classList.contains('hidden');
+    menu.classList.toggle('hidden');
+    if (icon) {
+        icon.setAttribute('data-lucide', isHidden ? 'x' : 'menu');
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+}
+
+function closeMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const icon = document.getElementById('menu-icon');
+    if (menu && !menu.classList.contains('hidden')) {
+        menu.classList.add('hidden');
+        if (icon) {
+            icon.setAttribute('data-lucide', 'menu');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+    }
+}
+
 function switchView(name) {
     document.querySelectorAll('.view-content').forEach(v => v.classList.add('hidden-view'));
     document.getElementById('view-' + name)?.classList.remove('hidden-view');
@@ -544,15 +609,37 @@ function switchView(name) {
         title.innerHTML = `${t1}${breakTag}<span class="brand-green font-sans italic opacity-90">${t2}</span>`;
     }
 
+    // 同步桌面頂部選單狀態
     document.querySelectorAll('.nav-btn').forEach(b => {
         b.classList.remove('brand-green','border-b-2','border-brand-green','pb-1');
         b.classList.add('text-slate-500');
     });
-    
     const btn = document.getElementById('nav-' + name);
     if (btn) { 
         btn.classList.remove('text-slate-500');
         btn.classList.add('brand-green','border-b-2','border-brand-green','pb-1'); 
+    }
+
+    // 同步手機下拉選單狀態
+    document.querySelectorAll('.mobile-nav-btn').forEach(b => {
+        b.classList.remove('brand-green', 'bg-[#E0F2ED]/40');
+        b.classList.add('text-slate-600');
+    });
+    const mobileBtn = document.getElementById('mobile-nav-' + name);
+    if (mobileBtn) {
+        mobileBtn.classList.remove('text-slate-600');
+        mobileBtn.classList.add('brand-green', 'bg-[#E0F2ED]/40');
+    }
+
+    // 同步手機底部固定導航列狀態
+    document.querySelectorAll('.bottom-nav-btn').forEach(b => {
+        b.classList.remove('brand-green', 'font-black');
+        b.classList.add('text-slate-400', 'font-bold');
+    });
+    const bottomBtn = document.getElementById('bottom-nav-' + name);
+    if (bottomBtn) {
+        bottomBtn.classList.remove('text-slate-400', 'font-bold');
+        bottomBtn.classList.add('brand-green', 'font-black');
     }
     
     window.scrollTo({top: 0, behavior: 'smooth'});
