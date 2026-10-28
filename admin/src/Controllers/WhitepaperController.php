@@ -144,6 +144,8 @@ final class WhitepaperController extends BaseController
             'theme_color'   => $this->postString('theme_color', 'text-[#66C2A5]'),
             'description'   => $this->postString('description'),
             'bullet_points' => $_POST['bullet_points'] ?? '', // Expecting clean text with line breaks
+            'faq_question'  => $_POST['faq_question'] ?? '',
+            'faq_answer'    => $_POST['faq_answer'] ?? '',
             'sort_order'    => $this->postInt('sort_order', 0),
             'is_active'     => isset($_POST['is_active']) ? 1 : 0,
         ];
@@ -215,6 +217,18 @@ final class WhitepaperController extends BaseController
                     <textarea name="bullet_points" rows="5"
                               class="w-full px-4 py-3 rounded-2xl border border-slate-100 bg-white text-slate-800 focus:outline-none focus:border-[#66C2A5] resize-none"
                               placeholder="建置區域型冷鏈中心&#10;打造屏東優選直銷品牌..."><?= htmlspecialchars($pillar['bullet_points'] ?? '') ?></textarea>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">AI 搜尋引擎優化 (AEO) - 問題</label>
+                    <textarea name="faq_question" rows="2"
+                              class="w-full px-4 py-3 rounded-2xl border border-slate-100 bg-white text-slate-800 focus:outline-none focus:border-[#66C2A5] resize-none"
+                              placeholder="例如：潘炩禕針對屏東的農業發展有什麼政見？"><?= htmlspecialchars($pillar['faq_question'] ?? '') ?></textarea>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">AI 搜尋引擎優化 (AEO) - 答案</label>
+                    <textarea name="faq_answer" rows="4"
+                              class="w-full px-4 py-3 rounded-2xl border border-slate-100 bg-white text-slate-800 focus:outline-none focus:border-[#66C2A5] resize-none"
+                              placeholder="例如：潘炩禕的核心願景是..."><?= htmlspecialchars($pillar['faq_answer'] ?? '') ?></textarea>
                 </div>
             </div>
 

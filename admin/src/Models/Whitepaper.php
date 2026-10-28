@@ -39,8 +39,8 @@ final class Whitepaper
     {
         $pdo  = Database::getInstance();
         $stmt = $pdo->prepare(
-            'INSERT INTO whitepaper_pillars (title, subtitle, category_tag, icon_name, theme_color, description, bullet_points, sort_order, is_active)
-             VALUES (:title, :subtitle, :category_tag, :icon_name, :theme_color, :description, :bullet_points, :sort_order, :is_active)'
+            'INSERT INTO whitepaper_pillars (title, subtitle, category_tag, icon_name, theme_color, description, bullet_points, faq_question, faq_answer, sort_order, is_active)
+             VALUES (:title, :subtitle, :category_tag, :icon_name, :theme_color, :description, :bullet_points, :faq_question, :faq_answer, :sort_order, :is_active)'
         );
         $stmt->execute(self::sanitize($data));
         return (int) $pdo->lastInsertId();
@@ -53,7 +53,7 @@ final class Whitepaper
         $stmt = $pdo->prepare(
             'UPDATE whitepaper_pillars SET title=:title, subtitle=:subtitle, category_tag=:category_tag,
              icon_name=:icon_name, theme_color=:theme_color, description=:description,
-             bullet_points=:bullet_points, sort_order=:sort_order, is_active=:is_active
+             bullet_points=:bullet_points, faq_question=:faq_question, faq_answer=:faq_answer, sort_order=:sort_order, is_active=:is_active
              WHERE id = :id'
         );
         $stmt->execute(array_merge(self::sanitize($data), ['id' => $id]));
@@ -98,6 +98,8 @@ final class Whitepaper
             'theme_color'   => trim((string) ($data['theme_color'] ?? 'brand-green')),
             'description'   => trim((string) ($data['description'] ?? '')),
             'bullet_points' => trim((string) ($data['bullet_points'] ?? '')), // Expected to be JSON encoded string or multiline text
+            'faq_question'  => trim((string) ($data['faq_question'] ?? '')),
+            'faq_answer'    => trim((string) ($data['faq_answer'] ?? '')),
             'sort_order'    => (int) ($data['sort_order'] ?? 0),
             'is_active'     => (int) ($data['is_active'] ?? 1),
         ];

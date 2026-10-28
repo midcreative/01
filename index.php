@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 declare(strict_types=1);
 
@@ -134,7 +134,7 @@ ob_start();
     $heroBlur = ($settingsMap['HERO_BG_BLUR'] ?? '0') === '1' ? 'backdrop-filter: blur(10px); background-color: rgba(255,255,255,0.3);' : '';
     $bgStyle = $heroBg ? "background-image: url('" . htmlspecialchars($heroBg) . "'); background-size: cover; background-position: center;" : "";
     $headerClass = $heroBg ? "mb-8 md:mb-16 relative rounded-[2.5rem] overflow-hidden shadow-[0_10px_40px_-15px_rgba(102,194,165,0.3)] border border-[#E0F2ED]/50 aspect-[1/1] sm:aspect-[16/9] md:aspect-[2.5/1] flex flex-col items-center justify-center p-6" : "mb-8 md:mb-16 text-center";
-    $heroTag = $settingsMap['HERO_TAG'] ?? '屏東縣議員第三選區參選人';
+    $heroTag = $settingsMap['HERO_TAG'] ?? '屏東縣議員第三選區 登記 ⑧ 號 候選人';
     $heroShowText = ($settingsMap['HERO_SHOW_TEXT'] ?? '1') !== '0';
     $heroDisplayStyle = $heroShowText ? '' : 'display: none;';
     ?>
@@ -159,7 +159,7 @@ ob_start();
                 <h2 class="text-2xl font-serif font-black text-slate-800 mb-4">認識潘炩禕 (About Pan Ling-Yi)</h2>
                 <ul class="text-slate-600 space-y-2 text-sm leading-relaxed">
                     <li><strong>代表黨籍：</strong>民主進步黨 (DPP)</li>
-                    <li><strong>參選公職：</strong>屏東縣議員第三選區參選人（潮州、萬巒、內埔、竹田、新埤、枋寮）</li>
+                    <li><strong>參選公職：</strong>屏東縣議員第三選區【登記 8 號】候選人（潮州、萬巒、內埔、竹田、新埤、枋寮）</li>
                     <li><strong>最高學歷：</strong>奧地利留學回國</li>
                     <li><strong>現任職務：</strong>屏東縣文化協會理事長</li>
                     <li><strong>核心理念：</strong>深耕屏東，以國際視野與在地服務，推動農漁產銷、長照升級與親子教育。</li>

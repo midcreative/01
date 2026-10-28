@@ -116,6 +116,8 @@ CREATE TABLE IF NOT EXISTS `whitepaper_pillars` (
   `theme_color`   VARCHAR(50)    NOT NULL,
   `description`   TEXT           NOT NULL,
   `bullet_points` TEXT           NOT NULL,
+  `faq_question`  TEXT           NULL,
+  `faq_answer`    TEXT           NULL,
   `sort_order`    INT            NOT NULL DEFAULT 0,
   `is_active`     TINYINT(1)     NOT NULL DEFAULT 1,
   `created_at`    DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP,
