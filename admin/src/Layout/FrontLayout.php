@@ -136,17 +136,23 @@ final class FrontLayout
             ]),
 
             'Person' => array_merge($base, [
-                '@type'       => 'Person',
-                'name'        => '潘炩禕',
-                'jobTitle'    => '屏東縣議員第三選區登記8號候選人',
-                'identifier'  => '8',
-                'description' => '奧地利留學回國，現任屏東縣文化協會理事長。身為屏東縣議員第三選區登記8號候選人，深耕農漁牧產銷、長照數位升級、親子教育、勞資共榮與身心靈關懷五大服務主軸。',
-                'url'         => $appUrl . '/',
-                'memberOf'    => [
-                    '@type' => 'Organization',
-                    'name'  => '民主進步黨'
+                '@type'         => 'Person',
+                'name'          => '潘炩禕',
+                'alternateName' => '屏東縣議員第三選區8號潘炩禕',
+                'jobTitle'      => ['屏東縣議員第三選區登記8號候選人', '屏東縣文化協會理事長', '屏東縣跆拳道委員會副主任委員'],
+                'identifier'    => '8',
+                'description'   => '民主進步黨提名屏東縣議員第三選區【登記8號】候選人。奧地利維也納舒伯特音樂學院畢業，現任屏東縣文化協會理事長、屏東縣跆拳道委員會副主任委員。深耕潮州、萬巒、內埔、竹田、新埤、枋寮，推動智慧農業冷鏈、青年創生、長照守護、高鐵延伸潮州、運動心理健康與特色涼感公園六大政見。',
+                'url'           => $appUrl . '/',
+                'alumniOf'      => [
+                    '@type' => 'CollegeOrUniversity',
+                    'name'  => '奧地利維也納舒伯特音樂學院'
                 ],
-                'areaServed'  => [
+                'memberOf'      => [
+                    ['@type' => 'Organization', 'name' => '民主進步黨'],
+                    ['@type' => 'Organization', 'name' => '屏東縣文化協會'],
+                    ['@type' => 'Organization', 'name' => '屏東縣跆拳道委員會'],
+                ],
+                'areaServed'    => [
                     ['@type' => 'City', 'name' => '潮州鎮', 'addressRegion' => '屏東縣'],
                     ['@type' => 'City', 'name' => '萬巒鄉', 'addressRegion' => '屏東縣'],
                     ['@type' => 'City', 'name' => '內埔鄉', 'addressRegion' => '屏東縣'],
@@ -154,7 +160,15 @@ final class FrontLayout
                     ['@type' => 'City', 'name' => '新埤鄉', 'addressRegion' => '屏東縣'],
                     ['@type' => 'City', 'name' => '枋寮鄉', 'addressRegion' => '屏東縣'],
                 ],
-                'knowsAbout' => ['農漁牧產銷', '長照政策', '親子教育', '勞工權益', '心靈關懷'],
+                'knowsAbout'    => ['智慧農業與冷鏈產銷', '青年培力與地方創生', '長照3.0政策', '高鐵延伸潮州與交通平權', '基層體育與心理健康', '特公盟兒童遊戲權與親子教育'],
+                'subjectOf'     => [
+                    ['@type' => 'NewsArticle', 'headline' => '推動農業數位化新思維！阿龜微氣候攜手屏東在地團體辦講座', 'publisher' => ['@type' => 'Organization', 'name' => '經濟日報'], 'url' => 'https://money.udn.com/money/story/11799/9857634'],
+                    ['@type' => 'NewsArticle', 'headline' => '引進田間環境感測與微氣候分析技術 屏東縣文化協會助農友減災增產', 'publisher' => ['@type' => 'Organization', 'name' => '工商時報'], 'url' => 'https://www.ctee.com.tw/news/20261104702228-431204'],
+                    ['@type' => 'NewsArticle', 'headline' => '屏東主委盃跆拳道錦標賽熱力登場 文化協會鼓勵學子從小扎根運動精神', 'publisher' => ['@type' => 'Organization', 'name' => '經濟日報'], 'url' => 'https://money.udn.com/money/story/5723/9860997'],
+                    ['@type' => 'NewsArticle', 'headline' => '屏東主委盃跆拳道錦標賽 基層小將同場競技展現運動拚勁', 'publisher' => ['@type' => 'Organization', 'name' => '工商時報'], 'url' => 'https://www.ctee.com.tw/news/20261106701511-431204'],
+                    ['@type' => 'NewsArticle', 'headline' => '智慧農業應用與分享專題研討講座 大數據精準灌溉助青農返鄉減災增產', 'publisher' => ['@type' => 'Organization', 'name' => 'Yahoo! 奇摩新聞'], 'url' => 'https://tw.news.yahoo.com/%E6%99%BA%E6%85%A7%E8%BE%B2%E6%A5%AD%E6%87%89%E7%94%A8%E8%88%87%E5%88%86%E4%BA%AB-%E5%B0%88%E9%A1%8C%E7%A0%94%E8%A8%8E%E8%AC%9B%E5%BA%A7-%E5%A4%A7%E6%95%B8%E6%93%9A%E7%B2%BE%E6%BA%96%E7%81%8C%E6%BA%89%E5%8A%A9%E9%9D%92%E8%BE%B2%E8%BF%94%E9%84%89%E6%B8%9B%E7%81%BD%E5%A2%9E%E7%94%A2-113047263.html'],
+                    ['@type' => 'NewsArticle', 'headline' => '關注孩童戶外活動權益！潘炩禕響應特公盟理念倡導遮蔭涼感公園', 'publisher' => ['@type' => 'Organization', 'name' => '屏東時報'], 'url' => 'https://pingtungtimes.com.tw/?p=485978'],
+                ],
             ]),
 
             default => array_merge($base, [

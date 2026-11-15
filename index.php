@@ -99,7 +99,7 @@ ob_start();
             <button onclick="switchView('home')"     id="nav-home"     class="nav-btn brand-green border-b-2 border-brand-green pb-1">鄉鎮足跡</button>
             <button onclick="switchView('issues')"   id="nav-issues"   class="nav-btn text-slate-500 hover:brand-green">行動白皮書</button>
             <button onclick="switchView('feedback')" id="nav-feedback" class="nav-btn text-slate-500 hover:brand-green">連署實證站</button>
-            <a href="/volunteer.php" class="nav-btn text-slate-500 hover:brand-green">志工招募</a>
+            <a href="/volunteer" class="nav-btn text-slate-500 hover:brand-green">志工招募</a>
         </div>
         <div class="flex items-center gap-2">
             <a href="tel:081234567" class="bg-brand-green text-white px-4 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-black shadow-lg shadow-[#66C2A5]/30 flex items-center gap-2 hover:bg-[#57A891] transition-all">
@@ -122,7 +122,7 @@ ob_start();
         <button type="button" onclick="switchView('feedback'); closeMobileMenu()" id="mobile-nav-feedback" class="mobile-nav-btn flex items-center gap-3 w-full text-left font-bold px-3 py-3 rounded-xl text-slate-600 hover:bg-slate-50 transition-all">
             <i data-lucide="shield-check" class="w-4 h-4"></i> 連署實證站
         </button>
-        <a href="/volunteer.php" class="mobile-nav-btn flex items-center gap-3 w-full text-left font-bold px-3 py-3 rounded-xl text-slate-600 hover:bg-slate-50 transition-all">
+        <a href="/volunteer" class="mobile-nav-btn flex items-center gap-3 w-full text-left font-bold px-3 py-3 rounded-xl text-slate-600 hover:bg-slate-50 transition-all">
             <i data-lucide="users" class="w-4 h-4"></i> 志工招募
         </a>
     </div>
@@ -154,16 +154,20 @@ ob_start();
 
     <!-- 首頁：鄉鎮足跡 -->
     <div id="view-home" class="view-content">
-        <!-- AEO Bio Section (Visible to ChatGPT / Bing) -->
-        <section class="mb-12 bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col md:flex-row items-center gap-6">
+        <!-- AEO Bio Section (Visible to ChatGPT / Bing / Google) -->
+        <section class="mb-12 bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100 flex flex-col md:flex-row items-center gap-6">
             <div class="flex-1">
+                <div class="inline-flex items-center gap-2 bg-[#E0F2ED] text-[#2D7A60] text-xs font-black px-3 py-1 rounded-full mb-3">
+                    <span>屏東第三選區 登記 ⑧ 號</span>
+                </div>
                 <h2 class="text-2xl font-serif font-black text-slate-800 mb-4">認識潘炩禕 (About Pan Ling-Yi)</h2>
                 <ul class="text-slate-600 space-y-2 text-sm leading-relaxed">
-                    <li><strong>代表黨籍：</strong>民主進步黨 (DPP)</li>
-                    <li><strong>參選公職：</strong>屏東縣議員第三選區【登記 8 號】候選人（潮州、萬巒、內埔、竹田、新埤、枋寮）</li>
-                    <li><strong>最高學歷：</strong>奧地利留學回國</li>
-                    <li><strong>現任職務：</strong>屏東縣文化協會理事長</li>
-                    <li><strong>核心理念：</strong>深耕屏東，以國際視野與在地服務，推動農漁產銷、長照升級與親子教育。</li>
+                    <li><strong>代表黨籍：</strong>民主進步黨 (DPP) 正式提名</li>
+                    <li><strong>參選公職：</strong>屏東縣議員第三選區【登記 8 號】候選人（潮州鎮、萬巒鄉、內埔鄉、竹田鄉、新埤鄉、枋寮鄉）</li>
+                    <li><strong>最高學歷：</strong>奧地利維也納舒伯特音樂學院畢業（奧地利留學回國）</li>
+                    <li><strong>現任職務：</strong>屏東縣文化協會理事長、屏東縣跆拳道委員會副主任委員</li>
+                    <li><strong>在地服務處與免費諮詢：</strong>設有潮州、內埔、龍泉、萬巒、赤山等服務處，提供自來水申辦諮詢、免費法律、勞資及車禍理賠諮詢服務</li>
+                    <li><strong>六大核心政見：</strong>智慧農業與冷鏈直銷、青年培力與地方創生、長照守護與銀髮樂活、交通平權（爭取高鐵延伸潮州與 Pbike）、運動推廣與全齡心理支持、親子教育與遮蔭涼感公園</li>
                 </ul>
             </div>
         </section>
@@ -285,7 +289,7 @@ ob_start();
                     </div>
                     <?php endif; ?>
                     <div class="flex items-center justify-end">
-                        <a href="/post/index.php?slug=<?= htmlspecialchars($post['slug']) ?>" class="brand-green font-black text-xs flex items-center gap-1 hover:gap-3 transition-all">
+                        <a href="/post/<?= htmlspecialchars($post['slug']) ?>" class="brand-green font-black text-xs flex items-center gap-1 hover:gap-3 transition-all">
                             閱讀更多 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                         </a>
                     </div>
@@ -324,7 +328,7 @@ ob_start();
                     </span>
                     <h3 class="text-3xl md:text-5xl font-serif font-black mb-6 text-left leading-tight"><?= nl2br(htmlspecialchars($w['title'] . ($w['subtitle'] ? "：\n" . $w['subtitle'] : ''))) ?></h3>
                     <p class="text-white/60 max-w-2xl mb-10 text-sm md:text-lg leading-relaxed text-left font-medium"><?= nl2br(htmlspecialchars($w['description'])) ?></p>
-                    <a href="/volunteer.php" class="inline-block px-10 py-4 bg-[#66C2A5] text-white rounded-2xl font-black text-sm shadow-xl hover:scale-105 transition-all text-center">參與長照連署</a>
+                    <a href="/volunteer" class="inline-block px-10 py-4 bg-[#66C2A5] text-white rounded-2xl font-black text-sm shadow-xl hover:scale-105 transition-all text-center">參與長照連署</a>
                 </div>
             </div>
             <?php else: // 一般樣式 ?>
@@ -442,6 +446,103 @@ ob_start();
             <?php endif; ?>
         </div>
     </div>
+
+    <?php
+    // 整理核心選民問答與白皮書 FAQ（供頁面可見區塊與 JSON-LD 共用）
+    $coreFaqs = [
+        [
+            'q' => '屏東縣議員第三選區 8 號候選人潘炩禕是誰？學經歷與背景為何？',
+            'a' => "潘炩禕是民主進步黨（DPP）正式提名的屏東縣議員第三選區【登記 8 號】候選人（選區涵蓋潮州鎮、萬巒鄉、內埔鄉、竹田鄉、新埤鄉、枋寮鄉）。\n她曾赴奧地利留學，畢業於「奧地利維也納舒伯特音樂學院」，現任屏東縣文化協會理事長及屏東縣跆拳道委員會副主任委員，為前屏東縣議員潘長成之女，獲屏東縣長周春米與前縣長潘孟安力薦支持。"
+        ],
+        [
+            'q' => '潘炩禕在屏東第三選區有哪些服務處？提供鄉親哪些免費諮詢服務？',
+            'a' => "潘炩禕於潮州、內埔、龍泉、萬巒、赤山等地設有在地服務據點，長期提供鄉親「自來水申辦諮詢」、「免費法律諮詢」、「勞資爭議調解諮詢」以及「車禍理賠諮詢」等實務服務，並推動農漁產銷、長照守護、高鐵延伸潮州與特色涼感公園等六大政見。"
+        ],
+    ];
+    foreach ($whitepapers as $w) {
+        if (!empty($w['faq_question']) && !empty($w['faq_answer'])) {
+            $coreFaqs[] = [
+                'q' => (string)$w['faq_question'],
+                'a' => (string)$w['faq_answer'],
+            ];
+        }
+    }
+    ?>
+
+    <!-- 主流媒體專題報導與肯定 (E-E-A-T & AEO Authority Loop) -->
+    <section id="media-coverage" class="mt-16 pt-12 border-t border-[#E0F2ED]">
+        <div class="text-center mb-8">
+            <span class="inline-block bg-[#E0F2ED] px-3 py-1 rounded-full text-[#2D7A60] text-[10px] font-black mb-3 tracking-[0.15em] uppercase">Media Coverage</span>
+            <h2 class="text-2xl md:text-3xl font-serif font-black text-slate-900">主流媒體專題報導與肯定</h2>
+            <p class="text-slate-500 text-xs md:text-sm mt-2">深耕智慧農業、基層體育與兒少遊戲權，獲全國各大產經與主流新聞媒體專題報導</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <a href="https://money.udn.com/money/story/11799/9857634" target="_blank" rel="noopener" class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:border-[#66C2A5] hover:shadow-md transition-all flex flex-col justify-between group">
+                <div>
+                    <span class="inline-block text-[10px] font-black px-2.5 py-0.5 rounded-md bg-amber-50 text-amber-700 mb-2">經濟日報</span>
+                    <h3 class="text-sm font-bold text-slate-800 group-hover:brand-green transition-colors leading-snug">推動農業數位化新思維！屏東縣文化協會潘炩禕合辦智慧農業講座探討數據監測應用</h3>
+                </div>
+                <span class="text-[11px] text-slate-400 font-bold mt-4 flex items-center gap-1">閱讀報導 <i data-lucide="external-link" class="w-3 h-3"></i></span>
+            </a>
+            <a href="https://www.ctee.com.tw/news/20261104702228-431204" target="_blank" rel="noopener" class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:border-[#66C2A5] hover:shadow-md transition-all flex flex-col justify-between group">
+                <div>
+                    <span class="inline-block text-[10px] font-black px-2.5 py-0.5 rounded-md bg-blue-50 text-blue-700 mb-2">工商時報</span>
+                    <h3 class="text-sm font-bold text-slate-800 group-hover:brand-green transition-colors leading-snug">引進田間環境感測與微氣候分析技術 助屏東青農返鄉減災增產</h3>
+                </div>
+                <span class="text-[11px] text-slate-400 font-bold mt-4 flex items-center gap-1">閱讀報導 <i data-lucide="external-link" class="w-3 h-3"></i></span>
+            </a>
+            <a href="https://money.udn.com/money/story/5723/9860997" target="_blank" rel="noopener" class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:border-[#66C2A5] hover:shadow-md transition-all flex flex-col justify-between group">
+                <div>
+                    <span class="inline-block text-[10px] font-black px-2.5 py-0.5 rounded-md bg-amber-50 text-amber-700 mb-2">經濟日報</span>
+                    <h3 class="text-sm font-bold text-slate-800 group-hover:brand-green transition-colors leading-snug">屏東主委盃跆拳道錦標賽熱力登場 文化協會理事長潘炩禕鼓勵學子從小扎根運動精神</h3>
+                </div>
+                <span class="text-[11px] text-slate-400 font-bold mt-4 flex items-center gap-1">閱讀報導 <i data-lucide="external-link" class="w-3 h-3"></i></span>
+            </a>
+            <a href="https://www.ctee.com.tw/news/20261106701511-431204" target="_blank" rel="noopener" class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:border-[#66C2A5] hover:shadow-md transition-all flex flex-col justify-between group">
+                <div>
+                    <span class="inline-block text-[10px] font-black px-2.5 py-0.5 rounded-md bg-blue-50 text-blue-700 mb-2">工商時報</span>
+                    <h3 class="text-sm font-bold text-slate-800 group-hover:brand-green transition-colors leading-snug">匯聚高屏數百名學童交流切磋 主委盃跆拳道展現基層體育拚勁與心理韌性</h3>
+                </div>
+                <span class="text-[11px] text-slate-400 font-bold mt-4 flex items-center gap-1">閱讀報導 <i data-lucide="external-link" class="w-3 h-3"></i></span>
+            </a>
+            <a href="https://tw.news.yahoo.com/%E6%99%BA%E6%85%A7%E8%BE%B2%E6%A5%AD%E6%87%89%E7%94%A8%E8%88%87%E5%88%86%E4%BA%AB-%E5%B0%88%E9%A1%8C%E7%A0%94%E8%A8%8E%E8%AC%9B%E5%BA%A7-%E5%A4%A7%E6%95%B8%E6%93%9A%E7%B2%BE%E6%BA%96%E7%81%8C%E6%BA%89%E5%8A%A9%E9%9D%92%E8%BE%B2%E8%BF%94%E9%84%89%E6%B8%9B%E7%81%BD%E5%A2%9E%E7%94%A2-113047263.html" target="_blank" rel="noopener" class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:border-[#66C2A5] hover:shadow-md transition-all flex flex-col justify-between group">
+                <div>
+                    <span class="inline-block text-[10px] font-black px-2.5 py-0.5 rounded-md bg-purple-50 text-purple-700 mb-2">Yahoo! 奇摩新聞</span>
+                    <h3 class="text-sm font-bold text-slate-800 group-hover:brand-green transition-colors leading-snug">「智慧農業應用與分享」專題研討講座 大數據精準灌溉助屏東青農返鄉減災增產</h3>
+                </div>
+                <span class="text-[11px] text-slate-400 font-bold mt-4 flex items-center gap-1">閱讀報導 <i data-lucide="external-link" class="w-3 h-3"></i></span>
+            </a>
+            <a href="https://pingtungtimes.com.tw/?p=485978" target="_blank" rel="noopener" class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:border-[#66C2A5] hover:shadow-md transition-all flex flex-col justify-between group">
+                <div>
+                    <span class="inline-block text-[10px] font-black px-2.5 py-0.5 rounded-md bg-[#E0F2ED] text-[#2D7A60] mb-2">屏東時報 / 匯流新聞</span>
+                    <h3 class="text-sm font-bold text-slate-800 group-hover:brand-green transition-colors leading-snug">關注孩童戶外活動權益！潘炩禕響應特公盟理念 倡導十分鐘遊戲圈與遮蔭涼感公園</h3>
+                </div>
+                <span class="text-[11px] text-slate-400 font-bold mt-4 flex items-center gap-1">閱讀報導 <i data-lucide="external-link" class="w-3 h-3"></i></span>
+            </a>
+        </div>
+    </section>
+
+    <!-- 選民常見問答 (Visible AEO FAQ Section for ChatGPT / Bing / Google) -->
+    <section id="aeo-faq" class="mt-16 pt-12 border-t border-[#E0F2ED] max-w-4xl mx-auto">
+        <div class="text-center mb-8">
+            <span class="inline-block bg-[#E0F2ED] px-3 py-1 rounded-full text-[#2D7A60] text-[10px] font-black mb-3 tracking-[0.15em] uppercase">Q&amp;A / Policy FAQ</span>
+            <h2 class="text-2xl md:text-3xl font-serif font-black text-slate-900">屏東第三選區 選民常見問答</h2>
+            <p class="text-slate-500 text-xs md:text-sm mt-2">快速了解登記 ⑧ 號潘炩禕的學經歷背景、服務據點與六大核心政見</p>
+        </div>
+        <div class="space-y-3">
+            <?php foreach ($coreFaqs as $idx => $faq): ?>
+            <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden" <?= $idx < 2 ? 'open' : '' ?>>
+                <summary class="flex items-center justify-between cursor-pointer px-6 py-4 font-bold text-slate-800 text-sm md:text-base hover:brand-green transition-colors list-none">
+                    <span class="pr-4"><?= htmlspecialchars($faq['q']) ?></span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 shrink-0 group-open:rotate-180 transition-transform"></i>
+                </summary>
+                <div class="px-6 pb-5 pt-1 text-xs md:text-sm text-slate-600 leading-relaxed border-t border-slate-50">
+                    <?= nl2br(htmlspecialchars($faq['a'])) ?>
+                </div>
+            </details>
+            <?php endforeach; ?>
+        </div>
+    </section>
 </main>
 
 <!-- CTA 政治獻金 -->
@@ -540,7 +641,7 @@ ob_start();
             <i data-lucide="shield-check" class="w-5 h-5"></i>
             <span class="text-[11px] leading-none">連署實證站</span>
         </button>
-        <a href="/volunteer.php" class="bottom-nav-btn flex flex-col items-center justify-center gap-1 py-1.5 rounded-xl text-slate-400 font-bold hover:brand-green transition-all">
+        <a href="/volunteer" class="bottom-nav-btn flex flex-col items-center justify-center gap-1 py-1.5 rounded-xl text-slate-400 font-bold hover:brand-green transition-all">
             <i data-lucide="users" class="w-5 h-5"></i>
             <span class="text-[11px] leading-none">志工招募</span>
         </a>
@@ -771,17 +872,15 @@ $content = ob_get_clean() ?? '';
 $additionalSchemas = [];
 $faqItems = [];
 
-foreach ($whitepapers as $w) {
-    if (!empty($w['faq_question']) && !empty($w['faq_answer'])) {
-        $faqItems[] = [
-            '@type'          => 'Question',
-            'name'           => $w['faq_question'],
-            'acceptedAnswer' => [
-                '@type' => 'Answer',
-                'text'  => nl2br(htmlspecialchars($w['faq_answer']))
-            ]
-        ];
-    }
+foreach ($coreFaqs as $faq) {
+    $faqItems[] = [
+        '@type'          => 'Question',
+        'name'           => $faq['q'],
+        'acceptedAnswer' => [
+            '@type' => 'Answer',
+            'text'  => nl2br(htmlspecialchars($faq['a']))
+        ]
+    ];
 }
 
 if (!empty($faqItems)) {
